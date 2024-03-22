@@ -33,12 +33,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $tel = null;
 
+<<<<<<< HEAD
     #[ORM\Column]
     private ?int $idClasse = null;
 
     #[ORM\Column(length: 255)]
     private ?string $etatPresence = null;
 
+=======
+>>>>>>> e0d56a633510ae54e53f6127c61cad8f1d648c27
     public function getId(): ?int
     {
         return $this->id;
@@ -151,6 +154,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+<<<<<<< HEAD
 
     public function getIdClasse(): ?int
     {
@@ -175,4 +179,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+=======
+>>>>>>> e0d56a633510ae54e53f6127c61cad8f1d648c27
 }

@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "4e439138072e7ac622543e16ca0dfd8c",
+=======
+    "content-hash": "c84af848c7bd1d79f3998de6bc03e4ec",
+>>>>>>> e0d56a633510ae54e53f6127c61cad8f1d648c27
     "packages": [
         {
             "name": "doctrine/cache",
@@ -990,6 +994,7 @@
         },
         {
             "name": "doctrine/orm",
+<<<<<<< HEAD
             "version": "3.1.1",
             "source": {
                 "type": "git",
@@ -1000,6 +1005,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/doctrine/orm/zipball/9c560713925ac5859342e6ff370c4c997acf2fd4",
                 "reference": "9c560713925ac5859342e6ff370c4c997acf2fd4",
+=======
+            "version": "3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/orm.git",
+                "reference": "716fc97b70cf8116f74eaa0588eef51420874bf9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/716fc97b70cf8116f74eaa0588eef51420874bf9",
+                "reference": "716fc97b70cf8116f74eaa0588eef51420874bf9",
+>>>>>>> e0d56a633510ae54e53f6127c61cad8f1d648c27
                 "shasum": ""
             },
             "require": {
@@ -1016,7 +1033,11 @@
                 "php": "^8.1",
                 "psr/cache": "^1 || ^2 || ^3",
                 "symfony/console": "^5.4 || ^6.0 || ^7.0",
+<<<<<<< HEAD
                 "symfony/var-exporter": "^6.3.9 || ^7.0"
+=======
+                "symfony/var-exporter": "~6.2.13 || ^6.3.2 || ^7.0"
+>>>>>>> e0d56a633510ae54e53f6127c61cad8f1d648c27
             },
             "require-dev": {
                 "doctrine/coding-standard": "^12.0",
@@ -1072,9 +1093,15 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/doctrine/orm/tree/3.1.1"
             },
             "time": "2024-03-21T11:37:52+00:00"
+=======
+                "source": "https://github.com/doctrine/orm/tree/3.1.0"
+            },
+            "time": "2024-03-03T17:45:20+00:00"
+>>>>>>> e0d56a633510ae54e53f6127c61cad8f1d648c27
         },
         {
             "name": "doctrine/persistence",
@@ -1798,6 +1825,7 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
+<<<<<<< HEAD
             "version": "1.27.0",
             "source": {
                 "type": "git",
@@ -1808,6 +1836,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/86e4d5a4b036f8f0be1464522f4c6b584c452757",
                 "reference": "86e4d5a4b036f8f0be1464522f4c6b584c452757",
+=======
+            "version": "1.26.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpdoc-parser.git",
+                "reference": "231e3186624c03d7e7c890ec662b81e6b0405227"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/231e3186624c03d7e7c890ec662b81e6b0405227",
+                "reference": "231e3186624c03d7e7c890ec662b81e6b0405227",
+>>>>>>> e0d56a633510ae54e53f6127c61cad8f1d648c27
                 "shasum": ""
             },
             "require": {
@@ -1839,9 +1879,15 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/phpstan/phpdoc-parser/tree/1.27.0"
             },
             "time": "2024-03-21T13:14:53+00:00"
+=======
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.26.0"
+            },
+            "time": "2024-02-23T16:05:55+00:00"
+>>>>>>> e0d56a633510ae54e53f6127c61cad8f1d648c27
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2164,6 +2210,7 @@
         },
         {
             "name": "phpunit/phpunit",
+<<<<<<< HEAD
             "version": "9.6.18",
             "source": {
                 "type": "git",
@@ -2174,6 +2221,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/32c2c2d6580b1d8ab3c10b1e9e4dc263cc69bb04",
                 "reference": "32c2c2d6580b1d8ab3c10b1e9e4dc263cc69bb04",
+=======
+            "version": "9.6.17",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/phpunit.git",
+                "reference": "1a156980d78a6666721b7e8e8502fe210b587fcd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1a156980d78a6666721b7e8e8502fe210b587fcd",
+                "reference": "1a156980d78a6666721b7e8e8502fe210b587fcd",
+>>>>>>> e0d56a633510ae54e53f6127c61cad8f1d648c27
                 "shasum": ""
             },
             "require": {
@@ -2247,7 +2306,11 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
+<<<<<<< HEAD
                 "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.18"
+=======
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.17"
+>>>>>>> e0d56a633510ae54e53f6127c61cad8f1d648c27
             },
             "funding": [
                 {
@@ -2263,7 +2326,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2024-03-21T12:07:32+00:00"
+=======
+            "time": "2024-02-23T13:14:51+00:00"
+>>>>>>> e0d56a633510ae54e53f6127c61cad8f1d648c27
         },
         {
             "name": "psr/cache",

@@ -10,6 +10,10 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+<<<<<<< HEAD
+=======
+        # used to reload user from session & other features (e.g. switch_user)
+>>>>>>> e0d56a633510ae54e53f6127c61cad8f1d648c27
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
