@@ -1,0 +1,55 @@
+{% block stylesheets %}
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    
+{% endblock %}
+{% block body %}
+    <div class="half">
+    <div class="bg order-1 order-md-2" style="background-image: url('./frontOffice/img/gallery/admin1.jpg');"></div>
+    <div class="contents order-2 order-md-1">
+
+      <div class="container">
+        <div class="row align-items-center justify-content-center">
+          <div class="col-md-6">
+            <div class="form-block">
+              <div class="text-center mb-5">
+              <h3> <strong>ENERGYBOX</strong><br>Admin register</h3>
+              <!-- <p class="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p> -->
+              </div>
+          {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
+            <div class="form-group first">
+               {{ form_row(registrationForm.nom, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group first">
+               {{ form_row(registrationForm.tel, {'attr': {'class': 'form-control'}}) }}
+               {{ form_errors(registrationForm.tel) }}
+            </div>
+            <div class="form-group first">
+               {{ form_row(registrationForm.email, {'attr': { 'class': 'form-control'}} )}}
+            </div>
+            
+           
+            <div class="form-group first">
+                {{ form_row(registrationForm.plainPassword, {
+                    label: 'Password', 'attr': {'class': 'form-control'}
+                }) }}
+            </div>
+
+            <div class="d-sm-flex mb-5 align-items-center">
+                <label class="control control--checkbox mb-3 mb-sm-0"><span class="caption"></span></label>
+                {{ form_row(registrationForm.agreeTerms) }}
+                <a class="text-light" href="{{ path('app_login') }}">
+                    <h6 style="color:#000000;  margin-left: 120px; text-decoration: underline;">Already have an account ?</h6>
+                </a>
+            </div>
+            <div class="col-lg-12">
+                <button type="submit-info" class="btn" style="margin-bottom: 10px; margin-left: 100px; background-color: #720000; color:#ffffff;">Register</button><br>
+            </div>
+            <br>
+
+          {{ form_end(registrationForm) }}
+
+{% endblock %}
+{% block javascripts %}
+
+{% endblock %}
