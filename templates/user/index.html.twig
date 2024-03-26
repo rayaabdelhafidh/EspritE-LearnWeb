@@ -11,11 +11,8 @@
                 <th>Id</th>
                 <th>Email</th>
                 <th>Roles</th>
-                <th>Password</th>
                 <th>Nom</th>
                 <th>Tel</th>
-                <th>IdClasse</th>
-                <th>EtatPresence</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -25,11 +22,8 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.password }}</td>
                 <td>{{ user.nom }}</td>
                 <td>{{ user.tel }}</td>
-                <td>{{ user.IdClasse }}</td>
-                <td>{{ user.etatPresence }}</td>
                 <td>
                     <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
                     <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
