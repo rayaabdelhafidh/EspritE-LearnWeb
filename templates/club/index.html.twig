@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Club index{% endblock %}
+
+{% block body %}
+    <h1>Club index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Idclub</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for club in clubs %}
+            <tr>
+                <td>{{ club.idclub }}</td>
+                <td>
+                    <a href="{{ path('app_club_show', {'idclub': club.idclub}) }}">show</a>
+                    <a href="{{ path('app_club_edit', {'idclub': club.idclub}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_club_new') }}">Create new</a>
+{% endblock %}
