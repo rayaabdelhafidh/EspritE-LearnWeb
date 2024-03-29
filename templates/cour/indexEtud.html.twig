@@ -1,6 +1,15 @@
-{% extends 'baseback.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Cour index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .red-title {
+            color: red;
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
     <h1 class="mb-4">Liste des Cours</h1>
@@ -11,15 +20,13 @@
                 <div class="card">
                     <img src="{{ asset(cour.Image) }}" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title"><strong>Titre:</strong> {{ cour.Titre }}</h5>
+                        <h5 class="card-title red-title"><strong>Titre:</strong> {{ cour.Titre }}</h5>
                         <p class="card-text"><strong>Description:</strong> {{ cour.description }}</p>
                         <p class="card-text"><strong>Durée:</strong> {{ cour.Duree }}</p>
                         <p class="card-text"><strong>Objectif:</strong> {{ cour.Objectif }}</p>
                         <p class="card-text"><strong>Matière:</strong> {{ cour.idmatiere.nomm }}</p>
                         <p class="card-text"><strong>Note:</strong> {{ cour.Note }}</p>
                         <p class="card-text"><strong>Likes:</strong> {{ cour.Nblike }}</p>
-                        <a href="{{ path('app_cour_show', {'id': cour.id}) }}" class="btn btn-primary">Détails</a>
-                        <a href="{{ path('app_cour_edit', {'id': cour.id}) }}" class="btn btn-secondary">Modifier</a>
                     </div>
                 </div>
             </div>
@@ -29,6 +36,4 @@
             </div>
         {% endfor %}
     </div>
-
-    <a href="{{ path('app_cour_new') }}" class="btn btn-success mt-4">Ajouter un nouveau cours</a>
 {% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Plandetude Index{% endblock %}
+
+{% block body %}
+    <h1 class="text-center mb-4">Liste des Plandetudes</h1>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nom du Programme</th>
+                    <th scope="col">Niveau</th>
+                    <th scope="col">Durée Totale</th>
+                    <th scope="col">Crédits Requis Total</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for plandetude in plandetudes %}
+                    <tr>
+                        <td>{{ plandetude.id }}</td>
+                        <td>{{ plandetude.nomprogramme }}</td>
+                        <td>{{ plandetude.niveau }}</td>
+                        <td>{{ plandetude.dureetotal }}</td>
+                        <td>{{ plandetude.creditsrequistotal }}</td>
+                        <td>
+                            <a href="{{ path('app_plandetude_show', {'id': plandetude.id}) }}" class="btn btn-info  btn-sm">Voir</a>
+                            <a href="{{ path('app_plandetude_edit', {'id': plandetude.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{{ path('app_plandetude_new') }}" class="btn btn-success">Ajouter un nouveau Plandetude</a>
+{% endblock %}

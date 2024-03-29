@@ -1,0 +1,23 @@
+<form method="{{ form.vars.method }}" action="{{ form.vars.action }}" enctype="multipart/form-data">
+    {{ form_start(form) }}
+    <div class="form-group">
+        <label class="form-control-label text-danger" for="{{ form.nomProgramme.vars.id }}">Nom Programme</label>
+        {{ form_widget(form.nomProgramme, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="form-group">
+        <label class="form-control-label text-danger" for="{{ form.niveau.vars.id }}">Niveau</label>
+        {{ form_widget(form.niveau, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="form-group">
+        <label class="form-control-label text-danger" for="{{ form.dureeTotal.vars.id }}">Durée Totale</label>
+        {{ form_widget(form.dureeTotal, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="form-group">
+        <label class="form-control-label text-danger" for="{{ form.creditsRequisTotal.vars.id }}">Crédits Requis Total</label>
+        {{ form_widget(form.creditsRequisTotal, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <!-- Ajoutez d'autres champs de formulaire si nécessaire -->
+    <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    <a href="{{ path('app_plandetude_index') }}" class="btn btn-secondary">Annuler</a>
+    {{ form_end(form) }}
+</form>

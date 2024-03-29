@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MatiereRepository;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MatiereRepository")
@@ -23,35 +24,51 @@ class Matiere
    #[ORM\Column]
    private ?int $idm = null;
 
-    
+    /**
+     * @ORM\Column(length=255)
+     */
     #[ORM\Column(length: 255)]
     private ?string $nomm = null;
 
-    
+    /**
+     * @ORM\Column(type="integer")
+     */
     #[ORM\Column]
     private ?int $idenseignant = null;
 
-    
+    /**
+     * @ORM\Column(type="integer")
+     */
     #[ORM\Column]
     private ?int $nbrheure = null;
 
   
-     
+     /**
+     * @ORM\Column(type="integer")
+     */
     #[ORM\Column]
     private ?int $coefficient = null;
 
-   
+   /**
+     * @ORM\Column(type="integer")
+     */
     #[ORM\Column]
     private ?int $semester = null;
 
 
-    
+    /**
+     * @ORM\Column(type="integer")
+     */
     #[ORM\Column]
     private ?int $credit = null;
 
     
     #[ORM\ManyToOne(inversedBy: 'Matiere')]
     private ?Plandetude $plandetude = null;
+
+  /**
+   * @ORM\OneToMany(targetEntity="Cour",mappedBy="Matiere")
+   */
 
     #[ORM\OneToMany(mappedBy: 'Matiere', targetEntity: Cour::class)]
     private Collection $Cour;
@@ -153,5 +170,9 @@ class Matiere
     {
         return $this->Cour;
     }
-
+ public function __construct()
+    {
+        $this->Cour = new ArrayCollection();
+    }
+   
 }

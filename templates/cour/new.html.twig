@@ -1,0 +1,11 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}New Cour{% endblock %}
+
+{% block body %}
+    <h1>Create new Cour</h1>
+
+    {{ include('cour/_form.html.twig') }}
+
+    <a href="{{ path('app_cour_index') }}">back to list</a>
+{% endblock %}

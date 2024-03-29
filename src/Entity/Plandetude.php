@@ -22,19 +22,27 @@ class Plandetude
    #[ORM\Column]
    private ?int $id = null;
 
-   
+   /**
+     * @ORM\Column(length=500)
+     */
     #[ORM\Column(length: 500)]
     private ?string $nomprogramme = null;
 
-    
+     /**
+     * @ORM\Column(length=250)
+     */
     #[ORM\Column(length: 250)]
     private ?string $niveau = null;
     
-
+/**
+     * @ORM\Column(type="integer")
+     */
     #[ORM\Column]
     private ?int $dureetotal = null;
 
-    
+     /**
+     * @ORM\Column(type="integer")
+     */
     #[ORM\Column]
     private ?int $creditsrequistotal = null;
 
