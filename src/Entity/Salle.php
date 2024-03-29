@@ -3,36 +3,32 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\SalleRepository;
 
 /**
- * Salle
- *
- * @ORM\Table(name="salle")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\SalleRepository")
  */
+
+
+#[ORM\Entity(repositoryClass: SalleRepository::class)]
 class Salle
 {
     /**
-     * @var int
      *
      * @ORM\Column(name="salleId", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private $salleid;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="bloc", type="string", length=255, nullable=false)
-     */
+  
+   #[ORM\Column(length: 255)]
     private $bloc;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="numeroSalle", type="integer", nullable=false)
-     */
+    #[ORM\Column]
     private $numerosalle;
 
     public function getSalleid(): ?int

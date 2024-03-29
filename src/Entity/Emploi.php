@@ -4,51 +4,43 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use App\Repository\EmploiRepository;
 /**
  * Emploi
  *
  * @ORM\Table(name="emploi", indexes={@ORM\Index(name="salleId", columns={"salleId"}), @ORM\Index(name="classeId", columns={"classeId"})})
  * @ORM\Entity
  */
+
+ #[ORM\Entity(repositoryClass: EmploiRepository::class)]
 class Emploi
 {
     /**
-     * @var int
+
      *
      * @ORM\Column(name="emploiId", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $emploiid;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="premierDate", type="date", nullable=true)
-     */
-    private $premierdate;
+     #[ORM\Id]
+     #[ORM\GeneratedValue]
+     #[ORM\Column]
+    private ?int $emploiid;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="dernierDate", type="date", nullable=true)
-     */
-    private $dernierdate;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="salleId", type="integer", nullable=true)
-     */
-    private $salleid;
+     #[ORM\Column(type: "date")]
+    private ?date $premierdate;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="classeId", type="integer", nullable=true)
-     */
-    private $classeid;
+
+     #[ORM\Column(type: "date")]
+    private ?date $dernierdate = null;
+
+    #[ORM\ManyToOne(inversedBy: 'Emploi')]
+    private ?Salle $salleid = null;
+
+   #[ORM\ManyToOne(inversedBy: 'Emploi')]
+    private ?Classe $classeid = null;
 
     public function getEmploiid(): ?int
     {
