@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Classe index{% endblock %}
+
+{% block body %}
+    <h1>Classe index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Idclasse</th>
+                <th>Nomclasse</th>
+                <th>Filiere</th>
+                <th>Nbreetudi</th>
+                <th>Niveaux</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for classe in classes %}
+            <tr>
+                <td>{{ classe.idclasse }}</td>
+                <td>{{ classe.nomclasse }}</td>
+                <td>{{ classe.filiere }}</td>
+                <td>{{ classe.nbreetudi }}</td>
+                <td>{{ classe.niveaux }}</td>
+                <td>
+                    <a href="{{ path('app_classe_show', {'idclasse': classe.idclasse}) }}">show</a>
+                    <a href="{{ path('app_classe_edit', {'idclasse': classe.idclasse}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_classe_new') }}">Create new</a>
+{% endblock %}
