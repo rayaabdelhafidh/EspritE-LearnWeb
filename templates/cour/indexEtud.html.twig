@@ -5,6 +5,26 @@
 {% block stylesheets %}
     {{ parent() }}
     <style>
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px; /* Pour compenser les marges négatives des colonnes */
+        }
+
+        .col-md-4 {
+            padding: 0 15px; /* Ajoute une marge aux colonnes */
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Assurez-vous que la hauteur de la carte est à 100% de son conteneur */
+        }
+
+        .card-body {
+            flex-grow: 1; /* Permet au contenu de s'étirer pour remplir l'espace disponible */
+        }
+
         .red-title {
             color: red;
         }
@@ -27,6 +47,7 @@
                         <p class="card-text"><strong>Matière:</strong> {{ cour.idmatiere.nomm }}</p>
                         <p class="card-text"><strong>Note:</strong> {{ cour.Note }}</p>
                         <p class="card-text"><strong>Likes:</strong> {{ cour.Nblike }}</p>
+                        <p class="card-text"><strong>coururl:</strong> {{ cour.Courspdfurl }}</p>
                     </div>
                 </div>
             </div>
