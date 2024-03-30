@@ -46,6 +46,10 @@ class Plandetude
     #[ORM\Column]
     private ?int $creditsrequistotal = null;
 
+
+  /**
+   * @ORM\OneToMany(targetEntity="Matiere",mappedBy="Plandetude")
+   */
     #[ORM\OneToMany(mappedBy: 'Plandetude', targetEntity: Matiere::class)]
     private Collection $Matiere;
 

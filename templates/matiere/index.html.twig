@@ -1,0 +1,49 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Matiere index{% endblock %}
+
+{% block body %}
+    <h1 class="text-center mb-4">Matiere index</h1>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Idm</th>
+                    <th scope="col">Nomm</th>
+                    <th scope="col">Idenseignant</th>
+                    <th scope="col">Nbrheure</th>
+                    <th scope="col">Coefficient</th>
+                    <th scope="col">Semester</th>
+                    <th scope="col">Credit</th>
+                    <th scope="col">Plandetude</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for matiere in matieres %}
+                    <tr>
+                        <td>{{ matiere.idm }}</td>
+                        <td>{{ matiere.nomm }}</td>
+                        <td>{{ matiere.idenseignant }}</td>
+                        <td>{{ matiere.nbrheure }}</td>
+                        <td>{{ matiere.coefficient }}</td>
+                        <td>{{ matiere.semester }}</td>
+                        <td>{{ matiere.credit }}</td>
+                        <td>{{ matiere.idplandetude.nomprogramme }}</td>
+                        <td>
+                            <a href="{{ path('app_matiere_show', {'idm': matiere.idm}) }}" class="btn btn-info btn-sm">Voir</a>
+                            <a href="{{ path('app_matiere_edit', {'idm': matiere.idm}) }}" class="btn btn-primary btn-sm">Modifier</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{{ path('app_matiere_new') }}" class="btn btn-success">Ajouter une nouvelle Matiere</a>
+{% endblock %}

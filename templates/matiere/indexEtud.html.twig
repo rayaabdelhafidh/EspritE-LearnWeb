@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Matiere index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .error-message {
+            background-color: #F31010; /* Rouge */
+            color: #fff; /* Blanc */
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .table {
+            background-color: #f2f2f2; /* Gris clair */
+        }
+        .table th {
+            color: #F31010; /* Rouge */
+        }
+        .table td {
+            color: #333; /* Couleur de texte par défaut */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h1>Matiere index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nomm</th>
+                <th>Idenseignant</th>
+                <th>Nbrheure</th>
+                <th>Coefficient</th>
+                <th>Semester</th>
+                <th>Credit</th>
+                <th>Plandetude</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for matiere in matieres %}
+            <tr>
+                <td>{{ matiere.nomm }}</td>
+                <td>{{ matiere.idenseignant }}</td>
+                <td>{{ matiere.nbrheure }}</td>
+                <td>{{ matiere.coefficient }}</td>
+                <td>{{ matiere.semester }}</td>
+                <td>{{ matiere.credit }}</td>
+                <td>{{ matiere.idplandetude.nomprogramme }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MatiereRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MatiereRepository")
@@ -62,9 +63,18 @@ class Matiere
     #[ORM\Column]
     private ?int $credit = null;
 
+     /**
+     * @var \Plandetude
+     *
+     * @ORM\ManyToOne(targetEntity="Plandetude")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idPlanDetude", referencedColumnName="id")
+     * })
+     */
     
     #[ORM\ManyToOne(inversedBy: 'Matiere')]
-    private ?Plandetude $plandetude = null;
+    
+    private ?Plandetude $idplandetude = null;
 
   /**
    * @ORM\OneToMany(targetEntity="Cour",mappedBy="Matiere")
@@ -151,17 +161,18 @@ class Matiere
         return $this;
     }
 
-    public function getPlandetude(): ?Plandetude
-    {
-        return $this->plandetude;
-    }
+    public function getIdplandetude(): ?Plandetude
+{
+    return $this->idplandetude;
+}
 
-    public function setPlandetude(?Plandetude $plandetude): static
-    {
-        $this->plandetude = $plandetude;
+public function setIdplandetude(?Plandetude $idplandetude): static
+{
+    $this->idplandetude = $idplandetude;
 
-        return $this;
-    }
+    return $this;
+}
+
  
      /** 
      * @return Collection<int, Cour>
