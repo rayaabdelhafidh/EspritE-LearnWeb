@@ -29,7 +29,9 @@ class CourController extends AbstractController
             'cours' => $courRepository->findAll(),
         ]);
     }
+    
 
+   
     #[Route('/new', name: 'app_cour_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -38,6 +40,23 @@ class CourController extends AbstractController
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $file1 = $form->get('courspdfurl')->getData();
+        if ($file1) {
+            // Générer un nom unique pour le fichier avant de l'enregistrer
+            $fileName1 = md5(uniqid()).'.'.$file1->guessExtension();
+
+            // Déplacer le fichier vers le répertoire où les fichiers PDF sont stockés
+            $targetDirectory1 = $this->getParameter('kernel.project_dir') . '/public';
+            $file1->move(
+                $targetDirectory1,
+                $fileName1
+            );
+            $cour->setCourspdfurl($fileName1);
+        }
+
+
+
             $file = $form->get('image')->getData();
             if ($file) {
                 // Generate a unique name for the file before saving it

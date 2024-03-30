@@ -1,5 +1,5 @@
 {% extends 'baseback.html.twig' %}
-
+<!-- hadha s7y7 -->
 {% block title %}Cour index{% endblock %}
 
 {% block body %}
@@ -18,7 +18,8 @@
                         <p class="card-text"><strong>Matière:</strong> {{ cour.idmatiere.nomm }}</p>
                         <p class="card-text"><strong>Note:</strong> {{ cour.Note }}</p>
                         <p class="card-text"><strong>Likes:</strong> {{ cour.Nblike }}</p>
-                       
+                        <!-- Lien de téléchargement PDF -->
+                        <a href="{{ path('download_pdf', {'id': cour.id}) }}" class="btn btn-primary mt-auto">Télécharger PDF</a>
                         <a href="{{ path('app_cour_show', {'id': cour.id}) }}" class="btn btn-primary mt-auto">Détails</a>
                         <a href="{{ path('app_cour_edit', {'id': cour.id}) }}" class="btn btn-secondary">Modifier</a>
                     </div>
