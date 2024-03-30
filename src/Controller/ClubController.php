@@ -14,12 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/club')]
 class ClubController extends AbstractController
 {
-    #[Route('/', name: 'app_club_index', methods: ['GET'])]
+    #[Route('/', name: 'app_club_index')]
     public function index(ClubRepository $clubRepository): Response
     {
-        return $this->render('club/index.html.twig', [
-            'clubs' => $clubRepository->findAll(),
-        ]);
+        $clubs= $clubRepository->findAll();
+        return $this->render('club/index.html.twig',
+            ['clubs'=>$clubs]
+        );
     }
 
     #[Route('/new', name: 'app_club_new', methods: ['GET', 'POST'])]
@@ -46,7 +47,7 @@ class ClubController extends AbstractController
     public function show(Club $club): Response
     {
         return $this->render('club/show.html.twig', [
-            'club' => $club,
+            'clubs' => $club,
         ]);
     }
 
@@ -69,13 +70,12 @@ class ClubController extends AbstractController
     }
 
     #[Route('/{idclub}', name: 'app_club_delete', methods: ['POST'])]
-    public function delete(Request $request, Club $club, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$club->getIdclub(), $request->request->get('_token'))) {
-            $entityManager->remove($club);
-            $entityManager->flush();
-        }
+    function deleteClub($id,ClubRepository $repo,ManagerRegistry $manager){
+        $em=$manager->getManager();
+        $club=$repo->find($id);
+        $em->remove($club);
+        $em->flush();
+        return $this->redirectToRoute('app_club_index'); 
 
-        return $this->redirectToRoute('app_club_index', [], Response::HTTP_SEE_OTHER);
     }
 }

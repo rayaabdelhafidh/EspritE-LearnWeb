@@ -24,23 +24,48 @@ class Club
     #[ORM\Column]
     private ?int $idclub=null;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nomclub", type="string", length=155, nullable=false)
+     */
     #[ORM\Column(length: 155)]
     private ?string $nomclub=null;
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="datefondation", type="date", nullable=true)
+     */
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $datefondation=null;
 
+/**
+     * @var string
+     *
+     * @ORM\Column(name="typeactivite", type="string", length=155, nullable=false)
+     */
     #[ORM\Column(length: 155)]
     private ?string $typeactivite=null;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=300, nullable=false)
+     */
     #[ORM\Column(length: 300)]
     private ?string $description=null;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nbmembres", type="integer", nullable=false)
+     */
     #[ORM\Column]
     private ?int $nbmembres=null;
 
     #[ORM\Column(type: "boolean")]
-    private ?bool $active=true;
+    private ?bool $active=null;
 
     #[ORM\OneToMany(mappedBy: 'club', targetEntity: Evenement::class)]
     private Collection $evenement_club;
@@ -61,19 +86,19 @@ class Club
         return $this->nomclub;
     }
 
-    public function setNomclub(?string $nomclub)
+    public function setNomclub(string $nomclub):self 
     {
         $this->nomclub = $nomclub;
 
         return $this;
     }
 
-    public function getDatefondation(): ?date
+    public function getDatefondation(): ?\DateTimeInterface
     {
         return $this->datefondation;
     }
 
-    public function setDatefondation(?date $datefondation)
+    public function setDatefondation(\DateTimeInterface $datefondation):self
     {
         $this->datefondation = $datefondation;
 
@@ -85,7 +110,7 @@ class Club
         return $this->typeactivite;
     }
 
-    public function setTypeactivite(?string $typeactivite)
+    public function setTypeactivite(string $typeactivite):self
     {
         $this->typeactivite = $typeactivite;
 
@@ -97,7 +122,7 @@ class Club
         return $this->description;
     }
 
-    public function setDescription(?string $description)
+    public function setDescription(string $description):self
     {
         $this->description = $description;
 
@@ -109,7 +134,7 @@ class Club
         return $this->nbmembres;
     }
 
-    public function setNbmembres(?int $nbmembres)
+    public function setNbmembres(int $nbmembres):self
     {
         $this->nbmembres = $nbmembres;
 
@@ -121,7 +146,7 @@ class Club
         return $this->active;
     }
 
-    public function setActive(?bool $active)
+    public function setActive(bool $active):self
     {
         $this->active = $active;
 

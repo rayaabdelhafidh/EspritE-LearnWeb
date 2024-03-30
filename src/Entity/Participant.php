@@ -2,59 +2,40 @@
 
 namespace App\Entity;
 
+use App\Repository\ParticipantRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
- * Participant
- *
- * @ORM\Table(name="participant", indexes={@ORM\Index(name="idUser", columns={"idUser"}), @ORM\Index(name="idEvenement", columns={"idEvenement"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ParticipantRepository")
  */
+#[ORM\Entity(repositoryClass: ParticipantRepository::class)]
 class Participant
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idParticipant", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idparticipant;
+        /**
+ * @ORM\Id
+ * @ORM\Column(type="integer")
+ * @ORM\GeneratedValue(strategy="AUTO")
+ */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $idparticipant=null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="token", type="string", length=255, nullable=false)
-     */
-    private $token;
+    #[ORM\Column(length: 255)]
+    private ?string $token=null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateReservation", type="date", nullable=false)
-     */
-    private $datereservation;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $datereservation=null;
 
-    /**
-     * @var \Evenement
-     *
-     * @ORM\ManyToOne(targetEntity="Evenement")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idEvenement", referencedColumnName="IdEvenement")
-     * })
-     */
-    private $idevenement;
+ 
+    #[ORM\ManyToOne(inversedBy: 'evenement')]
+        private ?Evenement $idevenement= null;
 
-    /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idUser", referencedColumnName="id")
-     * })
-     */
-    private $iduser;
+    #[ORM\ManyToOne(inversedBy: 'user')]
+    private ?User $iduser= null;
 
     public function getIdparticipant(): ?int
     {

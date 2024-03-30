@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>DarkPan - Bootstrap 5 Admin Template</title>
+    <title>ESPRIT E-LEARN BACK</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -39,6 +39,8 @@
 
 
 <body>
+            {% block bodyBack %}
+
     <div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -70,11 +72,10 @@
                 <div class="navbar-nav w-100">
                     <a href="{{ path('app_back_home') }}" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Elements</a>
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Vie Etudiante</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="button.html" class="dropdown-item">Buttons</a>
-                            <a href="typography.html" class="dropdown-item">Typography</a>
-                            <a href="element.html" class="dropdown-item">Other Elements</a>
+                            <a href="{{ path('app_club_index') }}" class="dropdown-item">Clubs</a>
+                            <a href="{{ path('app_about') }}" class="dropdown-item">Evenements</a>
                         </div>
                     </div>
                     <a href="widget.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Cours</a>
@@ -191,11 +192,6 @@
             </nav>
             <!-- Navbar End -->
 
-
-
-
-          {% block body %}
-           {% endblock  %}
             <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-secondary rounded-top p-4">
@@ -237,6 +233,8 @@
 
     <!-- Template Javascript -->
     <script src="{{asset('./back/js/main.js')}}"></script>
+        {% endblock %}
+
 </body>
 
 

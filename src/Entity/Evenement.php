@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\EvenementRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EvenementRepository")
  */
@@ -38,6 +40,9 @@ class Evenement
 
     #[ORM\ManyToOne(inversedBy: 'evenement')]
     private ?Club $club= null;
+
+    #[ORM\OneToMany(mappedBy: 'evenement', targetEntity: Participant::class)]
+    private Collection $evenement_participant;
 
 
     public function getIdevenement(): ?int

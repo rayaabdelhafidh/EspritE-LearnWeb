@@ -1,24 +1,33 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseback.html.twig' %}
 
-{% block title %}Club index{% endblock %}
-
-{% block body %}
-    <h1>Club index</h1>
-
+{% block bodyBack %}
+    <h1>Liste des Clubs</h1>
     <table class="table">
         <thead>
             <tr>
-                <th>Idclub</th>
-                <th>actions</th>
+    <td> Id Club </td>
+    <td> Nom Club </td>
+    <td> Date Fondation </td>
+    <td> Type d Activite </td>
+    <td> Description </td>
+    <td> Nombre de membres </td>
+    <td> Activite  </td>                
+    <th>          </th>
             </tr>
         </thead>
         <tbody>
         {% for club in clubs %}
             <tr>
-                <td>{{ club.idclub }}</td>
+    <td> {{club.idclub}} </td>
+    <td> {{club.nomclub|upper}} </td>
+    <td>{{ club.datefondation ? club.datefondation|date('Y-m-d') : '' }}</td>
+    <td> {{club.typeactivite}} </td>
+    <td> {{club.description}} </td>
+    <td> {{club.nbmembres}} </td>
+    <td>{{ club.active ? 'Active' : 'Inactive' }}</td>
                 <td>
-                    <a href="{{ path('app_club_show', {'idclub': club.idclub}) }}">show</a>
-                    <a href="{{ path('app_club_edit', {'idclub': club.idclub}) }}">edit</a>
+                    <a href="{{ path('app_club_delete', {'idclub': club.idclub}) }}">Supprimer</a>
+                    <a href="{{ path('app_club_edit', {'idclub': club.idclub}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -29,5 +38,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_club_new') }}">Create new</a>
+    <a href="{{ path('app_club_new') }}">Ajouter Club</a>
 {% endblock %}
