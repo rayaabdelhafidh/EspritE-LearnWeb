@@ -22,10 +22,6 @@ class SalleController extends AbstractController
         ]);
     }
     
-    
-    
-    
-
     #[Route('/new', name: 'app_salle_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -46,7 +42,7 @@ class SalleController extends AbstractController
         ]);
     }
 
-    #[Route('/{salleid}', name: 'app_salle_show', methods: ['GET'])]
+    #[Route('/{salleId}', name: 'app_salle_show', methods: ['GET'])]
     public function show(Salle $salle): Response
     {
         return $this->render('salle/show.html.twig', [
@@ -54,7 +50,7 @@ class SalleController extends AbstractController
         ]);
     }
 
-    #[Route('/{salleid}/edit', name: 'app_salle_edit', methods: ['GET', 'POST'])]
+    #[Route('/{salleId}/edit', name: 'app_salle_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Salle $salle, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(SalleType::class, $salle);
@@ -72,7 +68,7 @@ class SalleController extends AbstractController
         ]);
     }
 
-    #[Route('/{salleid}', name: 'app_salle_delete', methods: ['POST'])]
+    #[Route('/{salleId}', name: 'app_salle_delete', methods: ['POST'])]
     public function delete(Request $request, Salle $salle, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$salle->getSalleid(), $request->request->get('_token'))) {
