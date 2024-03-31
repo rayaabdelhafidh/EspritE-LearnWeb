@@ -36,12 +36,12 @@ class Emploi
      #[ORM\Column(type: "date")]
     private ?date $dernierdate = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Emploi')]
+  /*  #[ORM\ManyToOne(inversedBy: 'Emploi')]
     private ?Salle $salleid = null;
 
    #[ORM\ManyToOne(inversedBy: 'Emploi')]
     private ?Classe $classeid = null;
-
+*/
     public function getEmploiid(): ?int
     {
         return $this->emploiid;

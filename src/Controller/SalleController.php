@@ -10,17 +10,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Psr\Log\LoggerInterface;
 
 #[Route('/salle')]
 class SalleController extends AbstractController
-{
-    #[Route('/', name: 'app_salle_index', methods: ['GET'])]
+{  #[Route('/', name: 'app_salle_index', methods: ['GET'])]
     public function index(SalleRepository $salleRepository): Response
     {
         return $this->render('salle/index.html.twig', [
             'salles' => $salleRepository->findAll(),
         ]);
     }
+    
+    
+    
+    
 
     #[Route('/new', name: 'app_salle_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response

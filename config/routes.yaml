@@ -12,16 +12,3 @@ app_back_home:
     path: /back
     controller: App\Controller\BackHomeController::index
 
-
-app_salle_show:
-    path: /salle/{salleid}
-    controller: App\Controller\SalleController::show
-    methods: ['GET']
-    requirements:
-        salleid: '\d+'
-
-
-app_salle_index:
-    path: /salle
-    controller: App\Controller\SalleController::index
-    methods: ['GET']

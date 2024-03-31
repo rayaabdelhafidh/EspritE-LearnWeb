@@ -8,22 +8,26 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Salleid</th>
-                <th>actions</th>
+                <th>Bloc</th>
+                <th>Numero Salle</th>
+                <th>SalleId</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for salle in salles %}
             <tr>
-                <td>{{ salle.salleid }}</td>
+                <td>{{ salle.bloc }}</td> <!-- Displaying 'bloc' attribute -->
+                <td>{{ salle.numeroSalle }}</td> <!-- Displaying 'numeroSalle' attribute -->
+                <td>{{ salle.salleId }}</td> <!-- Displaying 'salleId' attribute -->
                 <td>
-                    <a href="{{ path('app_salle_show', {'salleid': salle.salleid}) }}">show</a>
-                    <a href="{{ path('app_salle_edit', {'salleid': salle.salleid}) }}">edit</a>
+                    <a href="{{ path('app_salle_show', {'salleid': salle.salleId}) }}">show</a>
+                    <a href="{{ path('app_salle_edit', {'salleid': salle.salleId}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="2">no records found</td>
+                <td colspan="4">No records found</td> <!-- Colspan adjusted to match the number of columns -->
             </tr>
         {% endfor %}
         </tbody>

@@ -22,18 +22,27 @@ class Salle
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private $salleid;
+    private ?int $salleId=null;
 
+      /**
+     * @var string
+     *
+     * @ORM\Column(name="bloc", type="string", length=255, nullable=false)
+     */
   
-   #[ORM\Column(length: 255)]
-    private $bloc;
+    private ?string $bloc=null;
 
+       /**
+     * @var int
+     *
+     * @ORM\Column(name="numeroSalle", type="integer", nullable=false)
+     */
     #[ORM\Column]
-    private $numerosalle;
+    private ?int $numeroSalle=null;
 
-    public function getSalleid(): ?int
+    public function getSalleId(): ?int
     {
-        return $this->salleid;
+        return $this->salleId;
     }
 
     public function getBloc(): ?string
@@ -48,14 +57,14 @@ class Salle
         return $this;
     }
 
-    public function getNumerosalle(): ?int
+    public function getNumeroSalle(): ?int
     {
-        return $this->numerosalle;
+        return $this->numeroSalle;
     }
 
-    public function setNumerosalle(int $numerosalle): static
+    public function setNumeroSalle(int $numeroSalle): static
     {
-        $this->numerosalle = $numerosalle;
+        $this->numeroSalle = $numeroSalle;
 
         return $this;
     }
