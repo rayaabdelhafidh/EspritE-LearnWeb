@@ -2,13 +2,3 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-
-app_home:
-    path: /
-    controller: App\Controller\HomeController::index
-
-# Route for the second template
-app_back_home:
-    path: /back
-    controller: App\Controller\BackHomeController::index
-
