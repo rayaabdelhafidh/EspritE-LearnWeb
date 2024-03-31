@@ -73,13 +73,14 @@ class ClubController extends AbstractController
         ]);
     }
 
-    #[Route('/{idclub}', name: 'app_club_delete')]
-    function deleteClub($idclub,ClubRepository $repo,ManagerRegistry $manager){
-        $em=$manager->getManager();
-        $club=$repo->find($idclub);
-        $em->remove($club);
-        $em->flush();
-        return $this->redirectToRoute('app_club_show'); 
+    #[Route('/{idclub}', name: 'app_club_delete', methods: ['POST'])]
+    public function delete(Request $request, Club $club, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$club->getIdclub(), $request->request->get('_token'))) {
+            $entityManager->remove($club);
+            $entityManager->flush();
+        }
 
+        return $this->redirectToRoute('app_club_index', [], Response::HTTP_SEE_OTHER);
     }
 }
