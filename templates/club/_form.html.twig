@@ -1,4 +1,64 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{% extends "baseback.html.twig" %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/add.css') }}" rel="stylesheet">
+    <style>
+        .error-message {
+            color: red;
+        }
+        /* Adjust placeholder font size */
+        ::placeholder {
+            font-size: 0.3rem; /* Adjust the font size as needed */
+        }
+    </style>
+{% endblock %}
+{% block bodyBack %}
+    <form method="{{ form.vars.method }}" action="{{ form.vars.action }}" enctype="multipart/form-data">
+        {{ form_start(form,{'attr': {'novalidate': 'novalidate'}}) }}
+        <div class="form-group">
+            <label class="form-control-label text-danger" for="{{ form.nomclub.vars.id }}">Nom Club</label>
+            {{ form_widget(form.nomclub, {'attr': {'class': 'form-control','placeholder': 'Inserer le nom du club'}}) }}
+            {% if form_errors(form.nomclub) %}
+                <div class="error-message">{{ form_errors(form.nomclub) }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label class="form-control-label text-danger" for="{{ form.datefondation.vars.id }}">Date Fondation</label>
+            {{ form_widget(form.datefondation, {'attr': {'class': 'form-control','placeholder': 'Inserer l du club'}}) }}
+            {% if form_errors(form.datefondation) %}
+                <div class="error-message">{{ form_errors(form.datefondation) }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label class="form-control-label text-danger" for="{{ form.typeactivite.vars.id }}">Type d activite</label>
+            {{ form_widget(form.typeactivite, {'attr': {'class': 'form-control'}}) }}
+            {% if form_errors(form.typeactivite) %}
+                <div class="error-message">{{ form_errors(form.typeactivite) }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label class="form-control-label text-danger" for="{{ form.description.vars.id }}">Description</label>
+            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+            {% if form_errors(form.description) %}
+                <div class="error-message">{{ form_errors(form.description) }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label class="form-control-label text-danger" for="{{ form.nbmembres.vars.id }}">Nombre de membres</label>
+            {{ form_widget(form.nbmembres, {'attr': {'class': 'form-control'}}) }}
+            {% if form_errors(form.nbmembres) %}
+                <div class="error-message">{{ form_errors(form.nbmembres) }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label class="form-control-label text-danger" for="{{ form.active.vars.id }}">Active</label>
+            {{ form_widget(form.active, {'attr': {'class': 'form-control'}}) }}
+            {% if form_errors(form.active) %}
+                <div class="error-message">{{ form_errors(form.active) }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+        <a href="{{ path('app_club_index') }}" class="btn btn-secondary">Annuler</a>
+        {{ form_end(form) }}
+    </form>
+{% endblock %}

@@ -22,6 +22,7 @@ class Club
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Assert\NotBlank(message: "ID cannot be blank")]
     private ?int $idclub=null;
 
     /**
@@ -30,14 +31,24 @@ class Club
      * @ORM\Column(name="nomclub", type="string", length=155, nullable=false)
      */
     #[ORM\Column(length: 155)]
+    #[Assert\NotBlank(message: "club name cannot be blank")]
+    #[Assert\Length(
+        max: 155,
+        maxMessage: "the club name cannot be longer than {{ limit }} characters"
+    )]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z0-9]+$/",
+        message: "the club name can only contain numbers and alphabets"
+    )]
     private ?string $nomclub=null;
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(name="datefondation", type="date", nullable=true)
      */
-
+    
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message: "date cannot be blank")]
     private ?\DateTimeInterface $datefondation=null;
 
 /**
@@ -46,6 +57,7 @@ class Club
      * @ORM\Column(name="typeactivite", type="string", length=155, nullable=false)
      */
     #[ORM\Column(length: 155)]
+    #[Assert\NotBlank(message: "activity type cannot be blank")]
     private ?string $typeactivite=null;
 
     /**
@@ -54,6 +66,8 @@ class Club
      * @ORM\Column(name="description", type="string", length=300, nullable=false)
      */
     #[ORM\Column(length: 300)]
+    #[Assert\NotBlank(message: "description cannot be blank")]
+
     private ?string $description=null;
 
     /**
@@ -62,8 +76,14 @@ class Club
      * @ORM\Column(name="nbmembres", type="integer", nullable=false)
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message: "number cannot be blank")]
     private ?int $nbmembres=null;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="active", type="boolean", nullable=false)
+     */
     #[ORM\Column(type: "boolean")]
     private ?bool $active=null;
 

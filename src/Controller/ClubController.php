@@ -10,6 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Form\AbstractType;
+
 
 #[Route('/club')]
 class ClubController extends AbstractController
@@ -69,13 +73,13 @@ class ClubController extends AbstractController
         ]);
     }
 
-    #[Route('/{idclub}', name: 'app_club_delete', methods: ['POST'])]
-    function deleteClub($id,ClubRepository $repo,ManagerRegistry $manager){
+    #[Route('/{idclub}', name: 'app_club_delete')]
+    function deleteClub($idclub,ClubRepository $repo,ManagerRegistry $manager){
         $em=$manager->getManager();
-        $club=$repo->find($id);
+        $club=$repo->find($idclub);
         $em->remove($club);
         $em->flush();
-        return $this->redirectToRoute('app_club_index'); 
+        return $this->redirectToRoute('app_club_show'); 
 
     }
 }
