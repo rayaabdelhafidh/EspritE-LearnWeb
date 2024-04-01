@@ -48,7 +48,8 @@
                 <td>{{ salle.numeroSalle }}</td> 
                <td style="display: flex; align-items: center;">
     <a href="{{ path('app_salle_edit', {'salleId': salle.salleId}) }}">Modifier</a>
-    <div style="margin-left: 10px;">{{ include('salle/_delete_form.html.twig') }}</div>
+<div style="margin-left: 10px;">{{ include('salle/_delete_form.html.twig', {'salle': salle}) }}</div>
+
 </td>
             </tr>
         {% else %}
@@ -59,7 +60,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_salle_new') }}" style ="margin-left:20px;">Créer un nouveau</a>
+    <a href="{{ path('app_salle_new') }}" style ="margin-left:20px;">Ajouter salle</a>
 {% endblock %}
 
 

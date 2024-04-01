@@ -67,6 +67,7 @@ class SalleController extends AbstractController
             'form' => $form,
         ]);
     }
+    
 
     #[Route('/{salleId}', name: 'app_salle_delete', methods: ['POST'])]
     public function delete(Request $request, Salle $salle, EntityManagerInterface $entityManager): Response
