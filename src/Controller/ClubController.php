@@ -51,7 +51,7 @@ class ClubController extends AbstractController
     public function show(Club $club): Response
     {
         return $this->render('club/show.html.twig', [
-            'clubs' => $club,
+            'club' => $club,
         ]);
     }
 

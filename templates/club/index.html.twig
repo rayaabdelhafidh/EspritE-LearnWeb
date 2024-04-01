@@ -183,6 +183,9 @@
                 <td>
                     <a href="{{ path('app_club_edit', {'idclub': club.idclub}) }}"><button type="submit" class="btn btn-primary">Modifier</button></a>
                 </td>
+                <td>
+                <a href="{{ path('app_club_show', {'idclub': club.idclub}) }}"><button type="submit" class="btn btn-primary">Voir</button></a>
+                </td>
             </tr>
         {% else %}
             <tr>

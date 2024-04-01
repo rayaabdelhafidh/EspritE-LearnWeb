@@ -184,6 +184,9 @@
                 <td>
                     <a href="{{ path('app_evenement_edit', {'idevenement': evenement.idevenement}) }}"><button type="submit" class="btn btn-primary">Modifier</button></a>
                 </td>
+                <td>
+                <a href="{{ path('app_evenement_show', {'idevenement': evenement.idevenement}) }}"><button type="submit" class="btn btn-primary">Voir</button></a>
+                </td>
             </tr>
         {% else %}
             <tr>
