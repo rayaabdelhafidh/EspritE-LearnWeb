@@ -1,0 +1,41 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Emplois{% endblock %}
+
+{% block body %}
+    <h1>Emplois</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Filiere</th>
+                <th>Niveau</th>
+                <th>Classe</th>
+                <th>Premierdate</th>
+                <th>Dernierdate</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for emploi in emplois %}
+            <tr>
+                <td>{{ emploi.classe.Filiere }}</td>
+                <td>{{ emploi.classe.niveaux }}</td>
+                <td>{{ emploi.classe.nomClasse }}</td>
+                <td>{{ emploi.premierdate ? emploi.premierdate|date('Y-m-d') : '' }}</td>
+                <td>{{ emploi.dernierdate ? emploi.dernierdate|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_emploi_show', {'id': emploi.id}) }}">show</a>
+                    <a href="{{ path('app_emploi_edit', {'id': emploi.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_emploi_new') }}">Create new</a>
+{% endblock %}

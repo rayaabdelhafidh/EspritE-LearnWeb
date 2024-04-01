@@ -1,0 +1,63 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Emploi{% endblock %}
+
+{% block body %}
+    <h1>Emploi</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ emploi.id }}</td>
+            </tr>
+            <tr>
+                <th>Premierdate</th>
+                <td>{{ emploi.premierdate ? emploi.premierdate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Dernierdate</th>
+                <td>{{ emploi.dernierdate ? emploi.dernierdate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr> 
+            <th>Classe</th>
+            <td>{{ emploi.classe.nomClasse }}</td>
+            </tr>
+
+            <tr> 
+            <th>Niveau</th>
+            <td>{{ emploi.classe.niveaux }}</td>
+            </tr>
+
+            <tr> 
+            <th>Filiere</th>
+            <td>{{ emploi.classe.filiere }}</td>
+            </tr>
+
+             <tr> 
+             <th>Matieres</th>
+                <td>
+                    <ul>
+                        {% for emploiMatiere in emploi.emploiMatieres %}
+                            <li>{{ emploiMatiere.matiere.nomM }}</li>
+                            <li>{{ emploiMatiere.starttime ? emploiMatiere.starttime|date('H:i') : '' }}</li>
+                            <li>{{ emploiMatiere.endtime ? emploiMatiere.endtime|date('H:i') : '' }}</li>
+                            <li>{{ emploiMatiere.dayofweek }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+
+             <tr> 
+            <th>Salle</th>
+            <td>{{ emploi.salle }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_emploi_index') }}">back to list</a>
+
+    <a href="{{ path('app_emploi_edit', {'id': emploi.id}) }}">edit</a>
+
+    {{ include('emploi/_delete_form.html.twig') }}
+{% endblock %}

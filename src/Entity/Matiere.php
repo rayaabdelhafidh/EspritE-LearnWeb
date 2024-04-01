@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MatiereRepository;
+use Doctrine\Common\Collections\Collection;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MatiereRepository")
@@ -23,7 +25,9 @@ class Matiere
    #[ORM\Column]
    private ?int $idm = null;
 
-    
+        /**
+     * @ORM\Column(length=255)
+     */
     #[ORM\Column(length: 255)]
     private ?string $nomm = null;
 
@@ -53,9 +57,19 @@ class Matiere
     #[ORM\ManyToOne(inversedBy: 'Matiere')]
     private ?Plandetude $plandetude = null;
 
-    #[ORM\OneToMany(mappedBy: 'Matiere', targetEntity: Cour::class)]
+    /**
+     * @ORM\OneToMany(targetEntity=Cour::class, mappedBy="matiere")
+     */
+    #[ORM\OneToMany(mappedBy: 'matiere', targetEntity: Cour::class)]
     private Collection $Cour;
     
+    
+/**
+     * @ORM\OneToMany(targetEntity=EmploiMatiere::class, mappedBy="matiere")
+     */
+    #[ORM\OneToMany(mappedBy: 'matiere', targetEntity: EmploiMatiere::class)]
+    private Collection $emploiMatieres;
+
 
     public function getIdm(): ?int
     {
@@ -146,12 +160,20 @@ class Matiere
         return $this;
     }
  
-     /** 
-     * @return Collection<int, Cour>
-     */
-    public function getCour(): Collection
-    {
-        return $this->Cour;
-    }
+     /**
+ * @return Collection<int, Cour>
+ */
+public function getCour(): Collection
+{
+    return $this->Cour;
+}
+
+    /**
+ * @return Collection<int, EmploiMatiere>
+ */
+public function getEmploiMatieres(): Collection
+{
+    return $this->emploiMatieres;
+}
 
 }

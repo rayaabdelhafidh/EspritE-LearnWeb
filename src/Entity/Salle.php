@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SalleRepository;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SalleRepository")
@@ -42,19 +44,23 @@ class Salle
     #[ORM\Column]
     #[Assert\NotBlank(message:"numéro de salle est requis.")]
     #[Assert\Length(
-        max: 3,
-        maxMessage: "numéro de salle doit contenir juste 3 caractéres"
-    )]
-
-    #[Assert\Length(
+        exactMessage: "numéro de salle doit contenir 3 caractéres",
         min: 3,
-        minMessage: "numéro de salle doit contenir 3 caractéres"
+        max: 3
     )]
     #[Assert\Type(
         type: 'integer',
         message: "numéro de salle doit étre un numéro"
     )]
     private ?int $numeroSalle=null;
+
+    #[ORM\OneToMany(mappedBy: 'salle', targetEntity: Emploi::class)]
+    private Collection $emplois;
+
+    public function __construct()
+    {
+        $this->emplois = new ArrayCollection();
+    }
 
     public function getSalleId(): ?int
     {
@@ -85,5 +91,38 @@ class Salle
         return $this;
     }
 
+ /**
+     * @return Collection|Emploi[]
+     */
+    public function getEmplois(): Collection
+    {
+        return $this->emplois;
+    }
+
+    public function addEmploi(Emploi $emploi): self
+    {
+        if (!$this->emplois->contains($emploi)) {
+            $this->emplois[] = $emploi;
+            $emploi->setSalle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmploi(Emploi $emploi): self
+    {
+        if ($this->emplois->removeElement($emploi)) {
+            if ($emploi->getSalle() === $this) {
+                $emploi->setSalle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->bloc . ' - ' . $this->numeroSalle;
+    }
 
 }

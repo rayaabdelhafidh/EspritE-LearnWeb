@@ -67,11 +67,18 @@ class Classe
     private $idpresence = array();
 
     /**
+     * @ORM\OneToMany(targetEntity="Emploi", mappedBy="classe")
+     */
+    private $emplois;
+
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->idpresence = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->emplois = new ArrayCollection();
     }
 
     public function getIdclasse(): ?int
@@ -107,6 +114,15 @@ class Classe
     {
         return $this->nbreetudi;
     }
+
+     /**
+     * @return Collection<int, Emploi>
+     */
+    public function getEmplois(): Collection
+    {
+        return $this->emplois;
+    }
+
 
     public function setNbreetudi(int $nbreetudi): static
     {
@@ -149,6 +165,11 @@ class Classe
         $this->idpresence->removeElement($idpresence);
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->nomclasse. ' - ' . $this->niveaux. ' - ' . $this->filiere;
     }
 
 }

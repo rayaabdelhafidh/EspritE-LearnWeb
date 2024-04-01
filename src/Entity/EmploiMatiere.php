@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EmploiMatiereRepository;
 
 /**
  * EmploiMatiere
@@ -11,56 +12,60 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="emploi_matiere", indexes={@ORM\Index(name="matiereId", columns={"matiereId"})})
  * @ORM\Entity
  */
+
+ #[ORM\Entity(repositoryClass: EmploiMatiereRepository::class)]
 class EmploiMatiere
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="emploiId", type="integer", nullable=false)
+
+
+      /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\ManyToOne(targetEntity="Emploi")
+     * @ORM\JoinColumn(name="emploiId", referencedColumnName="emploiId", nullable=false)
      */
-    private $emploiid;
+    private Emploi $emploi;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="matiereId", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\ManyToOne(targetEntity="Matiere")
+     * @ORM\JoinColumn(name="matiereId", referencedColumnName="idm", nullable=false)
      */
-    private $matiereid;
+    private Matiere $matiere;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="startTime", type="time", nullable=false)
      */
-    private $starttime;
+    #[ORM\Column(type: "date")]
+    private ?\DateTimeInterface $starttime;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="endTime", type="time", nullable=false)
      */
-    private $endtime;
+    #[ORM\Column(type: "date")]
+    private ?\DateTimeInterface $endtime;
 
     /**
      * @var string
      *
      * @ORM\Column(name="dayOfWeek", type="string", length=20, nullable=false)
      */
+    #[ORM\Column(length: 255)]
     private $dayofweek;
 
-    public function getEmploiid(): ?int
+   public function getEmploi(): Emploi
     {
-        return $this->emploiid;
+        return $this->emploi;
     }
 
-    public function getMatiereid(): ?int
+    public function getMatiere(): Matiere
     {
-        return $this->matiereid;
+        return $this->matiere;
     }
+
 
     public function getStarttime(): ?\DateTimeInterface
     {
