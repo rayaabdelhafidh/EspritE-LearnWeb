@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SalleRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SalleRepository")
@@ -29,7 +30,8 @@ class Salle
      *
      * @ORM\Column(name="bloc", type="string", length=255, nullable=false)
      */
-  
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"bloc est requis.")]
     private ?string $bloc=null;
 
        /**
@@ -38,6 +40,20 @@ class Salle
      * @ORM\Column(name="numeroSalle", type="integer", nullable=false)
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message:"numéro de salle est requis.")]
+    #[Assert\Length(
+        max: 3,
+        maxMessage: "numéro de salle doit contenir juste 3 caractéres"
+    )]
+
+    #[Assert\Length(
+        min: 3,
+        minMessage: "numéro de salle doit contenir 3 caractéres"
+    )]
+    #[Assert\Type(
+        type: 'integer',
+        message: "numéro de salle doit étre un numéro"
+    )]
     private ?int $numeroSalle=null;
 
     public function getSalleId(): ?int
