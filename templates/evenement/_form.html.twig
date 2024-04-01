@@ -1,47 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-
-
-<head>
-    <meta charset="utf-8">
-    <title>ESPRIT E-LEARN BACK</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
-
-
-    <!-- Favicon -->
-    <link href="{{asset('./back/img/favicon.ico')}}" rel="icon">
-
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap" rel="stylesheet"> 
-    
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-
-    <!-- Libraries Stylesheet -->
-    <link href="{{asset('./back/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
-    <link href="{{asset('./back/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css')}}" rel="stylesheet" />
-
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{asset('./back/css/bootstrap.min.css')}}" rel="stylesheet">
-
-
-    <!-- Template Stylesheet -->
-    <link href="{{asset('./back/css/style.css')}}" rel="stylesheet">
-</head>
-
-
-<body>
-            {% block bodyBack %}
-
-    <div class="container-fluid position-relative d-flex p-0">
+{% extends "baseback.html.twig" %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/add.css') }}" rel="stylesheet">
+    <style>
+        .error-message {
+            color: red;
+        }
+        /* Adjust placeholder font size */
+        ::placeholder {
+            font-size: 0.3rem; /* Adjust the font size as needed */
+        }
+    </style>
+{% endblock %}
+{% block bodyBack %}
+<div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -75,7 +47,7 @@
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Vie Etudiante</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="{{ path('app_club_index') }}" class="dropdown-item">Clubs</a>
-                            <a href="{{ path('app_evenement_index') }}" class="dropdown-item">Evenements</a>
+                            <a href="{{ path('app_about') }}" class="dropdown-item">Evenements</a>
                         </div>
                     </div>
                     <a href="widget.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Cours</a>
@@ -191,25 +163,66 @@
                 </div>
             </nav>
             <!-- Navbar End -->
-
-            <!-- Footer Start -->
+  <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-secondary rounded-top p-4">
                     <div class="row">
-                        <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">ESPRIT ELearn Back Dashboard</a>, All Right Reserved. 
+    <form method="{{ form.vars.method }}" action="{{ form.vars.action }}" enctype="multipart/form-data">
+        {{ form_start(form,{'attr': {'novalidate': 'novalidate'}}) }}
+        <div class="form-group">
+            <label class="form-control-label text-danger" for="{{ form.nomevenement.vars.id }}">Nom Evenement</label>
+            {{ form_widget(form.nomevenement, {'attr': {'class': 'form-control','placeholder': 'Inserer le nom de l evenement'}}) }}
+            {% if form_errors(form.nomevenement) %}
+                <div class="error-message">{{ form_errors(form.nomevenement) }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label class="form-control-label text-danger" for="{{ form.dateevenement.vars.id }}">Date de l evenement</label>
+            {{ form_widget(form.dateevenement, {'attr': {'class': 'form-control','placeholder': 'Inserer la date de l evenement'}}) }}
+            {% if form_errors(form.dateevenement) %}
+                <div class="error-message">{{ form_errors(form.dateevenement) }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label class="form-control-label text-danger" for="{{ form.lieuevenement.vars.id }}">Lieu de l evenement</label>
+            {{ form_widget(form.lieuevenement, {'attr': {'class': 'form-control','placeholder': 'Inserer le lieu de l evenement'}}) }}
+            {% if form_errors(form.lieuevenement) %}
+                <div class="error-message">{{ form_errors(form.lieuevenement) }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label class="form-control-label text-danger" for="{{ form.prixevenement.vars.id }}">Prix</label>
+            {{ form_widget(form.prixevenement, {'attr': {'class': 'form-control','placeholder': 'Inserer le prix de l evenement'}}) }}
+            {% if form_errors(form.prixevenement) %}
+                <div class="error-message">{{ form_errors(form.prixevenement) }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+    <label class="form-control-label text-danger" for="{{ form.afficheevenement.vars.id }}">Affiche de l'événement</label>
+    {{ form_widget(form.afficheevenement, {'attr': {'class': 'form-control-file'}}) }}
+    {% if form_errors(form.afficheevenement) %}
+        <div class="error-message">{{ form_errors(form.afficheevenement) }}</div>
+    {% endif %}
+</div>
+
+        <div class="form-group">
+            <label class="form-control-label text-danger" for="{{ form.club.vars.id }}">Club responsable</label>
+            {{ form_widget(form.club, {'attr': {'class': 'form-control'}}) }}
+            {% if form_errors(form.club) %}
+                <div class="error-message">{{ form_errors(form.club) }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+        <a href="{{ path('app_evenement_index') }}" class="btn btn-secondary">Annuler</a>
+        {{ form_end(form) }}
+    </form>
                         </div>
-                        <div class="col-12 col-sm-6 text-center text-sm-end">
-                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                            Designed By Equipe Phoenix
-                            <br>Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                        </div>
-                    </div>
                 </div>
             </div>
             <!-- Footer End -->
         </div>
         <!-- Content End -->
+
 
 
 
@@ -233,9 +246,6 @@
 
     <!-- Template Javascript -->
     <script src="{{asset('./back/js/main.js')}}"></script>
-        {% endblock %}
+    
+{% endblock %}
 
-</body>
-
-
-</html>

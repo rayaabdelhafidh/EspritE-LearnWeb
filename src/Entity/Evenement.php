@@ -22,22 +22,55 @@ class Evenement
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $idevenement=null;
-
+/**
+     * @var string
+     *
+     * @ORM\Column(name="nomevenement", type="string", length=155, nullable=false)
+     */
     #[ORM\Column(length: 155)]
     private ?string $nomevenement=null;
 
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="dateevenement", type="date", nullable=true)
+     */
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateevenement=null;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lieuevenement", type="string", length=255, nullable=false)
+     */
     #[ORM\Column(length: 255)]
     private ?string $lieuevenement= null;
 
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="PrixEvenement", type="float", precision=10, scale=0, nullable=false)
+     */
     #[ORM\Column]
     private ?float $prixevenement= null;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="afficheevenement", type="string", length=255, nullable=false)
+     */
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "affiche cannot be blank")]
     private ?string $afficheevenement= null;
 
+    /**
+     * @var \Club
+     *
+     * @ORM\ManyToOne(targetEntity="Club")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="club", referencedColumnName="idclub")
+     * })
+     */
     #[ORM\ManyToOne(inversedBy: 'evenement')]
     private ?Club $club= null;
 
@@ -62,12 +95,12 @@ class Evenement
         return $this;
     }
 
-    public function getDateevenement(): ?DateTimeInterface
+    public function getDateevenement(): ?\DateTimeInterface
     {
         return $this->dateevenement;
     }
 
-    public function setDateevenement(?DateTimeInterface $dateevenement): static
+    public function setDateevenement(?\DateTimeInterface $dateevenement): static
     {
         $this->dateevenement = $dateevenement;
 

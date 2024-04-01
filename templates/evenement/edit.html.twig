@@ -1,0 +1,7 @@
+{% extends 'baseback.html.twig' %}
+{% block bodyBack %}
+    {{ include('evenement/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+<br>
+    {{ include('evenement/_delete_form.html.twig') }}
+{% endblock %}
