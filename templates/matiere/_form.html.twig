@@ -1,4 +1,73 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{% extends 'back_home/form.html.twig' %}
+
+{% block body %}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    <div class="container-fluid">
+        <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+                <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <a href="{{ path('app_matiere_index') }}" class="" >
+                            <h3 class="text-primary"><img src="{{ asset('front_office/img/Al3ab/al3ab_blanc.png') }}" width="30%" height="40%"  alt="">Ajouter Matiere</h3>
+                        </a>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label text-danger" for="{{ form.nomm.vars.id }}">Nom Matiere</label>
+                        {{ form_widget(form.nomm, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
+                        {% if form_errors(form.nomm)|length > 0 %}
+                            <div class="error-message">{{ form_errors(form.nomm) }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label text-danger" for="{{ form.idenseignant.vars.id }}">ID Enseignant</label>
+                        {{ form_widget(form.idenseignant, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
+                        {% if form_errors(form.idenseignant)|length > 0 %}
+                            <div class="error-message">{{ form_errors(form.idenseignant) }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label text-danger" for="{{ form.nbrheure.vars.id }}">Nombre d'Heures</label>
+                        {{ form_widget(form.nbrheure, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
+                        {% if form_errors(form.nbrheure)|length > 0 %}
+                            <div class="error-message">{{ form_errors(form.nbrheure) }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label text-danger" for="{{ form.coefficient.vars.id }}">Coefficient</label>
+                        {{ form_widget(form.coefficient, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
+                        {% if form_errors(form.coefficient)|length > 0 %}
+                            <div class="error-message">{{ form_errors(form.coefficient) }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label text-danger" for="{{ form.semester.vars.id }}">Semester</label>
+                        {{ form_widget(form.semester, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
+                        {% if form_errors(form.semester)|length > 0 %}
+                            <div class="error-message">{{ form_errors(form.semester) }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label text-danger" for="{{ form.credit.vars.id }}">Crédit</label>
+                        {{ form_widget(form.credit, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
+                        {% if form_errors(form.credit)|length > 0 %}
+                            <div class="error-message">{{ form_errors(form.credit) }}</div>
+                        {% endif %}
+                    </div>
+                     <div class="form-group">
+                        <label class="form-control-label text-danger" for="{{ form.idplandetude.vars.id }}">idplandetude</label>
+                        {{ form_widget(form.idplandetude, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
+                        {% if form_errors(form.idplandetude)|length > 0 %}
+                            <div class="error-message">{{ form_errors(form.idplandetude) }}</div>
+                        {% endif %}
+                    </div>
+                    <!-- Ajoutez d'autres champs de formulaire si nécessaire -->
+                    <div class="text-center mb-0">
+                        <button type="submit" class="btn btn-primary py-3 w-100 mb-4">{{ button_label|default('Save') }}</button>
+                        <a href="{{ path('app_matiere_index') }}" class="btn btn-secondary">Annuler</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

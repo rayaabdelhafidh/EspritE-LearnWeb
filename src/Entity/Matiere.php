@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MatiereRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MatiereRepository")
  */
@@ -29,18 +29,21 @@ class Matiere
      * @ORM\Column(length=255)
      */
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Nom programme  is required")]
     private ?string $nomm = null;
 
     /**
      * @ORM\Column(type="integer")
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message:"Nom programme  is required")]
     private ?int $idenseignant = null;
 
     /**
      * @ORM\Column(type="integer")
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message:"Nom programme  is required")]
     private ?int $nbrheure = null;
 
   
@@ -48,12 +51,14 @@ class Matiere
      * @ORM\Column(type="integer")
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message:"Nom programme  is required")]
     private ?int $coefficient = null;
 
    /**
      * @ORM\Column(type="integer")
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message:"Nom programme  is required")]
     private ?int $semester = null;
 
 
@@ -61,6 +66,7 @@ class Matiere
      * @ORM\Column(type="integer")
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message:"Nom programme  is required")]
     private ?int $credit = null;
 
      /**

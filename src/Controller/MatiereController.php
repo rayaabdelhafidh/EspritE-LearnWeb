@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Entity\Matiere;
 use App\Entity\Plandetude;
 use App\Form\MatiereType;
@@ -106,11 +108,34 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
     ]);
 }
 
+#[Route('/print', name: 'app_matiere_print', methods: ['GET'])]
+public function print( MatiereRepository $matiererepository)
+{
 
+    $result = $matiererepository->findAll();
+    $pdfOptions = new Options();
 
- 
-    
+    // Instantiate Dompdf with our options
+    $dompdf = new Dompdf($pdfOptions);
 
+    // Retrieve the HTML generated in our twig file
+    $html = $this->renderView('matiere/print.html.twig', [
+        'matieres' => $result
+    ]);
+
+    // Load HTML to Dompdf
+    $dompdf->loadHtml($html);
+    // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+    $dompdf->setPaper('A4', 'portrait');
+
+    // Render the HTML as PDF
+    $dompdf->render();
+    // Output the generated PDF as a response with Content-Type set to 'application/pdf'
+    return new Response($dompdf->output(), Response::HTTP_OK, [
+        'Content-Type' => 'application/pdf',
+    ]);
+
+}
 
     #[Route('/{idm}', name: 'app_matiere_show', methods: ['GET'])]
     public function show(Matiere $matiere): Response

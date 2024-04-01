@@ -18,7 +18,7 @@ class PlandetudeType extends AbstractType
         ->add('niveau')
         ->add('dureeTotal')
         ->add('creditsRequisTotal')
-        
+       
         ;
     }
 
