@@ -1,4 +1,31 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+{# Affichage des erreurs globales du formulaire #}
+{% if form_errors(form) %}
+    <div class="alert alert-danger">
+        {{ form_errors(form) }}
+    </div>
+{% endif %}
+
+<div>
+    {{ form_label(form.nomclasse) }} {# Affiche le label #}
+    <div style="height: 10px;"></div> {# Ajoute de l'espace vertical #}
+    {{ form_widget(form.nomclasse) }} {# Affiche le champ de formulaire #}
+</div><br> 
+<div>
+    {{ form_label(form.filiere) }}
+    <div style="height: 10px;"></div>
+    {{ form_widget(form.filiere) }}
+</div><br> 
+<div>
+    {{ form_label(form.nbreetudi) }}
+    <div style="height: 10px;"></div>
+    {{ form_widget(form.nbreetudi) }}
+</div><br> 
+<div>
+    {{ form_label(form.niveaux) }}
+    <div style="height: 10px;"></div>
+    {{ form_widget(form.niveaux) }}
+</div><br> 
+<button type="submit" class="btn btn-primary">Enregistrer</button> 
 {{ form_end(form) }}

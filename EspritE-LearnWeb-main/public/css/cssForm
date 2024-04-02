@@ -1,0 +1,9 @@
+/* Ajoute un espacement léger entre les éléments du formulaire */
+.form-group {
+    margin-bottom: 10px; /* Espacement entre les groupes de formulaire */
+}
+
+/* Rend les titres des formulaires en rouge */
+.form-title {
+    color: red;
+}

@@ -64,6 +64,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     private ?string $tel = null;
 
+    #[ORM\ManyToOne(targetEntity: Classe::class)]
+    #[ORM\JoinColumn(name: 'IdClasse', referencedColumnName: 'idclasse')]
+    private ?Classe $classe = null;
+
     #[ORM\Column]
     private ?int $IdClasse = null;
 
@@ -96,6 +100,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
+    }
+
+
+    public function getClasse(): ?Classe
+    {
+        return $this->classe;
+    }
+
+    public function setClasse(?Classe $classe): static
+    {
+        $this->classe = $classe;
+
+        return $this;
     }
 
     /**

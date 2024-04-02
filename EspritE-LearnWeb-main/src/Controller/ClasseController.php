@@ -10,11 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use MercurySeries\FlashyBundle\FlashyNotifier;
+
 
 #[Route('/classe')]
 class ClasseController extends AbstractController
 {
-    #[Route('/', name: 'app_classe_index', methods: ['GET'])]
+    #[Route('/listec', name: 'app_classe_index', methods: ['GET'])]
     public function index(ClasseRepository $classeRepository): Response
     {
         return $this->render('classe/index.html.twig', [
@@ -22,9 +24,56 @@ class ClasseController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/tri/eve", name="evenement_tri")
+     */
+    public function Tri(Request $request,ClasseRepository $repository): Response
+    {
+        // Retrieve the entity manager of Doctrine
+        $order=$request->get('type');
+        if($order== "Croissant"){
+            $evenements = $repository->tri_asc();
+        }
+        else {
+            $evenements = $repository->tri_desc();
+        }
+        
+        // Render the twig view
+        return $this->render('classe/index.html.twig', [
+            'classes' => $evenements
+        ]);
+}
+
+    /**
+     * @Route("/evenement/ajax_search", name="ajax_search" ,methods={"GET"})
+     * @param Request $request
+     * @param ClasseRepository $EvenementRepository
+     * @return Response
+     */
+    public function searchAction(Request $request,ClasseRepository $evenementRepository) : Response
+    {
+        // $em = $this->getDoctrine()->getManager();
+        $requestString = $request->get('q');
+        $evenements =$evenementRepository->SearchNom($requestString);
+        if(!$evenements) {
+            $result['evenements']['error'] = "evenements non trouvée ";
+        } else {
+            $result['evenements'] = $this->getRealEntities($evenements);
+        }
+        return new Response(json_encode($result));
+    }
+    public function getRealEntities($classes){
+        foreach ($classes as $classe){
+            $realEntities[$classe->getIdclasse()] = [$classe->getNomclasse(),$classe->getNbreetudi(),$classe->getFiliere(),$classe->getNiveaux()];
+
+        }
+        return $realEntities;
+    }
+
     #[Route('/new', name: 'app_classe_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        
         $classe = new Classe();
         $form = $this->createForm(ClasseType::class, $classe);
         $form->handleRequest($request);
@@ -35,6 +84,7 @@ class ClasseController extends AbstractController
 
             return $this->redirectToRoute('app_classe_index', [], Response::HTTP_SEE_OTHER);
         }
+      
 
         return $this->renderForm('classe/new.html.twig', [
             'classe' => $classe,

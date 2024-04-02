@@ -6,64 +6,70 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ClasseRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Type;
 
 
-
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ClasseRepository")
- */
 #[ORM\Entity(repositoryClass: ClasseRepository::class)]
-
 class Classe
 {
-
-    public const NIVEAU_1A = '_1A';
-    public const NIVEAU_2A = '_2A';
-    public const NIVEAU_2P = '_2P';
-    public const NIVEAU_3A = '_3A';
-    public const NIVEAU_3B = '_3B';
-    public const NIVEAU_4A = '_4A';
-    public const NIVEAU_5A = '_5A';
+    public const NIVEAU_1A = '1A';
+    public const NIVEAU_2A = '2A';
+    public const NIVEAU_2P = '2P';
+    public const NIVEAU_3A = '3A';
+    public const NIVEAU_3B = '3B';
+    public const NIVEAU_4A = '4A';
+    public const NIVEAU_5A = '5A';
 
     const FILIERE_TIC = 'TIC';
     const FILIERE_BUSINESS = 'Business';
     const FILIERE_GC = 'GC';
    
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $idclasse=null;
+#[ORM\GeneratedValue]
+#[ORM\Column(type: 'integer'--------------,name:'idClasse')]
+private ?int $id;
+
 
     #[ORM\Column(length: 255)]
-
+    #[Assert\NotBlank(message: 'Veuillez saisir le nom du classe')]
+    #[Assert\Regex(
+        pattern: '/^(?:[1-5][AB]|[2][ABP])(?:[1-9]|[12]\d|30)$/',
+        message: 'Le format du nom de la classe n\'est pas valide.'
+    )]
     private ?string $nomclasse=null;
 
     #[ORM\Column(length: 255)]
-
+    #[Assert\NotBlank(message: 'Veuillez selectionner un filiere')]
     private ?string  $filiere;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Veuillez fixer un nombre des etudiants')]
+    #[Assert\LessThanOrEqual(
+        value: 25, message: 'Le nombre des étudiants ne doit pas dépasser 25.'
+    )]
     private ?int $nbreetudi;
 
     #[ORM\Column(length: 255)]
-
-   
+    #[Assert\NotBlank(message: 'Veuillez selectionner un niveau de classe')]
     private ?string $niveaux;
 
-  
-    #[ORM\OneToMany(mappedBy: 'idClasse', targetEntity: Presence::class)]
+    #[ORM\OneToMany(mappedBy: 'nomClasse', targetEntity: Presence::class)]
     private Collection $presence;
-    private $idpresence = array();
 
     public function __construct()
     {
-        $this->idpresence = new ArrayCollection();
         $this->presence = new ArrayCollection();
     }
 
     public function getIdclasse(): ?int
     {
-        return $this->idclasse;
+        return $this->id;
     }
 
     public function getNomclasse(): ?string
@@ -126,38 +132,11 @@ class Classe
         ])) {
             throw new \InvalidArgumentException("Niveau invalide");
         }
-
         $this->niveaux = $niveaux;
 
         return $this;
     }
     
-
-
-    /**
-     * @return Collection<int, Presence>
-     */
-    public function getIdpresence(): Collection
-    {
-        return $this->idpresence;
-    }
-
-    public function addIdpresence(Presence $idpresence): static
-    {
-        if (!$this->idpresence->contains($idpresence)) {
-            $this->idpresence->add($idpresence);
-        }
-
-        return $this;
-    }
-
-    public function removeIdpresence(Presence $idpresence): static
-    {
-        $this->idpresence->removeElement($idpresence);
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Presence>
      */
@@ -175,31 +154,5 @@ class Classe
 
         return $this;
     }
-
-    public function removePresence(Presence $presence): static
-    {
-        if ($this->presence->removeElement($presence)) {
-            // set the owning side to null (unless already changed)
-            if ($presence->getIdclasse() === $this) {
-                $presence->setIdclasse(null);
-            }
-        }
-    
-        return $this;
-    }
-    
-
-
-    // public function removePresence(Presence $presence): static
-    // {
-    //     if ($this->presence->removeElement($presence)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($presence->getClasse() === $this) {
-    //             $presence->setClasse(null);
-    //         }
-    //     }
-
-    //     return $this;
-    // }
 
 }

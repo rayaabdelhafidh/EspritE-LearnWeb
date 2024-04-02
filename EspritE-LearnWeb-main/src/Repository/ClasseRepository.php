@@ -45,4 +45,26 @@ class ClasseRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+function tri_asc()
+{
+    return $this->createQueryBuilder('evenement')
+        ->orderBy('evenement.nbreetudi ','ASC')
+        ->getQuery()->getResult();
+}
+function tri_desc()
+{
+    return $this->createQueryBuilder('evenement')
+        ->orderBy('evenement.nbreetudi ','DESC')
+        ->getQuery()->getResult();
+}
+function SearchNom($nsc)
+
+    {
+        return $this->createQueryBuilder('o')
+            ->where ('o.nomclasse LIKE :nomclasse')
+            ->setParameter('nomclasse','%'.$nsc.'%')
+            ->getQuery()->getResult();
+
+    }
 }
