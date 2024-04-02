@@ -24,9 +24,10 @@
                 <td>{{ emploi.classe.nomClasse }}</td>
                 <td>{{ emploi.premierdate ? emploi.premierdate|date('Y-m-d') : '' }}</td>
                 <td>{{ emploi.dernierdate ? emploi.dernierdate|date('Y-m-d') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_emploi_show', {'id': emploi.id}) }}">show</a>
-                    <a href="{{ path('app_emploi_edit', {'id': emploi.id}) }}">edit</a>
+                <td style="display: flex; align-items: center;">
+                    <a href="{{ path('app_emploi_show', {'id': emploi.id}) }}">afficher</a>
+                    <a href="{{ path('app_emploi_edit', {'id': emploi.id}) }}"  style="margin-left: 17px;">modifer</a>
+                    <div style="margin-left: 10px;">{{ include('emploi/_delete_form.html.twig', {'emploi': emploi}) }}</div>
                 </td>
             </tr>
         {% else %}
@@ -37,5 +38,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_emploi_new') }}">Create new</a>
+    <a href="{{ path('app_emploi_new') }}">Créer Emploi</a>
 {% endblock %}

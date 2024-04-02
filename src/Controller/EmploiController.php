@@ -72,13 +72,19 @@ class EmploiController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_emploi_delete', methods: ['POST'])]
-    public function delete(Request $request, Emploi $emploi, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$emploi->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($emploi);
-            $entityManager->flush();
+public function delete(Request $request, Emploi $emploi, EntityManagerInterface $entityManager): Response
+{
+    if ($this->isCsrfTokenValid('delete'.$emploi->getId(), $request->request->get('_token'))) {
+        $emploiMatieres = $entityManager->getRepository(EmploiMatiere::class)->findBy(['emploi' => $emploi]);
+
+        foreach ($emploiMatieres as $emploiMatiere) {
+            $entityManager->remove($emploiMatiere);
         }
 
-        return $this->redirectToRoute('app_emploi_index', [], Response::HTTP_SEE_OTHER);
+        $entityManager->remove($emploi);
+        $entityManager->flush();
     }
+
+    return $this->redirectToRoute('app_emploi_index', [], Response::HTTP_SEE_OTHER);
+}
 }
