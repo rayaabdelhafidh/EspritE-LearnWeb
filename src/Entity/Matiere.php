@@ -29,21 +29,23 @@ class Matiere
      * @ORM\Column(length=255)
      */
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message:"Nom programme  is required")]
+    #[Assert\NotBlank(message:"Nom matiere  is required")]
+    #[Assert\Length(min:2,minMessage:"Votre nom de matiere ne contient pas au minimum {{ limit }} caractères.")]
     private ?string $nomm = null;
 
     /**
      * @ORM\Column(type="integer")
      */
     #[ORM\Column]
-    #[Assert\NotBlank(message:"Nom programme  is required")]
+    #[Assert\NotBlank(message:"idenseignant is required")]
     private ?int $idenseignant = null;
 
     /**
      * @ORM\Column(type="integer")
      */
     #[ORM\Column]
-    #[Assert\NotBlank(message:"Nom programme  is required")]
+    #[Assert\NotBlank(message:"nbrheure is required")]
+    #[Assert\GreaterThan(value:0 ,message:"nombre dheure doit être un nombre positif.")]
     private ?int $nbrheure = null;
 
   
@@ -51,14 +53,16 @@ class Matiere
      * @ORM\Column(type="integer")
      */
     #[ORM\Column]
-    #[Assert\NotBlank(message:"Nom programme  is required")]
+    #[Assert\NotBlank(message:"coefficient is required")]
+    #[Assert\GreaterThan(value:0 ,message:"coefficient doit être un nombre positif.")]
     private ?int $coefficient = null;
 
    /**
      * @ORM\Column(type="integer")
      */
     #[ORM\Column]
-    #[Assert\NotBlank(message:"Nom programme  is required")]
+    #[Assert\NotBlank(message:"semester is required")]
+    #[Assert\GreaterThan(value:0 ,message:"semester doit être un nombre positif.")]
     private ?int $semester = null;
 
 
@@ -66,7 +70,8 @@ class Matiere
      * @ORM\Column(type="integer")
      */
     #[ORM\Column]
-    #[Assert\NotBlank(message:"Nom programme  is required")]
+    #[Assert\NotBlank(message:"credit  is required")]
+    #[Assert\GreaterThan(value:0 ,message:"credit doit être un nombre positif.")]
     private ?int $credit = null;
 
      /**
