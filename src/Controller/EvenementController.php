@@ -22,6 +22,23 @@ class EvenementController extends AbstractController
         ]);
     }
 
+    #[Route('/evenementEtud', name: 'app_evenement_indexFront', methods: ['GET'])]
+    public function indexFront(EvenementRepository $evenementRepository): Response
+    {
+        return $this->render('evenement/indexFront.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/{idevenement}/details', name: 'app_evenement_details', methods: ['GET'])]
+    public function details(Evenement $evenement): Response
+    {
+        return $this->render('evenement/showDetails.html.twig', [
+            'evenement' => $evenement,
+        ]);
+    }
+
+
     #[Route('/new', name: 'app_evenement_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {

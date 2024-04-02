@@ -7,6 +7,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert; // Import the Assert class
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ClubRepository")
@@ -22,7 +24,6 @@ class Club
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Assert\NotBlank(message: "ID cannot be blank")]
     private ?int $idclub=null;
 
     /**

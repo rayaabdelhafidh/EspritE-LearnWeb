@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Evenement index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px; /* Pour compenser les marges négatives des colonnes */
+        }
+
+        .col-md-4 {
+            padding: 0 15px; /* Ajoute une marge aux colonnes */
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Assurez-vous que la hauteur de la carte est à 100% de son conteneur */
+            border: 2px solid #ddd; /* Ajoute une bordure pour séparer les cartes */
+        }
+
+        .card-img-top {
+            flex-shrink: 0; /* Empêche l'image de se rétrécir pour remplir l'espace disponible */
+            width: 100%; /* Assure que l'image occupe toute la largeur de son conteneur */
+            height: auto; /* Garde le ratio hauteur-largeur de l'image */
+        }
+
+        .card-body {
+            flex-grow: 0; /* Permet au contenu de s'étirer pour remplir l'espace disponible */
+            padding: 5px; /* Ajoute une marge intérieure au contenu de la carte */
+        }
+
+        .red-title {
+            color: red;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+<br>
+    <h1>Evenements</h1>
+     <div class="row">
+        {% for evenement in evenements %}
+            <div class="col-md-3 mb-4">
+                <div class="card"> <!-- Added d-flex, justify-content-center, and align-items-center classes -->
+                 <table class="table">
+                    <div class="card-body">
+                    <h5 class="card-title red-title"><strong> {{ evenement.nomevenement }}</strong> </h5>
+                    <td><img src="{{ asset(evenement.afficheevenement) }}" class="card-img-right" width="200" style="flex-shrink: 0;"></td>
+                    <a href="{{ path('app_evenement_details', {'idevenement': evenement.idevenement}) }}"><button type="submit" class="btn btn-primary">Consulter</button></a>
+                </div>
+                </table>
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Evenement index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px; /* Pour compenser les marges négatives des colonnes */
+        }
+
+        .col-md-4 {
+            padding: 0 15px; /* Ajoute une marge aux colonnes */
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Assurez-vous que la hauteur de la carte est à 100% de son conteneur */
+        }
+
+        .card-body {
+            flex-grow: 1; /* Permet au contenu de s'étirer pour remplir l'espace disponible */
+        }
+
+        .red-title {
+            color: red;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<br>
+    <h1>Liste des Evenements</h1>
+     <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title red-title"><strong> {{evenement.nomevenement }}</strong> </h5>
+                        <p class="card-text"><strong>{{ evenement.dateevenement ? evenement.dateevenement|date('Y-m-d') : '' }}</strong> </p>
+                        <p class="card-text"><strong>{{ evenement.lieuevenement }} </strong> </p>
+                        <p class="card-text"><strong>{{ evenement.prixevenement }}</strong> </p>
+                        <p class="card-text"><strong>Organisé par: </strong> {{ evenement.club.nomclub }}</p>
+                    </div>
+                    <img src="{{ asset(evenement.afficheevenement) }}" class="card-img-right" width="200" style="flex-shrink: 0;">
+
+                </div>
+            </div>
+    </div>
+{% endblock %}

@@ -39,8 +39,6 @@
 
 
 <body>
-            {% block bodyBack %}
-
     <div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -192,6 +190,8 @@
             </nav>
             <!-- Navbar End -->
 
+{% block bodyBack %}
+           {% endblock  %}
             <!-- Footer Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-secondary rounded-top p-4">
@@ -233,7 +233,6 @@
 
     <!-- Template Javascript -->
     <script src="{{asset('./back/js/main.js')}}"></script>
-        {% endblock %}
 
 </body>
 
