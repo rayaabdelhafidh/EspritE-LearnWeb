@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Options index{% endblock %}
+
+{% block body %}
+    <h1>Options index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>OptionId</th>
+                <th>Contenue</th>
+                <th>IsCorrect</th>
+                <th>QuestionID</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for option in options %}
+            <tr>
+                <td>{{ option.optionId }}</td>
+                <td>{{ option.optionContent }}</td>
+                <td>{{ option.isCorrect }}</td>
+                <td>{{ option.question.questionid }}</td>
+                
+
+                
+               
+                <td>
+                    <a href="{{ path('app_options_show', {'optionId': option.optionId}) }}">show</a>
+                    <a href="{{ path('app_options_edit', {'optionId': option.optionId}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_options_new') }}">Create new</a>
+{% endblock %}
