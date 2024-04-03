@@ -40,9 +40,10 @@ class ClubController extends AbstractController
     }
 
     #[Route('/{idclub}/details', name: 'app_club_details', methods: ['GET'])]
-    public function showDetails(Club $club, EvenementRepository $evenementRepository): Response
+    public function showDetails($idclub,ClubRepository $clubRepository, EvenementRepository $evenementRepository): Response
     {
-        $evenements = $evenementRepository->findBy(['club' => $club]);
+        $club=$clubRepository->find($idclub);
+        $evenements = $evenementRepository->findByclub($idclub);
         return $this->render('club/showDetails.html.twig', [
             'club' => $club,
             'evenements' => $evenements,
@@ -105,6 +106,17 @@ class ClubController extends AbstractController
 
         return $this->redirectToRoute('app_club_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('clubASC',name:'app_club_trier')]
+    function listClubByName(ClubRepository $clubRepository){
+        $clubs = $clubRepository->createQueryBuilder('a')
+        ->orderBy('a.nomclub','ASC')
+        ->getQuery()
+        ->getResult();
+        return $this->render('club/index.html.twig',
+        ['clubs'=>$clubs]);
+    }
+    
 
    
 }

@@ -45,7 +45,9 @@
                         <p class="card-text"><strong>Description: </strong> {{ club.description }}</p>
                         <p class="card-text"><strong>Nombre de Membres: </strong> {{ club.nbmembres }}</p>
                         <p class="card-text"><strong>Activite: </strong> {{  club.active ? 'Active' : 'Inactive' }}</p>
-                    <a href="{{ path('app_club_details', {'idclub': club.idclub}) }}"><button type="submit" class="btn btn-primary">Consulter</button></a>
+<a href="{{ path('app_club_details', {'idclub': club.idclub}) }}">
+                        <button type="submit" class="btn btn-primary">Consulter</button>
+</a>
 
                     </div>
                 </div>
