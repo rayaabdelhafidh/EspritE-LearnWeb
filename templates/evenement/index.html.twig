@@ -152,6 +152,8 @@
                 <div class="bg-secondary rounded-top p-4">
                     <div class="row">
 <h1>Liste des Evenements</h1>
+        <a href="{{ path('app_evenement_trier') }}" class="btn btn-lg btn-primary btn-lg-square"><i class="bi bi-arrow-up"></i></a>
+
     <table class="table">
         <thead>
             <tr>
@@ -182,6 +184,9 @@
                 </td>
                 <td>
                     <a href="{{ path('app_evenement_edit', {'idevenement': evenement.idevenement}) }}"><button type="submit" class="btn btn-primary">Modifier</button></a>
+                </td>
+                <td>
+                <a href="{{ path('app_evenement_show', {'idevenement': evenement.idevenement}) }}"><button type="submit" class="btn btn-primary">Voir</button></a>
                 </td>
             </tr>
         {% else %}

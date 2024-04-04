@@ -126,4 +126,14 @@ class EvenementController extends AbstractController
 
         return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('evenementASC',name:'app_evenement_trier')]
+    function listEvenementByName(EvenementRepository $evenementRepository){
+        $evenements = $evenementRepository->createQueryBuilder('a')
+        ->orderBy('a.nomevenement','ASC')
+        ->getQuery()
+        ->getResult();
+        return $this->render('evenement/index.html.twig',
+        ['evenements'=>$evenements]);
+    }
 }
