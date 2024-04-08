@@ -34,6 +34,9 @@
 {% block body %}
 <br>
     <h1>Liste des Evenements</h1>
+
+    <table align="center">
+    <tr>
      <div class="row">
             <div class="col-md-4 mb-4">
                 <div class="card">
@@ -44,8 +47,23 @@
                         <p class="card-text"><strong>{{ evenement.prixevenement }}</strong> </p>
                         <p class="card-text"><strong>Organisé par: </strong> {{ evenement.club.nomclub }}</p>
                     </div>
-
+                            </div>
+            </div>
+    </div>
+    </tr>
+    <tr>
+    <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">                     
+                        {% set addressGPS = evenement.lieuevenement|replace({' ': '+'}) %}
+                        <iframe src="https://maps.google.com/maps?&q={{ addressGPS }}&output=embed" width="100%" height="300"></iframe>
+                    </div>
                 </div>
             </div>
     </div>
+    </tr>
+
+        
+    
 {% endblock %}
