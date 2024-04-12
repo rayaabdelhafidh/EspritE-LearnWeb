@@ -32,21 +32,22 @@ class EmploiMatiere
      */
     private Matiere $matiere;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="startTime", type="time", nullable=false)
-     */
-    #[ORM\Column(type: "date")]
-    private ?\DateTimeInterface $starttime;
+   /**
+ * @var \DateTimeInterface
+ *
+ * @ORM\Column(name="startTime", type="time", nullable=false)
+ */
+#[ORM\Column(type: "time")]
+private ?\DateTimeInterface $starttime;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="endTime", type="time", nullable=false)
-     */
-    #[ORM\Column(type: "date")]
-    private ?\DateTimeInterface $endtime;
+/**
+ * @var \DateTimeInterface
+ *
+ * @ORM\Column(name="endTime", type="time", nullable=false)
+ */
+#[ORM\Column(type: "time")]
+private ?\DateTimeInterface $endtime;
+
 
     /**
      * @var string

@@ -3,57 +3,77 @@
 {% block title %}Emploi{% endblock %}
 
 {% block body %}
-    <h1>Emploi</h1>
+    <h1>Emploi {{ emploi.classe.nomClasse }}</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ emploi.id }}</td>
-            </tr>
-            <tr>
-                <th>Premierdate</th>
-                <td>{{ emploi.premierdate ? emploi.premierdate|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Dernierdate</th>
-                <td>{{ emploi.dernierdate ? emploi.dernierdate|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr> 
-            <th>Classe</th>
-            <td>{{ emploi.classe.nomClasse }}</td>
-            </tr>
 
-            <tr> 
-            <th>Niveau</th>
-            <td>{{ emploi.classe.niveaux }}</td>
-            </tr>
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Emploi</h6>
+            <a href="{{ path('app_emploi_index') }}">Show All</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <thead>
+                    <tr class="text-white">
+                        <th scope="col">Jour/Temps</th>
+                        <th scope="col">09:00 - 12:15</th>
+                        <th scope="col">PAUSE</th>
+                        <th scope="col">13:30 - 16:45</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>LUNDI</td>
+                         {% set matiereA = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '09:00:00' and mat.dayofweek == 'Monday')|first %}
+                       <td>{% if matiereA is not empty %}{{ matiereA.matiere.nomM ~ ' ' ~ (emploi.salle is defined ? emploi.salle : '') }}{% endif %}</td>
+                        <td>PAUSE</td>
+                         {% set matiereB = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '13:30:00' and mat.dayofweek == 'Monday')|first %}
+                         <td>{% if matiereB is not empty %}{{ matiereB.matiere.nomM ~ ' ' ~ (emploi.salle is defined ? emploi.salle : '') }}{% endif %}</td>
+                    </tr>
 
-            <tr> 
-            <th>Filiere</th>
-            <td>{{ emploi.classe.filiere }}</td>
-            </tr>
+<tr>
+    <td>MARDI</td>
+    {% set matiereC = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '09:00:00' and mat.dayofweek == 'Tuesday')|first %}
+    <td>{% if matiereC is not empty %}{{ matiereC.matiere.nomM ~ ' ' ~ (emploi.salle is defined ? emploi.salle : '') }}{% endif %}</td>
+    <td>PAUSE</td>
+    {% set matiereD = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '13:30:00' and mat.dayofweek == 'Tuesday')|first %}
+    <td>{% if matiereD is not empty %}{{ matiereD.matiere.nomM ~ ' ' ~ (emploi.salle is defined ? emploi.salle : '') }}{% endif %}</td>
+</tr>
 
-             <tr> 
-             <th>Matieres</th>
-                <td>
-                    <ul>
-                        {% for emploiMatiere in emploi.emploiMatieres %}
-                            <li>{{ emploiMatiere.matiere.nomM }}</li>
-                            <li>{{ emploiMatiere.starttime ? emploiMatiere.starttime|date('H:i') : '' }}</li>
-                            <li>{{ emploiMatiere.endtime ? emploiMatiere.endtime|date('H:i') : '' }}</li>
-                            <li>{{ emploiMatiere.dayofweek }}</li>
-                        {% endfor %}
-                    </ul>
-                </td>
-            </tr>
+                    <tr>
+                        <td>MERCREDI</td>
+                         {% set matiereE = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '09:00:00' and mat.dayofweek == 'Wednesday')|first %}
+                         <td>{% if matiereE is not empty %}{{ matiereE.matiere.nomM ~ ' ' ~ (emploi.salle is defined ? emploi.salle : '') }}{% endif %}</td>
+                        <td>PAUSE</td>
+                        {% set matiereF = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '13:30:00' and mat.dayofweek == 'Wednesday')|first %}
+                        <td>{% if matiereF is not empty %}{{ matiereF.matiere.nomM ~ ' ' ~ (emploi.salle is defined ? emploi.salle : '') }}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td>JEUDI</td>
+                        {% set matiereG = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '09:00:00' and mat.dayofweek == 'Thursday')|first %}
+                         <td>{% if matiereG is not empty %}{{ matiereG.matiere.nomM ~ ' ' ~ (emploi.salle is defined ? emploi.salle : '') }}{% endif %}</td>
+                        <td>PAUSE</td>
+                         {% set matiereH = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '13:30:00' and mat.dayofweek == 'Thursday')|first %}
+                        <td>{% if matiereH is not empty %}{{ matiereH.matiere.nomM ~ ' ' ~ (emploi.salle is defined ? emploi.salle : '') }}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td>VENDREDI</td>
+                       {% set matiereI = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '09:00:00' and mat.dayofweek == 'Friday')|first %}
+                         <td>{% if matiereI is not empty %}{{ matiereI.matiere.nomM ~ ' ' ~ (emploi.salle is defined ? emploi.salle : '') }}{% endif %}</td>
+                        <td>PAUSE</td>
+                        {% set matiereJ = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '13:30:00' and mat.dayofweek == 'Friday')|first %}
+                        <td>{% if matiereJ is not empty %}{{ matiereJ.matiere.nomM ~ ' ' ~ (emploi.salle is defined ? emploi.salle : '') }}{% endif %}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-             <tr> 
-            <th>Salle</th>
-            <td>{{ emploi.salle }}</td>
-            </tr>
-        </tbody>
-    </table>
+
+
+
 
     <a href="{{ path('app_emploi_index') }}">back to list</a>
 
