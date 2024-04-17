@@ -12,14 +12,14 @@ class ClasseType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {   $builder
-        ->add('nomclasse')
+        ->add('nomClasse')
         ->add('filiere', ChoiceType::class, [
             'choices' => [
                 'TIC' => 'TIC',
                 'Business' => 'Business',
                 'GC' => 'GC', ],
             'placeholder' => '', ])
-        ->add('nbreetudi')
+        ->add('nbreEtudi')
         ->add('niveaux', ChoiceType::class, [
             'choices' => [
                 '1A' => '1A',

@@ -76,7 +76,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Idclasse</th>
+                <th>IdClasse</th>
                 <th>Nomclasse</th>
                 <th>Filiere</th>
                 <th>Nbreetudi</th>
@@ -87,14 +87,14 @@
         <tbody>
         {% for classe in classes %}
             <tr>
-                <td>{{ classe.idclasse }}</td>
-                <td>{{ classe.nomclasse }}</td>
+                <td>{{ classe.idClasse }}</td>
+                <td>{{ classe.nomClasse }}</td>
                 <td>{{ classe.filiere }}</td>
                 <td>{{ classe.nbreetudi }}</td>
                 <td>{{ classe.niveaux }}</td>
                 <td>
-                    <a href="{{ path('app_classe_show', {'idclasse': classe.idclasse}) }}">show</a>
-                    <a href="{{ path('app_classe_edit', {'idclasse': classe.idclasse}) }}">edit</a>
+                    <a href="{{ path('app_classe_show', {'idClasse': classe.idClasse}) }}">show</a>
+                    <a href="{{ path('app_classe_edit', {'idClasse': classe.idClasse}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

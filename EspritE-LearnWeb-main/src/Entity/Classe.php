@@ -25,15 +25,14 @@ class Classe
     const FILIERE_BUSINESS = 'Business';
     const FILIERE_GC = 'GC';
    
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+ 
+    
     #[ORM\Id]
 #[ORM\GeneratedValue]
-#[ORM\Column(type: 'integer'--------------,name:'idClasse')]
-private ?int $id;
+#[ORM\Column(type: 'integer', name:"idClasse")]
+private ?int $idClasse ;
+
+
 
 
     #[ORM\Column(length: 255)]
@@ -42,24 +41,24 @@ private ?int $id;
         pattern: '/^(?:[1-5][AB]|[2][ABP])(?:[1-9]|[12]\d|30)$/',
         message: 'Le format du nom de la classe n\'est pas valide.'
     )]
-    private ?string $nomclasse=null;
+    private ?string $nomClasse = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Veuillez selectionner un filiere')]
-    private ?string  $filiere;
 
-    #[ORM\Column(length: 255)]
+    private ?string  $filiere = null;
+
+    #[ORM\Column]
     #[Assert\NotBlank(message: 'Veuillez fixer un nombre des etudiants')]
     #[Assert\LessThanOrEqual(
         value: 25, message: 'Le nombre des étudiants ne doit pas dépasser 25.'
     )]
-    private ?int $nbreetudi;
-
+    private ?int $nbreetudi = null;
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Veuillez selectionner un niveau de classe')]
-    private ?string $niveaux;
+    private ?string $niveaux = null;
 
-    #[ORM\OneToMany(mappedBy: 'nomClasse', targetEntity: Presence::class)]
+    #[ORM\OneToMany(mappedBy: 'idClasse', targetEntity: Presence::class)]
     private Collection $presence;
 
     public function __construct()
@@ -67,19 +66,19 @@ private ?int $id;
         $this->presence = new ArrayCollection();
     }
 
-    public function getIdclasse(): ?int
+    public function getIdClasse(): ?int
     {
-        return $this->id;
+        return $this->idClasse;
     }
 
-    public function getNomclasse(): ?string
+    public function getNomClasse(): ?string
     {
-        return $this->nomclasse;
+        return $this->nomClasse;
     }
 
-    public function setNomclasse(string $nomclasse): static
+    public function setNomClasse(string $nomClasse): static
     {
-        $this->nomclasse = $nomclasse;
+        $this->nomClasse = $nomClasse;
 
         return $this;
     }
@@ -149,7 +148,7 @@ private ?int $id;
     {
         if (!$this->presence->contains($presence)) {
             $this->presence[] = $presence;
-            $presence->setNomclasse($this);
+            $presence->setIdClasse($this);
         }
 
         return $this;

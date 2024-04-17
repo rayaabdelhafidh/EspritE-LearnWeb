@@ -65,7 +65,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $tel = null;
 
     #[ORM\ManyToOne(targetEntity: Classe::class)]
-    #[ORM\JoinColumn(name: 'IdClasse', referencedColumnName: 'idclasse')]
+    #[ORM\JoinColumn(name: 'IdClasse', referencedColumnName: 'idClasse')]
     private ?Classe $classe = null;
 
     #[ORM\Column]

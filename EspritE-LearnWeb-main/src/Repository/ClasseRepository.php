@@ -62,8 +62,8 @@ function SearchNom($nsc)
 
     {
         return $this->createQueryBuilder('o')
-            ->where ('o.nomclasse LIKE :nomclasse')
-            ->setParameter('nomclasse','%'.$nsc.'%')
+            ->where ('o.nomclasse LIKE :nomClasse')
+            ->setParameter('nomClasse','%'.$nsc.'%')
             ->getQuery()->getResult();
 
     }

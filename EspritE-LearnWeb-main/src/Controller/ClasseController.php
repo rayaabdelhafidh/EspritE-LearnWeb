@@ -64,7 +64,7 @@ class ClasseController extends AbstractController
     }
     public function getRealEntities($classes){
         foreach ($classes as $classe){
-            $realEntities[$classe->getIdclasse()] = [$classe->getNomclasse(),$classe->getNbreetudi(),$classe->getFiliere(),$classe->getNiveaux()];
+            $realEntities[$classe->getIdClasse()] = [$classe->getNomClasse(),$classe->getNbreetudi(),$classe->getFiliere(),$classe->getNiveaux()];
 
         }
         return $realEntities;
@@ -92,7 +92,7 @@ class ClasseController extends AbstractController
         ]);
     }
 
-    #[Route('/{idclasse}', name: 'app_classe_show', methods: ['GET'])]
+    #[Route('/{idClasse}', name: 'app_classe_show', methods: ['GET'])]
     public function show(Classe $classe): Response
     {
         return $this->render('classe/show.html.twig', [
@@ -100,7 +100,7 @@ class ClasseController extends AbstractController
         ]);
     }
 
-    #[Route('/{idclasse}/edit', name: 'app_classe_edit', methods: ['GET', 'POST'])]
+    #[Route('/{idClasse}/edit', name: 'app_classe_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Classe $classe, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ClasseType::class, $classe);
@@ -118,10 +118,10 @@ class ClasseController extends AbstractController
         ]);
     }
 
-    #[Route('/{idclasse}', name: 'app_classe_delete', methods: ['POST'])]
+    #[Route('/{idClasse}', name: 'app_classe_delete', methods: ['POST'])]
     public function delete(Request $request, Classe $classe, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$classe->getIdclasse(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$classe->getIdClasse(), $request->request->get('_token'))) {
             $entityManager->remove($classe);
             $entityManager->flush();
         }

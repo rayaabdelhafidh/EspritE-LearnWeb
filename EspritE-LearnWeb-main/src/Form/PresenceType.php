@@ -14,8 +14,8 @@ class PresenceType extends AbstractType
         $builder
             ->add('date')
             ->add('seance')
-            ->add('nomclasse')
-            ->add('idclasse')
+            ->add('nomClasse')
+           // ->add('idClasse')
         ;
     }
 

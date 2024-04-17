@@ -8,12 +8,12 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Idclasse</th>
-                <td>{{ classe.idclasse }}</td>
+                <th>IdClasse</th>
+                <td>{{ classe.idClasse }}</td>
             </tr>
             <tr>
                 <th>Nomclasse</th>
-                <td>{{ classe.nomclasse }}</td>
+                <td>{{ classe.nomClasse }}</td>
             </tr>
             <tr>
                 <th>Filiere</th>
@@ -32,7 +32,7 @@
 
     <a href="{{ path('app_classe_index') }}">back to list</a>
 
-    <a href="{{ path('app_classe_edit', {'idclasse': classe.idclasse}) }}">edit</a>
+    <a href="{{ path('app_classe_edit', {'idClasse': classe.idClasse}) }}">edit</a>
 
     {{ include('classe/_delete_form.html.twig') }}
 {% endblock %}

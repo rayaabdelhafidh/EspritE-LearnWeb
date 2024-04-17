@@ -24,42 +24,63 @@ class Cour
    #[ORM\Column]
    private ?int $id = null;
 
-    
+    /**
+     * @ORM\Column(length=500)
+     */
     #[ORM\Column(length: 255)]
     private ?string $titre = null;
 
     
+    /**
+     * @ORM\Column(length=500)
+     */
     #[ORM\Column(length: 500)]
     private ?string $description = null;
-
+/**
+     * @ORM\Column(type="integer")
+     */
     
     #[ORM\Column]
     private ?int $duree = null;
 
-    
+    /**
+     * @ORM\Column(length=500)
+     */
     #[ORM\Column(length: 500)]
     private ?string $objectif = null;
 
-    
+    /**
+     * @ORM\Column(length=300)
+     */
     #[ORM\Column(length: 300)]
     private ?string $image = null;
 
-   
+   /**
+     * @ORM\Column(length=500)
+     */
     #[ORM\Column(length: 500)]
     private ?string $courspdfurl = null;
 
-    
+    /**
+     * @ORM\Column(type="integer")
+     */
     #[ORM\Column]
     private ?int $note = null;
 
 
-   
+   /**
+     * @ORM\Column(type="integer")
+     */
     #[ORM\Column]
     private ?int $nblike = null;
 
     
-    #[ORM\ManyToOne(inversedBy: 'Cour')]
-    private ?Matiere  $matiere = null;
+    
+   
+
+#[ORM\ManyToOne(targetEntity: Matiere::class)]
+#[ORM\JoinColumn(name: 'idMatiere', referencedColumnName: 'idm')]
+private ?Matiere $idmatiere = null;
 
     public function getId(): ?int
     {
@@ -83,12 +104,13 @@ class Cour
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
         return $this;
     }
+
 
     public function getDuree(): ?int
     {
@@ -162,14 +184,14 @@ class Cour
         return $this;
     }
 
-    public function getMatiere(): ?Matiere
+    public function getIdmatiere(): ?Matiere
     {
-        return $this->matiere;
+        return $this->idmatiere;
     }
 
-    public function setMatiere(?Matiere $matiere): static
+    public function setIdmatiere(?Matiere $idmatiere): static
     {
-        $this->matiere = $matiere;
+        $this->idmatiere = $idmatiere;
 
         return $this;
     }
