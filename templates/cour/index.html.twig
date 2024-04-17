@@ -15,10 +15,11 @@
                         <p class="card-text"><strong>Description:</strong> {{ cour.description }}</p>
                         <p class="card-text"><strong>Durée:</strong> {{ cour.Duree }}</p>
                         <p class="card-text"><strong>Objectif:</strong> {{ cour.Objectif }}</p>
+                        <p class="card-text"><strong>url:</strong> {{ cour.CoursPdfUrl }}</p>                      
                         <p class="card-text"><strong>Matière:</strong> {{ cour.idmatiere.nomm }}</p>
                         <p class="card-text"><strong>Note:</strong> {{ cour.Note }}</p>
                         <p class="card-text"><strong>Likes:</strong> {{ cour.Nblike }}</p>
-                       
+                    
                         <a href="{{ path('app_cour_show', {'id': cour.id}) }}" class="btn btn-primary mt-auto">Détails</a>
                         <a href="{{ path('app_cour_edit', {'id': cour.id}) }}" class="btn btn-secondary">Modifier</a>
                     </div>

@@ -13,6 +13,9 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\PositiveOrZero;
 
 class CourType extends AbstractType
 {
@@ -20,12 +23,32 @@ class CourType extends AbstractType
     {
         $builder
         
-        ->add('titre',TextType::class)
-        ->add('description',TextType::class)
-        ->add('duree')
-        ->add('objectif',TextType::class)
+        ->add('titre', TextType::class, [
+            'constraints' => [
+                new NotBlank(['message' => 'Le titre est requis.']),
+                new Length(['min' => 2, 'max' => 255, 'minMessage' => 'Le titre doit contenir au moins {{ limit }} caractères.', 'maxMessage' => 'Le titre ne peut pas dépasser {{ limit }} caractères.']),
+            ],
+        ])
+        ->add('description', TextType::class, [
+            'constraints' => [
+                new NotBlank(['message' => 'La description est requise.']),
+                new Length(['min' => 2, 'max' => 500, 'minMessage' => 'La description doit contenir au moins {{ limit }} caractères.', 'maxMessage' => 'La description ne peut pas dépasser {{ limit }} caractères.']),
+            ],
+        ])
+        ->add('duree', IntegerType::class, [
+            'constraints' => [
+                new NotBlank(['message' => 'La durée est requise.']),
+                new PositiveOrZero(['message' => 'La durée doit être un entier positif ou zéro.']),
+            ],
+        ])
+        ->add('objectif', TextType::class, [
+            'constraints' => [
+                new NotBlank(['message' => 'L\'objectif est requis.']),
+                new Length(['min' => 2, 'max' => 500, 'minMessage' => 'L\'objectif doit contenir au moins {{ limit }} caractères.', 'maxMessage' => 'L\'objectif ne peut pas dépasser {{ limit }} caractères.']),
+            ],
+        ])
        // ->add('image',TextType::class)
-        ->add('image',FileType::class, [
+        ->add('image', FileType::class, [
             'label' => 'Votre image',
 
             // unmapped means that this field is not associated to any entity property
@@ -50,24 +73,32 @@ class CourType extends AbstractType
                 ])
             ],
         ])
-
-        ->add('coursPdfUrl',TextType::class)
-        //->add('idMatiere')
-      /*  ->add('idMatiere', EntityType::class, [
-            'class' => Matiere::class,
-            'choice_label' => 'nomm', // Remplacez 'nomm' par le nom de la propriété que vous voulez afficher dans le champ de sélection
-            // Autres options si nécessaire
-        ])*/
+        ->add('coursPdfUrl', TextType::class, [
+            'constraints' => [
+                new NotBlank(['message' => 'L\'URL PDF est requise.']),
+                new Length(['min' => 2, 'max' => 500, 'minMessage' => 'L\'URL PDF doit contenir au moins {{ limit }} caractères.', 'maxMessage' => 'L\'URL PDF ne peut pas dépasser {{ limit }} caractères.']),
+            ],
+        ])
         ->add('idmatiere', EntityType::class, [
             'class' => Matiere::class,
             'choice_label' => 'nomm', // Remplacez 'nomm' par le nom de la propriété que vous voulez afficher dans le champ de sélection
             // Autres options si nécessaire
+            'constraints' => [
+                new NotBlank(['message' => 'La matière est requise.']),
+            ],
         ])
-        ->add('note')
-        ->add('nblike')
-       
-       
-        ;
+        ->add('note', IntegerType::class, [
+            'constraints' => [
+                new NotBlank(['message' => 'La note est requise.']),
+                new PositiveOrZero(['message' => 'La note doit être un entier positif ou zéro.']),
+            ],
+        ])
+        ->add('nblike', IntegerType::class, [
+            'constraints' => [
+                new NotBlank(['message' => 'Le nombre de likes est requis.']),
+                new PositiveOrZero(['message' => 'Le nombre de likes doit être un entier positif ou zéro.']),
+            ],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

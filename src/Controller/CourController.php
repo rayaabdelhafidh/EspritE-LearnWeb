@@ -41,23 +41,7 @@ class CourController extends AbstractController
     
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $file1 = $form->get('courspdfurl')->getData();
-        if ($file1) {
-            // Générer un nom unique pour le fichier avant de l'enregistrer
-            $fileName1 = md5(uniqid()).'.'.$file1->guessExtension();
-
-            // Déplacer le fichier vers le répertoire où les fichiers PDF sont stockés
-            $targetDirectory1 = $this->getParameter('kernel.project_dir') . '/public';
-            $file1->move(
-                $targetDirectory1,
-                $fileName1
-            );
-            $cour->setCourspdfurl($fileName1);
-        }
-
-
-
-            $file = $form->get('image')->getData();
+          $file = $form->get('image')->getData();
             if ($file) {
                 // Generate a unique name for the file before saving it
                 $fileName = md5(uniqid()).'.'.$file->guessExtension();
@@ -83,7 +67,7 @@ class CourController extends AbstractController
             // Enregistrer le cours en base de données
             $entityManager->persist($cour);
             $entityManager->flush();
-    
+            flash()->addSuccess('cour Added Successfully');
             return $this->redirectToRoute('app_cour_index', [], Response::HTTP_SEE_OTHER);
         }
     
@@ -130,6 +114,7 @@ class CourController extends AbstractController
             $cour->setIdmatiere($matiere);
             
             $entityManager->flush();
+            flash()->addSuccess('cour Modified Successfully');
 
             return $this->redirectToRoute('app_cour_index', [], Response::HTTP_SEE_OTHER);
         }
