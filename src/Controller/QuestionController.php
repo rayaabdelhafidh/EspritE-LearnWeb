@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Quizz;
+use App\Entity\Options;
+use App\Repository\OptionsRepository;
 
 
 #[Route('/question')]

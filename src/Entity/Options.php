@@ -5,6 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\OptionsRepositor;
 use App\Entity\Quizz;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Question;
+
 #[ORM\Entity(repositoryClass: OptionsRepository::class)]
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OptionsRepository")
@@ -22,20 +25,24 @@ class Options
     #[ORM\Column]
     private ?int  $optionId=null;
     
-             /**
+    /**
      * @var string
-     *
+     
      * @ORM\Column(name="option_content", type="string", length=255, nullable=false)
-     */
+     * @Assert\NotBlank(message="Le numéro est requis.")
+     
+    */
 
     #[ORM\Column(length:255)]
+    #[Assert\NotBlank(message:"bloc est requis.")]
     private ?string $optionContent=null;
+
        /**
      * @var bool|null
      *
      * @ORM\Column(name="is_correct", type="boolean", nullable=false)
      */
-   
+    
     #[ORM\Column(length:255)]
     private ?bool  $isCorrect;
 

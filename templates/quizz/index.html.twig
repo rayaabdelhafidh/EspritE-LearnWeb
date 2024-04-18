@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Quizz index{% endblock %}
+{% block title %}Quiz{% endblock %}
 
 {% block body %}
-    <h1>Quizz index</h1>
-
-    <table class="table">
+    <h1> </h1>
+    <a href="{{ path('app_quizz_new') }}" style="float: right; margin-right: 40px;">Create new</a>
+     <table class="table" style ="margin-left:10px;">
         <thead>
             <tr>
-                <th>QuizId</th>
+                
                 <th>Description</th>
                 <th>Matier</th>
                 <th>actions</th>
@@ -17,14 +17,15 @@
         <tbody>
         {% for quizz in quizzs %}
             <tr>
-                <td>{{ quizz.quizId }}</td>
+               
                 <td>{{ quizz.description }}</td>
                 <td>{{ quizz.matiere }}</td>
-                <td>
-                    <a href="{{ path('app_quizz_show', {'quizId': quizz.quizId}) }}">show</a>
-                    <a href="{{ path('app_quizz_edit', {'quizId': quizz.quizId}) }}">edit</a>
-                    <a href="{{ path('app_question_new', {'quizId': quizz.quizId}) }}">Ajouter</a>
-                    
+
+                <td style="display: flex; align-items: center;">
+                    <a href="{{ path('app_quizz_show', {'quizId': quizz.quizId}) }}" style="margin-right: 10px; ">show</a>
+                    <a href="{{ path('app_quizz_edit', {'quizId': quizz.quizId}) }}" style="margin-right: 10px; margin-left: 30px;">edit</a>
+                    <a href="{{ path('app_question_new', {'quizId': quizz.quizId}) }}" style="margin-left: 30px;">Ajouter Question</a>
+                    <div style="margin-left: 20px; color: red;">{{ include('quizz/_delete_form.html.twig', {'quizz': quizz}) }}</div>
                     
                 </td>
             </tr>
@@ -36,5 +37,11 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_quizz_new') }}">Create new</a>
+    
+    <style>
+     a {
+    color: red;
+    text-decoration: none;
+}
+     </style>
 {% endblock %}

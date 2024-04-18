@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\QuestionRepository")
  */
@@ -29,6 +31,7 @@ class Question
      */
 
    #[ORM\Column(length:255)]
+   #[Assert\NotBlank(message:"Le contenu ne peut pas être vide.")]
    private ?string $content=null;
    /**
      * @var int
@@ -37,6 +40,10 @@ class Question
 
      */
    #[ORM\Column]
+   #[Assert\Type(
+    type: 'integer',
+    message: "numéro de salle doit étre un numéro"
+    )]
    private ?int $score=null;
    
 /**
@@ -48,18 +55,19 @@ class Question
 #[ORM\JoinColumn(name: "quiz_id", referencedColumnName: "quiz_id", nullable: false)]
  private ?Quizz $quiz;
 
-      /**
-   * @ORM\OneToMany(targetEntity="Options",mappedBy="Question")
-   */
 
 
-   #[ORM\OneToMany(mappedBy: 'question', targetEntity: Options::class)]
-   private Collection $options;
 
-   public function __construct()
-   {
-       $this->options = new ArrayCollection();
-   }
+    /**
+     * @ORM\OneToMany(mappedBy="question", targetEntity=Options::class)
+     */
+    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Options::class)]
+    private Collection $options;
+
+    public function __construct()
+    {
+        $this->options = new ArrayCollection();
+    }
 
     
 

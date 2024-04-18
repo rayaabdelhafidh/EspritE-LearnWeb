@@ -10,6 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Question;
+use App\Form\QuestionType;
+use App\Repository\QuestionRepository;
+use App\Entity\Options;
+use App\Form\OptionsType;
+use App\Repository\OptionsRepository;
+
 
 #[Route('/quizz')]
 class QuizzController extends AbstractController
@@ -43,13 +50,16 @@ class QuizzController extends AbstractController
     }
 
     #[Route('/{quizId}', name: 'app_quizz_show', methods: ['GET'])]
-    public function show(Quizz $quizz): Response
+    public function show(Quizz $quizz, QuestionRepository $questionRepository): Response
     {
+        // Fetch the questions associated with the quiz
+        $questions = $questionRepository->findBy(['quiz' => $quizz]);
+    
         return $this->render('quizz/show.html.twig', [
             'quizz' => $quizz,
+            'questions' => $questions,
         ]);
     }
-
     #[Route('/{quizId}/edit', name: 'app_quizz_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Quizz $quizz, EntityManagerInterface $entityManager): Response
     {

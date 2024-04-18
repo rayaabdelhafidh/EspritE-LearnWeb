@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\QuizzRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\QuizzRepository")
  */
@@ -27,8 +28,12 @@ class Quizz
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=false)
+     
+      
      */
    #[ORM\Column(length:255)]
+   #[Assert\NotBlank(message:"description est requis.")]
+   #[Assert\Length(max:255, maxMessage:"La description ne peut pas dépasser {{ limit }} caractères.")]
    private ?string $description=null;
        /**
      * @var string
@@ -36,6 +41,7 @@ class Quizz
      * @ORM\Column(name="matiere", type="string", length=255, nullable=false)
      */
    #[ORM\Column(length:255)]
+   #[Assert\NotBlank(message:"matier est requis.")]
    private ?string $matiere=null;
 
    #[ORM\OneToMany(mappedBy: 'quizz', targetEntity: Question::class)]

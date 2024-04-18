@@ -1,31 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Question index{% endblock %}
+{% block title %}Question{% endblock %}
 
 {% block body %}
-    <h1>Question index</h1>
+    <h1> </h1>
+    <a href="{{ path('app_quizz_index') }}" style="float: right; margin-right: 40px;">back to liste Quiz</a>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Questionid</th>
+               
                 <th>Content</th>
                 <th>score</th>
-                <th>id_quiz</th>
+               
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for question in questions %}
             <tr>
-                <td>{{ question.questionid }}</td>
+                
                 <td>{{ question.content }}</td>
                 <td>{{ question.score }}</td>
-               <td>{{ question.quiz.quizId}}</td>
-                <td>
-                    <a href="{{ path('app_question_show', {'questionid': question.questionid}) }}">show</a>
-                    <a href="{{ path('app_question_edit', {'questionid': question.questionid}) }}">edit</a>
-                    <a href="{{ path('app_options_new',  {'questionid': question.questionid}) }}">Ajouter</a>
+               
+                <td style="display: flex; align-items: center;">
+                    <a href="{{ path('app_question_show', {'questionid': question.questionid}) }}" style="margin-right: 10px;">show</a>
+                    <a href="{{ path('app_question_edit', {'questionid': question.questionid}) }}" style="margin-right: 10px; margin-left: 30px;">edit</a>
+                    <a href="{{ path('app_options_new',  {'questionid': question.questionid}) }}"  style="margin-left: 30px;">Ajouter Choix</a>
+                    <div style="margin-left: 20px; color: red;" >{{ include('question/_delete_form.html.twig', {'question': question}) }}</div>
                 </td>
             </tr>
         {% else %}
@@ -35,6 +37,11 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_question_new') }}">Create new</a>
+        <style>
+     a {
+    color: red;
+    text-decoration: none;
+}
+     </style>
+    
 {% endblock %}
