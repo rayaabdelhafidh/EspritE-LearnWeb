@@ -16,17 +16,17 @@
             <table class="table text-start align-middle table-bordered table-hover mb-0">
                 <thead>
                     <tr class="text-white">
-                        <th scope="col">Jour/Temps</th>
-                        <th scope="col">09:00 - 12:15</th>
-                        <th scope="col">PAUSE</th>
-                        <th scope="col">13:30 - 16:45</th>
+                        <th scope="col" class="text-center">Jour/Temps</th>
+                        <th scope="col" class="text-center">09:00 - 12:15</th>
+                        <th scope="col" class="text-center">PAUSE</th>
+                        <th scope="col" class="text-center">13:30 - 16:45</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr class="text-center">
                         <td class="text-white">LUNDI</td>
                          {% set matiereA = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '09:00:00' and mat.dayofweek == 'Monday')|first %}
-                       <td class="text-center">
+                       <td>
                          {% if matiereA is not empty %}
                         {{ matiereA.matiere.nomM }}<br>
                         {{ emploi.salle is defined ? emploi.salle : '' }}
@@ -34,9 +34,9 @@
                          </td>
 
 
-                        <td class="text-white">PAUSE</td>
+                        <td class="text-white text-center">PAUSE</td>
                          {% set matiereB = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '13:30:00' and mat.dayofweek == 'Monday')|first %}
-                         <td class="text-center">
+                         <td>
                          {% if matiereB is not empty %}
                         {{ matiereB.matiere.nomM }}<br>
                         {{ emploi.salle is defined ? emploi.salle : '' }}
@@ -44,18 +44,18 @@
                          </td>
                     </tr>
 
-<tr>
+<tr class="text-center">
                     <td class="text-white">MARDI</td>
                         {% set matiereC = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '09:00:00' and mat.dayofweek == 'Tuesday')|first %}
-                    <td class="text-center">
+                    <td>
                          {% if matiereC is not empty %}
                         {{ matiereC.matiere.nomM }}<br>
                         {{ emploi.salle is defined ? emploi.salle : '' }}
                          {% endif %}
                          </td>
-                    <td class="text-white">PAUSE</td>
+                    <td class="text-white text-center">PAUSE</td>
                         {% set matiereD = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '13:30:00' and mat.dayofweek == 'Tuesday')|first %}
-                    <td class="text-center">
+                    <td>
                          {% if matiereD is not empty %}
                         {{ matiereD.matiere.nomM }}<br>
                         {{ emploi.salle is defined ? emploi.salle : '' }}
@@ -63,54 +63,54 @@
                          </td>
 </tr>
 
-                    <tr>
+                    <tr class="text-center">
                         <td class="text-white">MERCREDI</td>
                          {% set matiereE = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '09:00:00' and mat.dayofweek == 'Wednesday')|first %}
-                        <td class="text-center">
+                        <td>
                          {% if matiereE is not empty %}
                         {{ matiereE.matiere.nomM }}<br>
                         {{ emploi.salle is defined ? emploi.salle : '' }}
                          {% endif %}
                          </td>
-                        <td class="text-white">PAUSE</td>
+                        <td class="text-white text-center">PAUSE</td>
                         {% set matiereF = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '13:30:00' and mat.dayofweek == 'Wednesday')|first %}
-                        <td class="text-center">
+                        <td>
                          {% if matiereF is not empty %}
                         {{ matiereF.matiere.nomM }}<br>
                         {{ emploi.salle is defined ? emploi.salle : '' }}
                          {% endif %}
                          </td>
                     </tr>
-                    <tr>
+                    <tr class="text-center">
                         <td class="text-white">JEUDI</td>
                         {% set matiereG = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '09:00:00' and mat.dayofweek == 'Thursday')|first %}
-                        <td class="text-center">
+                        <td>
                          {% if matiereG is not empty %}
                         {{ matiereG.matiere.nomM }}<br>
                         {{ emploi.salle is defined ? emploi.salle : '' }}
                          {% endif %}
                          </td>
-                        <td class="text-white">PAUSE</td>
+                        <td class="text-white text-center">PAUSE</td>
                          {% set matiereH = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '13:30:00' and mat.dayofweek == 'Thursday')|first %}
-                       <td class="text-center">
+                       <td>
                          {% if matiereH is not empty %}
                         {{ matiereH.matiere.nomM }}<br>
                         {{ emploi.salle is defined ? emploi.salle : '' }}
                          {% endif %}
                          </td>
                     </tr>
-                    <tr>
+                    <tr class="text-center">
                         <td class="text-white">VENDREDI</td>
                        {% set matiereI = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '09:00:00' and mat.dayofweek == 'Friday')|first %}
-                        <td class="text-center">
+                        <td>
                          {% if matiereI is not empty %}
                         {{ matiereI.matiere.nomM }}<br>
                         {{ emploi.salle is defined ? emploi.salle : '' }}
                          {% endif %}
                          </td>
-                        <td class="text-white">PAUSE</td>
+                        <td class="text-white text-center">PAUSE</td>
                         {% set matiereJ = emploi.emploiMatieres|filter(mat => mat.starttime|date('H:i:s') == '13:30:00' and mat.dayofweek == 'Friday')|first %}
-                        <td class="text-center">
+                        <td>
                          {% if matiereJ is not empty %}
                         {{ matiereJ.matiere.nomM }}<br>
                         {{ emploi.salle is defined ? emploi.salle : '' }}

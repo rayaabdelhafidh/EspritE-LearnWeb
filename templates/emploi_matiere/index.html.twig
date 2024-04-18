@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EmploiMatiere index{% endblock %}
+
+{% block body %}
+    <h1>EmploiMatiere index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Starttime</th>
+                <th>Endtime</th>
+                <th>Dayofweek</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for emploi_matiere in emploi_matieres %}
+            <tr>
+                <td>{{ emploi_matiere.starttime ? emploi_matiere.starttime|date('H:i:s') : '' }}</td>
+                <td>{{ emploi_matiere.endtime ? emploi_matiere.endtime|date('H:i:s') : '' }}</td>
+                <td>{{ emploi_matiere.dayofweek }}</td>
+                <td>
+                    <a href="{{ path('app_emploi_matiere_show', {'emploi': emploi_matiere.emploi}) }}">show</a>
+                    <a href="{{ path('app_emploi_matiere_edit', {'emploi': emploi_matiere.emploi}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_emploi_matiere_new') }}">Create new</a>
+{% endblock %}

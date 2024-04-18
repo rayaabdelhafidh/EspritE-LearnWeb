@@ -1,10 +1,9 @@
 {% extends 'baseback.html.twig' %}
 
-{% block title %}New Emploi{% endblock %}
+{% block title %}nouveau emploi{% endblock %}
 
 {% block body %}
-    <h1>Create new Emploi</h1>
-
+    <h1>ajouter un emploi</h1>
     {{ include('emploi/_form.html.twig') }}
 
     <a href="{{ path('app_emploi_index') }}">back to list</a>

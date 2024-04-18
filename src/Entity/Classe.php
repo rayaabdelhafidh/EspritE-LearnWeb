@@ -169,7 +169,7 @@ class Classe
 
     public function __toString(): string
     {
-        return $this->nomclasse. ' - ' . $this->niveaux. ' - ' . $this->filiere;
+        return $this->nomclasse. ' - ' . $this->filiere;
     }
 
 }

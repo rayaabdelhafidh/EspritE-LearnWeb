@@ -29,19 +29,26 @@ class EmploiController extends AbstractController
         $emploi = new Emploi();
         $form = $this->createForm(EmploiType::class, $emploi);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($emploi);
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_emploi_index', [], Response::HTTP_SEE_OTHER);
+    
+            // Save the data in the session to be used later
+            $this->get('session')->set('new_empoi_data', $emploi);
+    
+            // Redirect to the next page with the Emploi ID as a route parameter
+            return $this->redirectToRoute('app_emploi_matiere_new', ['emploiId' => $emploi->getId()]);
         }
-
-        return $this->renderForm('emploi/new.html.twig', [
+    
+        return $this->render('emploi/new.html.twig', [
             'emploi' => $emploi,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
+    
+
+    
 
     #[Route('/{id}', name: 'app_emploi_show', methods: ['GET'])]
     public function show(Emploi $emploi): Response
