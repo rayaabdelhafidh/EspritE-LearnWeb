@@ -1,4 +1,25 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+<div class="form-container" style="background: linear-gradient(45deg, #191C24, #2E3140); padding: 40px; border-radius: 10px; margin: 20px auto; box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);">
+    {{ form_start(form) }}
+        <div class="form-row" style="display: flex; flex-wrap: wrap;">
+            <div class="form-group" style="flex: 0 0 50%; max-width: 50%; padding-right: 15px; margin-top:10px;">
+                {{ form_label(form.matiere, 'Matière : ', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.matiere, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group" style="flex: 0 0 50%; max-width: 50%; padding-left: 15px; margin-top:10px;">
+                {{ form_label(form.starttime, 'Heure de début : ', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.starttime, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group" style="flex: 0 0 50%; max-width: 50%; padding-right: 15px; margin-top:10px;">
+                {{ form_label(form.endtime, 'Heure de fin : ', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.endtime, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group" style="flex: 0 0 50%; max-width: 50%; padding-left: 15px; margin-top:10px;">
+                {{ form_label(form.dayofweek, 'Jour de la semaine : ', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.dayofweek, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+          <button class="btn" style=" border: 2px solid red; display: block; width: 100%; padding: 10px 20px; margin-top:30px; background-color: transparent; color: red; border-radius: 10px; cursor: pointer; transition: background-color 0.3s;">{{ button_label|default('enregistrer') }}</button>
+    {{ form_end(form) }}
+</div>

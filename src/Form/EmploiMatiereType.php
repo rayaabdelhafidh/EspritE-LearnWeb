@@ -16,18 +16,21 @@ class EmploiMatiereType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('matiere', EntityType::class, [
-            'class' => Matiere::class,
-            'choice_label' => 'nomM',
-        ])
-        ->add('starttime', TimeType::class, [
-            'widget' => 'single_text',
-            'placeholder' => 'Choisir un horaire',
-        ])
-        ->add('endtime', TimeType::class, [
-            'widget' => 'single_text',
-            'placeholder' => 'Choisir un horaire',
-        ])  
+            ->add('matiere', EntityType::class, [
+                'class' => Matiere::class,
+                'choice_label' => 'nomM',
+                'label' => 'Matière : ', // Set label for the 'matiere' field
+            ])
+            ->add('starttime', TimeType::class, [
+                'widget' => 'single_text',
+                'placeholder' => 'Choisir un horaire',
+                'label' => 'heure de début de la séance : ', // Set label for the 'starttime' field
+            ])
+            ->add('endtime', TimeType::class, [
+                'widget' => 'single_text',
+                'placeholder' => 'Choisir un horaire',
+                'label' => 'Heure de fin de la séance : ', // Set label for the 'endtime' field
+            ])
             ->add('dayofweek', ChoiceType::class, [
                 'choices' => [
                     'Monday' => 'Monday',
@@ -36,10 +39,9 @@ class EmploiMatiereType extends AbstractType
                     'Thursday' => 'Thursday',
                     'Friday' => 'Friday',
                 ],
-                'placeholder' => 'Choisir un jour'
-            ])
-           
-            ;
+                'placeholder' => 'Choisir un jour',
+                'label' => 'Jour de la semaine : ', // Set label for the 'dayofweek' field
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

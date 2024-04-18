@@ -1,10 +1,54 @@
-{{ form_start(form) }}
-    {{ form_row(form.premierdate) }}
-    {{ form_row(form.dernierdate) }}
-    {{ form_row(form.salle) }}
-    {{ form_row(form.classe) }}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
+<style>
+    .form-container {
+        text-align: center;
+    }
 
-  <br>
-    <button type="submit">enregistrer</button>
-{{ form_end(form) }}
+    .form-wrapper {
+        max-width: 700px;
+        margin: 40px auto;
+        text-align: left;
+    }
+
+    .form-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px; 
+    }
+
+    .form-label {
+        width: 120px; /* Adjust label width as needed */
+        margin-right: 20px; /* Adjust spacing between label and form row */
+    }
+
+    .submit-button {
+        margin-top: 20px; /* Adjust spacing above submit button */
+    }
+</style>
+
+<div class="form-container">
+    {{ form_start(form) }}
+    <div class="form-wrapper">
+        <div class="form-row">
+            {{ form_label(form.premierdate, 'De : ', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.premierdate) }}
+        </div>
+        <div class="form-row">
+            {{ form_label(form.dernierdate, 'Jusqu\'à : ', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.dernierdate) }}
+        </div>
+        <div class="form-row">
+            {{ form_label(form.salle, 'Salle : ', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.salle) }}
+        </div>
+        <div class="form-row">
+            {{ form_label(form.classe, 'Classe : ', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.classe) }}
+        </div>
+    </div>
+
+    <button type="submit" class="submit-button" style="border: 2px solid red; width: 200px; background-color: transparent; color: red; border-radius: 10px; margin-bottom: 20px;">enregistrer</button>
+    {{ form_end(form) }}
+</div>
+

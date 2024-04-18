@@ -1,15 +1,16 @@
 {% extends 'baseback.html.twig' %}
 
-{% block title %}New EmploiMatiere{% endblock %}
+{% block title %}les matières{% endblock %}
 
 {% block body %}
-    <h1>Create new EmploiMatiere</h1>
+<div class="page-container" style="max-width: 900px; margin: 0 auto; padding: 20px;">
+    <h1 class="page-title" style="text-align: center; color: #fefefe; margin-bottom: 20px;">Ajouter les matières</h1>
 
-    {{ include('emploi_matiere/_form.html.twig') }}
+    <div class="form-container" style="background: linear-gradient(45deg, #191C24, #2E3140); padding: 40px; border-radius: 10px; margin: 20px auto; box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);">
+        {{ include('emploi_matiere/_form.html.twig') }}
+    </div>
 
-    <a href="{{ path('app_emploi_index') }}">back to list</a>
-
-
-
-    {% endblock %}
+    <a href="{{ path('app_emploi_index') }}" class="back-link" style="display: block; text-align: center; margin-top: 20px; text-decoration: none; color: maroon; transition: color 0.3s;">Afficher les emplois</a>
+</div>
+{% endblock %}
 

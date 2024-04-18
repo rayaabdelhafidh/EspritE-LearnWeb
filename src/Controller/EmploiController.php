@@ -33,11 +33,9 @@ class EmploiController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($emploi);
             $entityManager->flush();
-    
-            // Save the data in the session to be used later
+
             $this->get('session')->set('new_empoi_data', $emploi);
     
-            // Redirect to the next page with the Emploi ID as a route parameter
             return $this->redirectToRoute('app_emploi_matiere_new', ['emploiId' => $emploi->getId()]);
         }
     

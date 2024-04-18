@@ -3,8 +3,42 @@
 {% block title %}nouveau emploi{% endblock %}
 
 {% block body %}
-    <h1>ajouter un emploi</h1>
-    {{ include('emploi/_form.html.twig') }}
+<div class="form-container">
+    <h1 style="text-align: center; color: white;">créer un emploi</h1>
 
-    <a href="{{ path('app_emploi_index') }}">back to list</a>
+    <div class="form-wrapper">
+        {{ include('emploi/_form.html.twig') }}
+    </div>
+
+<style>
+.form-container {
+    background: linear-gradient(45deg, #191C24, #2E3140);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 0 auto;
+    max-width: 900px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+}
+
+
+.form-wrapper {
+    margin-top: 20px;
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    text-decoration: none;
+    color: maroon;
+}
+
+.back-link:hover {
+    color: #666;
+}
+
+</style>
+    <a href="{{ path('app_emploi_index') }}" class="back-link">afficher les emplois</a>
+</div>
 {% endblock %}
+
