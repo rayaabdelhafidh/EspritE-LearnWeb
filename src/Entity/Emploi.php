@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\EmploiRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Emploi
  *
@@ -36,6 +38,7 @@ private ?int $id;
 * @ORM\Column(name="premierDate", type="date", nullable=true)
 */
 #[ORM\Column(type: "date")]
+#[Assert\NotBlank(message:"premier date est requise.")]
 private ?\DateTimeInterface $premierdate;
                             
 /**
@@ -44,6 +47,7 @@ private ?\DateTimeInterface $premierdate;
 * @ORM\Column(name="dernierDate", type="date", nullable=true)
 */
 #[ORM\Column(type: "date")]
+#[Assert\NotBlank(message:"dernier date est requis.")]
 private ?\DateTimeInterface $dernierdate;
                             
 /**
@@ -52,6 +56,7 @@ private ?\DateTimeInterface $dernierdate;
 */
                            
 #[ORM\ManyToOne(targetEntity: Salle::class, inversedBy: 'emplois')]
+#[Assert\NotBlank(message:"salle est requis.")]
 #[ORM\JoinColumn(name: "salleId", referencedColumnName: "salleId", nullable: false)]
  private ?Salle $salle;
                            
@@ -60,6 +65,7 @@ private ?\DateTimeInterface $dernierdate;
 * @ORM\JoinColumn(name="classeId", referencedColumnName="idClasse", nullable=false)
 */
 #[ORM\ManyToOne(targetEntity: Classe::class, inversedBy: 'emplois')]
+#[Assert\NotBlank(message:"classe est requis.")]
 #[ORM\JoinColumn(name: "classeId", referencedColumnName: "idClasse", nullable: false)]
 private ?Classe $classe;
                            

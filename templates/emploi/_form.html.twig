@@ -14,7 +14,7 @@
     .form-row {
         display: flex;
         align-items: center;
-        margin-bottom: 20px; 
+        margin-bottom: 20px;
     }
 
     .form-label {
@@ -25,30 +25,38 @@
     .submit-button {
         margin-top: 20px; /* Adjust spacing above submit button */
     }
+
+    .error-message {
+        color: red; /* Style the error messages */
+        margin-top: 5px; /* Adjust spacing between error message and input field */
+    }
 </style>
 
 <div class="form-container">
-    {{ form_start(form) }}
+    {{ form_start(form,{attr:{novalidate:'novalidate'}}) }}
     <div class="form-wrapper">
         <div class="form-row">
             {{ form_label(form.premierdate, 'De : ', {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.premierdate) }}
+            {{ form_errors(form.premierdate, {'attr': {'class': 'text-danger'}}) }}
         </div>
         <div class="form-row">
             {{ form_label(form.dernierdate, 'Jusqu\'à : ', {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.dernierdate) }}
+            {{ form_errors(form.dernierdate, {'attr': {'class': 'text-danger'}}) }}
         </div>
         <div class="form-row">
             {{ form_label(form.salle, 'Salle : ', {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.salle) }}
+            {{ form_errors(form.salle, {'attr': {'class': 'text-danger'}}) }}
         </div>
         <div class="form-row">
             {{ form_label(form.classe, 'Classe : ', {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.classe) }}
+            {{ form_errors(form.classe, {'attr': {'class': 'text-danger'}}) }}
         </div>
     </div>
 
     <button type="submit" class="submit-button" style="border: 2px solid red; width: 200px; background-color: transparent; color: red; border-radius: 10px; margin-bottom: 20px;">enregistrer</button>
     {{ form_end(form) }}
 </div>
-

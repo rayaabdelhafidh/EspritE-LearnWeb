@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\EmploiMatiereRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * EmploiMatiere
@@ -40,6 +41,7 @@ use App\Repository\EmploiMatiereRepository;
        * @ORM\Column(name="startTime", type="time", nullable=false)
        */
       #[ORM\Column(type: "time")]
+      #[Assert\NotBlank(message:"temps de début de la séance est requis.")]
       private ?\DateTimeInterface $starttime;
       
       /**
@@ -48,6 +50,7 @@ use App\Repository\EmploiMatiereRepository;
        * @ORM\Column(name="endTime", type="time", nullable=false)
        */
       #[ORM\Column(type: "time")]
+      #[Assert\NotBlank(message:"temps de la fin de la séance est requis.")]
       private ?\DateTimeInterface $endtime;
       
       
@@ -57,6 +60,7 @@ use App\Repository\EmploiMatiereRepository;
            * @ORM\Column(name="dayOfWeek", type="string", length=20, nullable=false)
            */
           #[ORM\Column(length: 255)]
+          #[Assert\NotBlank(message:"le jour de la semaine est requis.")]
           private $dayofweek;
       
          public function getEmploi(): Emploi
