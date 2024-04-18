@@ -22,6 +22,8 @@
                     
                         <a href="{{ path('app_cour_show', {'id': cour.id}) }}" class="btn btn-primary mt-auto">Détails</a>
                         <a href="{{ path('app_cour_edit', {'id': cour.id}) }}" class="btn btn-secondary">Modifier</a>
+                         <a href="{{ path('download_pdf', {'id': cour.id}) }}" class="btn btn-outline-secondary" downloadPdf>downloadPdf</a>
+
                     </div>
                 </div>
             </div>

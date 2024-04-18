@@ -47,12 +47,12 @@
                         {% endif %}
                     </div>
                     <div class="form-group">
-                        <label class="form-control-label text-danger" for="{{ form.coursPdfUrl.vars.id }}">URL PDF</label>
-                        {{ form_widget(form.coursPdfUrl, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
-                        {% if form_errors(form.coursPdfUrl)|length > 0 %}
-                            <div class="error-message">{{ form_errors(form.coursPdfUrl) }}</div>
-                        {% endif %}
-                    </div>
+    <label class="form-control-label text-danger" for="{{ form.coursPdfUrl.vars.id }}">Fichier PDF</label>
+    {{ form_row(form.coursPdfUrl, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
+    {% if form_errors(form.coursPdfUrl)|length > 0 %}
+        <div class="error-message">{{ form_errors(form.coursPdfUrl) }}</div>
+    {% endif %}
+</div>
                     <div class="form-group">
                         <label class="form-control-label text-danger" for="{{ form.note.vars.id }}">Note</label>
                         {{ form_widget(form.note, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}

@@ -73,10 +73,24 @@ class CourType extends AbstractType
                 ])
             ],
         ])
-        ->add('coursPdfUrl', TextType::class, [
+       /* ->add('coursPdfUrl', TextType::class, [
             'constraints' => [
                 new NotBlank(['message' => 'L\'URL PDF est requise.']),
                 new Length(['min' => 2, 'max' => 500, 'minMessage' => 'L\'URL PDF doit contenir au moins {{ limit }} caractères.', 'maxMessage' => 'L\'URL PDF ne peut pas dépasser {{ limit }} caractères.']),
+            ],
+        ])*/
+        ->add('coursPdfUrl', FileType::class, [
+            'label' => 'PDF du cours',
+            'mapped' => false, // Ceci indique que ce champ n'est pas associé à une propriété de l'entité
+            'required' => false, // Rend le champ facultatif
+            'constraints' => [
+                new File([
+                    'maxSize' => '1024k',
+                    'mimeTypes' => [
+                        'application/pdf', // Accepte uniquement les fichiers PDF
+                    ],
+                    'mimeTypesMessage' => 'Veuillez télécharger un fichier PDF valide.',
+                ])
             ],
         ])
         ->add('idmatiere', EntityType::class, [
