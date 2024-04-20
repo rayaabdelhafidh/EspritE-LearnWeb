@@ -32,6 +32,7 @@ class ClubType extends AbstractType
                 
             ->add('datefondation', DateType::class,[
                 'constraints' => [
+                    new NotBlank(['message' => 'la date du club est requis.']),
                     new LessThanOrEqual([
                     'value' => 'today',
                     'message' => 'la date doit etre inferieure a celle d aujourrdhui.',

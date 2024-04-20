@@ -45,10 +45,10 @@ class EvenementType extends AbstractType
                 new Length(['min' => 3, 'minMessage' => 'Le nom de l evenement doit contenir au moins {{ limit }} caractères.']),
             ],
             ])
-        ->add('prixevenement',TextType::class, [
+        ->add('prixevenement',IntegerType::class, [
             'constraints' => [
-                new NotBlank(['message' => 'Le nombre de membres est requise.']),
-                new PositiveOrZero(['message' => 'Le nombre de membres être un entier positif ou zéro.']),
+                new NotBlank(['message' => 'Le prix est requis.']),
+                new PositiveOrZero(['message' => 'Le prix doit être positif ou zéro.']),
             ],
         ])
         ->add('afficheevenement', FileType::class, [

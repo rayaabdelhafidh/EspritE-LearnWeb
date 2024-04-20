@@ -60,7 +60,6 @@ class Evenement
      * @ORM\Column(name="afficheevenement", type="string", length=255, nullable=false)
      */
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "affiche cannot be blank")]
     private ?string $afficheevenement= null;
 
     /**

@@ -32,14 +32,9 @@ class Club
      * @ORM\Column(name="nomclub", type="string", length=155, nullable=false)
      */
     #[ORM\Column(length: 155)]
-    #[Assert\NotBlank(message: "club name cannot be blank")]
-    #[Assert\Length(
-        max: 155,
-        maxMessage: "the club name cannot be longer than {{ limit }} characters"
-    )]
     #[Assert\Regex(
         pattern: "/^[a-zA-Z0-9]+$/",
-        message: "the club name can only contain numbers and alphabets"
+        message: "Le club doit seulement contenir des chiffres"
     )]
     private ?string $nomclub=null;
     /**
@@ -49,7 +44,6 @@ class Club
      */
     
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank(message: "date cannot be blank")]
     private ?\DateTimeInterface $datefondation=null;
 
 /**
@@ -58,7 +52,6 @@ class Club
      * @ORM\Column(name="typeactivite", type="string", length=155, nullable=false)
      */
     #[ORM\Column(length: 155)]
-    #[Assert\NotBlank(message: "activity type cannot be blank")]
     private ?string $typeactivite=null;
 
     /**
@@ -67,8 +60,6 @@ class Club
      * @ORM\Column(name="description", type="string", length=300, nullable=false)
      */
     #[ORM\Column(length: 300)]
-    #[Assert\NotBlank(message: "description cannot be blank")]
-
     private ?string $description=null;
 
     /**
@@ -77,7 +68,6 @@ class Club
      * @ORM\Column(name="nbmembres", type="integer", nullable=false)
      */
     #[ORM\Column]
-    #[Assert\NotBlank(message: "number cannot be blank")]
     private ?int $nbmembres=null;
 
     /**
