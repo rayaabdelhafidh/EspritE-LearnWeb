@@ -3,9 +3,12 @@
 {% block title %}Matiere index{% endblock %}
 
 {% block body %}
-    <h1 class="text-center mb-4">Matiere index</h1>
+    
 
     <div class="table-responsive">
+        <div class="section-title">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
+        </div>
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
@@ -46,5 +49,36 @@
     </div>
 
     <a href="{{ path('app_matiere_new') }}" class="btn btn-success">Ajouter une nouvelle Matiere</a>
-     <a href="{{ path('app_matiere_print') }}" class="btn btn-primary">PDF</a>
+    <a href="{{ path('app_matiere_print') }}" class="btn btn-primary">PDF</a>
+
+    <script>
+        function search() {
+            // Récupère la valeur de la recherche
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toUpperCase();
+
+            // Récupère tous les éléments de la table à filtrer
+            let rows = document.querySelectorAll("tbody tr");
+
+            // Parcours tous les éléments et masque ceux qui ne correspondent pas à la recherche
+            rows.forEach(row => {
+                let found = false;
+                // Récupère toutes les cellules de la ligne
+                let cells = row.querySelectorAll("td");
+                cells.forEach(cell => {
+                    let text = cell.textContent || cell.innerText;
+                    // Vérifie si le texte de la cellule contient le terme recherché
+                    if (text.toUpperCase().includes(filter)) {
+                        found = true;
+                    }
+                });
+                // Affiche ou masque la ligne en fonction de si elle contient le terme recherché
+                if (found) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
 {% endblock %}

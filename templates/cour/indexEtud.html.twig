@@ -48,6 +48,8 @@
                         <p class="card-text"><strong>Note:</strong> {{ cour.Note }}</p>
                         <p class="card-text"><strong>Likes:</strong> {{ cour.Nblike }}</p>
                         <p class="card-text"><strong>coururl:</strong> {{ cour.Courspdfurl }}</p>
+                         <a href="{{ path('download_pdf', {'id': cour.id}) }}" class="btn btn-outline-secondary" downloadPdf>downloadPdf</a>
+
                     </div>
                 </div>
             </div>
