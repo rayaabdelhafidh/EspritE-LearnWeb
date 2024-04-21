@@ -18,6 +18,7 @@ use App\Form\OptionsType;
 use App\Repository\OptionsRepository;
 
 
+
 #[Route('/quizz')]
 class QuizzController extends AbstractController
 {
@@ -54,6 +55,7 @@ class QuizzController extends AbstractController
     {
         // Fetch the questions associated with the quiz
         $questions = $questionRepository->findBy(['quiz' => $quizz]);
+        
     
         return $this->render('quizz/show.html.twig', [
             'quizz' => $quizz,
@@ -88,5 +90,61 @@ class QuizzController extends AbstractController
         }
 
         return $this->redirectToRoute('app_quizz_index', [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/{quizId}/submit', name: 'app_quizz_submit', methods: ['POST'])]
+    public function submitt(Request $request, Quizz $quizz, EntityManagerInterface $entityManager): Response
+    {
+        $submittedAnswers = $request->request->all();
+        $totalScore = 0;
+        foreach ($submittedAnswers as $questionid => $selectedOptionId) {
+            
+            $question = $entityManager->getRepository(Question::class)->find($questionid);
+          // Check the question ID
+            $selectedOption = $entityManager->getRepository(Options::class)->find($selectedOptionId);
+            
+            // Check if $question and $selectedOption are not null
+            if ($question !== null && $selectedOption !== null) {
+                // Check if the selected option is correct for this question
+                if ($selectedOption->isIsCorrect()) {
+                    $totalScore += $question->getScore();
+                    
+                }
+            }
+        }
+        
+        // You can save the score in the database or simply display it in a view
+        return $this->render('quizz/submit.html.twig', [
+            'totalScore' => $totalScore,
+        ]);
+     
+
+    }
+    #[Route('/submit/{quizId}', name: 'app_quizz_submit', methods: ['POST'])]
+    public function submit(Request $request, Quizz $quizz, EntityManagerInterface $entityManager, OptionsRepository $optionsRepository): Response
+    {
+        // Récupérer les données soumises
+        $submittedData = $request->request->all();
+    
+        // Initialiser le score total à 0
+        $totalScore = 0;
+    
+        // Parcourir les données soumises
+        foreach ($submittedData as $questionid => $optionId) {
+            // Récupérer l'option sélectionnée
+            $option = $optionsRepository->find($optionId);
+    
+            // Vérifier si l'option existe et si elle est correcte
+            if ($option && $option->isIsCorrect()) {
+                // Incrémenter le score total
+                $question = $option->getQuestion();
+            $totalScore += $question->getScore();
+            }
+        }
+    
+        // Rediriger vers la page de résultat avec le score total
+        return $this->render('quizz/submit.html.twig', [
+            'totalScore' => $totalScore,
+        ]);
+
     }
 }
