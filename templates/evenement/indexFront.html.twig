@@ -42,21 +42,45 @@
 
 {% block body %}
 <br>
-    <h1>Evenements</h1>
-     <div class="row">
-        {% for evenement in evenements %}
-            <div class="col-md-3 mb-4">
-                <div class="card"> <!-- Added d-flex, justify-content-center, and align-items-center classes -->
-                 <table class="table">
-                    <div class="card-body">
-                    <h5 class="card-title red-title"><strong> {{ evenement.nomevenement }}</strong> </h5>
-                    <td><img src="{{ asset(evenement.afficheevenement) }}" class="card-img-right" width="200" style="flex-shrink: 0;"></td>
-                    <a href="{{ path('app_evenement_details', {'idevenement': evenement.idevenement}) }}"><button type="submit" class="btn btn-primary">Consulter</button></a>
-                </div>
-                </table>
+<!-- Search input field -->
+    <div class="section-title">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
+    </div>
 
+    <h1>Evenements</h1>
+    <div class="row">
+        {% for evenement in evenements %}
+            <div class="col-md-3 mb-4 event-card" data-nom="{{ evenement.nomevenement|upper }}">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title red-title"><strong>{{ evenement.nomevenement }}</strong></h5>
+                        <img src="{{ asset(evenement.afficheevenement) }}" class="card-img-right" width="200">
+                        <a href="{{ path('app_evenement_details', {'idevenement': evenement.idevenement}) }}"><button type="submit" class="btn btn-primary">Consulter</button></a>
+                    </div>
                 </div>
             </div>
         {% endfor %}
     </div>
+
+    <!-- JavaScript function for search -->
+    <script>
+        function search() {
+            // Retrieve the value of the search input
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toUpperCase();
+
+            // Retrieve all event cards to filter
+            let cards = document.querySelectorAll(".event-card");
+
+            // Iterate through all cards and hide those that don't match the search term
+            cards.forEach(card => {
+                let nom = card.dataset.nom;
+                if (nom.toUpperCase().includes(filter)) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+    </script>
 {% endblock %}

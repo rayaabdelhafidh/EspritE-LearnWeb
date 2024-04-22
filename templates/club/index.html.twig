@@ -147,11 +147,14 @@
                     <div class="row">
 <h1>Liste des Clubs</h1>
         <a href="{{ path('app_club_trier') }}" class="btn btn-lg btn-primary btn-lg-square"><i class="bi bi-arrow-up"></i></a>
+        
+        <div class="section-title">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
+    </div>
 
     <table class="table">
         <thead>
             <tr>
-    <td> Id Club </td>
     <td> Nom Club </td>
     <td> Date Fondation </td>
     <td> Type d Activite </td>
@@ -165,7 +168,6 @@
         <tbody>
         {% for club in clubs %}
             <tr>
-    <td> {{club.idclub}} </td>
     <td> {{club.nomclub|upper}} </td>
     <td>{{ club.datefondation ? club.datefondation|date('Y-m-d') : '' }}</td>
     <td> {{club.typeactivite}} </td>
@@ -189,11 +191,39 @@
         {% endfor %}
         </tbody>
     </table>
+        <script>
+        function search() {
+            // Retrieve the value of the search input
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toUpperCase();
+
+            // Retrieve all table rows to filter
+            let rows = document.querySelectorAll("tbody tr");
+
+            // Iterate through all rows and hide those that don't match the search term
+            rows.forEach(row => {
+                let found = false;
+                let cells = row.querySelectorAll("td");
+                cells.forEach(cell => {
+                    let text = cell.textContent || cell.innerText;
+                    if (text.toUpperCase().includes(filter)) {
+                        found = true;
+                    }
+                });
+                if (found) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
     <a href="{{ path('app_club_new') }}">Ajouter Club</a>
                     </div>
                 </div>
             </div>
             <!-- Footer End -->
+            
         </div>
         <!-- Content End -->
         <!-- Back to Top -->

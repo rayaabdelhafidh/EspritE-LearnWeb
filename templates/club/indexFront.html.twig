@@ -33,10 +33,15 @@
 
 {% block body %}
 <br>
+    <!-- Search input field -->
+    <div class="section-title">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
+    </div>
+
     <h1>Liste des Clubs</h1>
-     <div class="row">
+    <div class="row">
         {% for club in clubs %}
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4 mb-4 club-card" data-nom="{{ club.nomclub|upper }}">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title red-title"><strong>Nom Club: </strong> {{ club.nomclub }}</h5>
@@ -45,15 +50,35 @@
                         <p class="card-text"><strong>Description: </strong> {{ club.description }}</p>
                         <p class="card-text"><strong>Nombre de Membres: </strong> {{ club.nbmembres }}</p>
                         <p class="card-text"><strong>Activite: </strong> {{  club.active ? 'Active' : 'Inactive' }}</p>
-<a href="{{ path('app_club_details', {'idclub': club.idclub}) }}">
-                        <button type="submit" class="btn btn-primary">Consulter</button>
-</a>
-
+                        <a href="{{ path('app_club_details', {'idclub': club.idclub}) }}">
+                            <button type="submit" class="btn btn-primary">Consulter</button>
+                        </a>
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
 
+    <!-- JavaScript function for search -->
+    <script>
+        function search() {
+            // Retrieve the value of the search input
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toUpperCase();
+
+            // Retrieve all club cards to filter
+            let cards = document.querySelectorAll(".club-card");
+
+            // Iterate through all cards and hide those that don't match the search term
+            cards.forEach(card => {
+                let nom = card.dataset.nom;
+                if (nom.toUpperCase().includes(filter)) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+    </script>
     
 {% endblock %}

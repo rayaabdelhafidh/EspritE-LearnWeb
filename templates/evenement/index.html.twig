@@ -147,11 +147,12 @@
                     <div class="row">
 <h1>Liste des Evenements</h1>
         <a href="{{ path('app_evenement_trier') }}" class="btn btn-lg btn-primary btn-lg-square"><i class="bi bi-arrow-up"></i></a>
-
+ <div class="section-title">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
+    </div>
     <table class="table">
         <thead>
             <tr>
-    <td> Id Evenement </td>
     <td> Nom Evenement </td>
     <td> Date Evenement </td>
     <td> Lieu Evenement </td>
@@ -165,7 +166,6 @@
         <tbody>
         {% for evenement in evenements %}
             <tr>
-    <td> {{evenement.idevenement}} </td>
     <td> {{evenement.nomevenement|upper}} </td>
     <td>{{ evenement.dateevenement ? evenement.dateevenement|date('Y-m-d') : '' }}</td>
     <td> {{evenement.lieuevenement}} </td>
@@ -190,6 +190,33 @@
         {% endfor %}
         </tbody>
     </table>
+    <script>
+        function search() {
+            // Retrieve the value of the search input
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toUpperCase();
+
+            // Retrieve all table rows to filter
+            let rows = document.querySelectorAll("tbody tr");
+
+            // Iterate through all rows and hide those that don't match the search term
+            rows.forEach(row => {
+                let found = false;
+                let cells = row.querySelectorAll("td");
+                cells.forEach(cell => {
+                    let text = cell.textContent || cell.innerText;
+                    if (text.toUpperCase().includes(filter)) {
+                        found = true;
+                    }
+                });
+                if (found) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
     <a href="{{ path('app_evenement_new') }}">Ajouter Evenement</a>
                     </div>
                 </div>
