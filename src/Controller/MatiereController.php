@@ -174,6 +174,11 @@ public function print( MatiereRepository $matiererepository)
         ]);
     }
 
+
+   
+    
+
+
     #[Route('/{idm}', name: 'app_matiere_delete', methods: ['POST'])]
     public function delete(Request $request, Matiere $matiere, EntityManagerInterface $entityManager): Response
     {

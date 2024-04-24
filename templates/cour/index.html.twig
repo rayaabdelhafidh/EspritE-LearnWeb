@@ -6,6 +6,8 @@
     <h1 class="mb-4">Liste des Cours</h1>
 
     <div class="row">
+        <a href="{{ path('app_cour_new') }}" class="btn btn-success mt-4">Ajouter un nouveau cours</a>
+
         {% for cour in cours %}
             <div class="col-md-4 mb-4">
                 <div class="card h-100 bg-white">
@@ -34,5 +36,4 @@
         {% endfor %}
     </div>
 
-    <a href="{{ path('app_cour_new') }}" class="btn btn-success mt-4">Ajouter un nouveau cours</a>
 {% endblock %}

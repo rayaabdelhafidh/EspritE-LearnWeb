@@ -9,13 +9,19 @@
         <div class="section-title">
             <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
         </div>
+        
+
+    
+   
+
+        
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">Idm</th>
-                    <th scope="col">Nomm</th>
+                   
+                    <th scope="col">Nom Matiere</th>
                     <th scope="col">Idenseignant</th>
-                    <th scope="col">Nbrheure</th>
+                    <th scope="col">Nombre d'heure</th>
                     <th scope="col">Coefficient</th>
                     <th scope="col">Semester</th>
                     <th scope="col">Credit</th>
@@ -26,7 +32,7 @@
             <tbody>
                 {% for matiere in matieres %}
                     <tr>
-                        <td>{{ matiere.idm }}</td>
+                        
                         <td>{{ matiere.nomm }}</td>
                         <td>{{ matiere.idenseignant }}</td>
                         <td>{{ matiere.nbrheure }}</td>

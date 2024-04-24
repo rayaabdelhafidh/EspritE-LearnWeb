@@ -15,10 +15,20 @@ use Symfony\Component\Routing\Annotation\Route;
 class PlandetudeController extends AbstractController
 {
     #[Route('/plan', name: 'app_plandetude_index', methods: ['GET'])]
-    public function index(PlandetudeRepository $plandetudeRepository): Response
+    public function index(Request $request, PlandetudeRepository $plandetudeRepository): Response
     {
+        $sort = $request->query->get('sort');
+
+        if ($sort === 'asc') {
+            $plandetudes = $plandetudeRepository->findBy([], ['nomprogramme' => 'ASC']);
+        } elseif ($sort === 'desc') {
+            $plandetudes = $plandetudeRepository->findBy([], ['nomprogramme' => 'DESC']);
+        } else {
+            $plandetudes = $plandetudeRepository->findAll();
+        }
+
         return $this->render('plandetude/index.html.twig', [
-            'plandetudes' => $plandetudeRepository->findAll(),
+            'plandetudes' => $plandetudes,
         ]);
     }
     #[Route('/planEtud', name: 'app_plandetude_indexEtud', methods: ['GET'])]
