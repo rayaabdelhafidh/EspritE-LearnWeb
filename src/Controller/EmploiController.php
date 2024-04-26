@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Flasher\Prime\FlasherInterface;
+
 
 #[Route('/emploi')]
 class EmploiController extends AbstractController
@@ -87,7 +89,7 @@ class EmploiController extends AbstractController
 
    
     #[Route('/{id}', name: 'app_emploi_delete', methods: ['POST'])]
-public function delete(Request $request, Emploi $emploi, EntityManagerInterface $entityManager): Response
+public function delete(Request $request, Emploi $emploi, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
 {
     if ($this->isCsrfTokenValid('delete'.$emploi->getId(), $request->request->get('_token'))) {
         $emploiMatieres = $entityManager->getRepository(EmploiMatiere::class)->findBy(['emploi' => $emploi]);
@@ -98,6 +100,7 @@ public function delete(Request $request, Emploi $emploi, EntityManagerInterface 
 
         $entityManager->remove($emploi);
         $entityManager->flush();
+        $flasher->addSuccess('emploi supprimé avec succès.');
     }
 
     return $this->redirectToRoute('app_emploi_index', [], Response::HTTP_SEE_OTHER);
