@@ -15,11 +15,21 @@ use App\Entity\Question;
 #[Route('/options')]
 class OptionsController extends AbstractController
 {
+   
     #[Route('/', name: 'app_options_index', methods: ['GET'])]
-    public function index(OptionsRepository $optionsRepository): Response
+    public function index(Request $request, OptionsRepository $optionsRepository): Response
     {
+        $sort = $request->query->get('sort');
+        if ($sort === 'asc') {
+            $options = $optionsRepository->findBy([], ['optionContent' => 'ASC']);
+        } elseif ($sort === 'desc') {
+            $options = $optionsRepository->findBy([], ['optionContent' => 'DESC']);
+        } else {
+            $options = $optionsRepository->findAll();
+        }
+
         return $this->render('options/index.html.twig', [
-            'options' => $optionsRepository->findAll(),
+            'options' => $options,
         ]);
     }
 

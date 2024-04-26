@@ -20,10 +20,19 @@ use App\Repository\OptionsRepository;
 class QuestionController extends AbstractController
 {
     #[Route('/', name: 'app_question_index', methods: ['GET'])]
-    public function index(QuestionRepository $questionRepository): Response
+    public function index(Request $request, QuestionRepository $questionRepository): Response
     {
+        $sort = $request->query->get('sort');
+        if ($sort === 'asc') {
+            $questions = $questionRepository->findBy([], ['content' => 'ASC']);
+        } elseif ($sort === 'desc') {
+            $questions = $questionRepository->findBy([], ['content' => 'DESC']);
+        } else {
+            $questions = $questionRepository->findAll();
+        }
+
         return $this->render('question/index.html.twig', [
-            'questions' => $questionRepository->findAll(),
+            'questions' => $questions,
         ]);
     }
 

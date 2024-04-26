@@ -16,6 +16,7 @@ use App\Repository\QuestionRepository;
 use App\Entity\Options;
 use App\Form\OptionsType;
 use App\Repository\OptionsRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 
@@ -23,10 +24,19 @@ use App\Repository\OptionsRepository;
 class QuizzController extends AbstractController
 {
     #[Route('/', name: 'app_quizz_index', methods: ['GET'])]
-    public function index(QuizzRepository $quizzRepository): Response
+    public function index(Request $request, QuizzRepository $quizRepository): Response
     {
+        $sort = $request->query->get('sort');
+        if ($sort === 'asc') {
+            $quizzs = $quizRepository->findBy([], ['description' => 'ASC']);
+        } elseif ($sort === 'desc') {
+            $quizzs = $quizRepository->findBy([], ['description' => 'DESC']);
+        } else {
+            $quizzs = $quizRepository->findAll();
+        }
+
         return $this->render('quizz/index.html.twig', [
-            'quizzs' => $quizzRepository->findAll(),
+            'quizzs' => $quizzs,
         ]);
     }
 
@@ -147,4 +157,13 @@ class QuizzController extends AbstractController
         ]);
 
     }
+
+   
+
+
+
+
+
 }
+
+
