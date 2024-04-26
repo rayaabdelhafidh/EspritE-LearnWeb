@@ -54,7 +54,25 @@ class EmploiMatiereController extends AbstractController
         ]);
     }
     
-
+    #[Route('/{emploiId}/edit', name: 'app_emploi_matiere_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, EmploiMatiere $emploiMatiere, EntityManagerInterface $entityManager): Response
+    {
+        $emploi = $emploiMatiere->getEmploi(); // Get the emploi associated with emploiMatiere
+        $form = $this->createForm(EmploiMatiereType::class, $emploiMatiere);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('app_emploi_matiere_edit', ['emploiId' => $emploi->getId()]);
+        }
+    
+        return $this->renderForm('emploi_matiere/edit.html.twig', [
+            'emploi_matiere' => $emploiMatiere,
+            'form' => $form,
+        ]);
+    }
+    
 
 
     #[Route('/{emploi}', name: 'app_emploi_matiere_show', methods: ['GET'])]
@@ -65,23 +83,7 @@ class EmploiMatiereController extends AbstractController
         ]);
     }
 
-    #[Route('/{emploi}/edit', name: 'app_emploi_matiere_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, EmploiMatiere $emploiMatiere, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(EmploiMatiereType::class, $emploiMatiere);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_emploi_matiere_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('emploi_matiere/edit.html.twig', [
-            'emploi_matiere' => $emploiMatiere,
-            'form' => $form,
-        ]);
-    }
+  
 
     #[Route('/{emploi}', name: 'app_emploi_matiere_delete', methods: ['POST'])]
     public function delete(Request $request, EmploiMatiere $emploiMatiere, EntityManagerInterface $entityManager): Response

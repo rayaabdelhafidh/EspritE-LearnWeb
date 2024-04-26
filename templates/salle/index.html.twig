@@ -42,7 +42,7 @@
             </tr>
         </thead>
         <tbody>
-        {% for salle in salles %}
+        {% for salle in pagination %}
             <tr>
                 <td>{{ salle.bloc }}</td>
                 <td>{{ salle.numeroSalle }}</td> 
@@ -61,6 +61,10 @@
     </table>
 
     <a href="{{ path('app_salle_new') }}" style ="margin-left:20px;">Ajouter salle</a>
+<div style="display: flex; justify-content: center; margin-top: 20px;">
+    {{ knp_pagination_render(pagination) }}
+</div>
+
 {% endblock %}
 
 

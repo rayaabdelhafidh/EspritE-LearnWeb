@@ -11,15 +11,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/emploi')]
 class EmploiController extends AbstractController
 {
     #[Route('/', name: 'app_emploi_index', methods: ['GET'])]
-    public function index(EmploiRepository $emploiRepository): Response
+    public function index(EmploiRepository $emploiRepository, PaginatorInterface $paginator, Request $request): Response
     {
+
+        $queryBuilder = $emploiRepository->createQueryBuilder('e');
+    
+        $pagination = $paginator->paginate(
+            $queryBuilder->getQuery(), 
+            $request->query->getInt('page', 1), 
+            5 
+        );
+
         return $this->render('emploi/index.html.twig', [
-            'emplois' => $emploiRepository->findAll(),
+            'pagination' => $pagination,
         ]);
     }
 
@@ -45,6 +55,23 @@ class EmploiController extends AbstractController
         ]);
     }
     
+    #[Route('/{id}/edit', name: 'app_emploi_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Emploi $emploi, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(EmploiType::class, $emploi);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_emploi_matiere_edit', ['emploiId' => $emploi->getId()]);
+        }
+
+        return $this->renderForm('emploi/edit.html.twig', [
+            'emploi' => $emploi,
+            'form' => $form,
+        ]);
+    }
 
     
 
@@ -58,24 +85,7 @@ class EmploiController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_emploi_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Emploi $emploi, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(EmploiType::class, $emploi);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_emploi_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('emploi/edit.html.twig', [
-            'emploi' => $emploi,
-            'form' => $form,
-        ]);
-    }
-
+   
     #[Route('/{id}', name: 'app_emploi_delete', methods: ['POST'])]
 public function delete(Request $request, Emploi $emploi, EntityManagerInterface $entityManager): Response
 {
