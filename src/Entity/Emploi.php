@@ -193,5 +193,11 @@ $emploiMatiere->setEmploi(null);
     {
         return $this->emploiMatieres;
     }
+
+
+    public function __toString(): string
+    {
+        return sprintf('%s - %s', $this->premierdate->format('Y-m-d'), $this->dernierdate->format('Y-m-d'));
+    }
                            
 }
