@@ -1,0 +1,42 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Liste des étudiants{% endblock %}
+
+{% block body %}
+    <h1>Liste des étudiants</h1>
+    <form action="{{ path('app_user_index') }}" method="GET" class="mb-3">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Rechercher par nom" name="search">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Rechercher</button>
+            </div>
+        </div>
+    
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Email</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Téléphone</th>
+                <!-- Ajoutez plus de colonnes si nécessaire -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for enseignant in enseignants %}
+                <tr>
+                    <td>{{ enseignant.id }}</td>
+                    <td>{{ enseignant.email }}</td>
+                    <td>{{ enseignant.nom }}</td>
+                    <td>{{ enseignant.tel }}</td>
+                    <!-- Ajoutez plus de colonnes si nécessaire -->
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucun enseignant trouvé</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+<div class="col-lg-5 col-xlg-9 col-md-12" style=" margin-left: 500px;">
+    <div class="card" style="margin-top: 100px;">
+        <div class="card-body">
+            <div class="form-group mb-4">
+                {% if app.user %}
+                
+
+                <label class="col-md-12 p-0" style="font-size: large"><strong>Full Name</strong></label>
+                <div class="col-md-12 border-bottom p-0">
+                    <h4>    {{ app.user.nom }} </h4></div>
+            </div>
+            <div class="form-group mb-4">
+                <label for="example-email" class="col-md-12 p-0"
+                       style="font-size: large"><strong>Email</strong></label>
+                <div class="col-md-12 border-bottom p-0">
+                    <h4>   {{ app.user.email }}</h4>
+                </div>
+            </div>
+            <div class="form-group mb-4">
+                <label class="col-md-12 p-0" style="font-size: large"><strong>Numero  de telephone</strong></label>
+                <div class="col-md-12 border-bottom p-0">
+                    <h4>  {{ app.user.tel }}</h4>
+                </div>
+            </div>
+            
+            
+            <button type="button" class="btn btn-danger " style="margin-left: 260px;" >
+                <i class="fa fa-magic"></i>&nbsp;
+                <a href=" {{ path('app_user_edit', {'id': app.user.id}) }} ">edit</a>
+            </button>
+
+            {% else %}
+                <tr>
+                    <td colspan="7">no records found</td>
+                </tr>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
