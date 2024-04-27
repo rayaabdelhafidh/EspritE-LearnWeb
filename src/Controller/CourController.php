@@ -118,15 +118,18 @@ class CourController extends AbstractController
    
 
     #[Route('/new', name: 'app_cour_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $cour = new Cour();
-        $form = $this->createForm(CourType::class, $cour);
-        $form->handleRequest($request);
-    
-        if ($form->isSubmitted() && $form->isValid()) {
+public function new(Request $request, EntityManagerInterface $entityManager): Response
+{
+    $cour = new Cour();
+    // Définir le nombre de likes et la note à 0 par défaut
+    $cour->setNblike(0);
+    $cour->setNote(0);
 
-         // Gérer le téléchargement du fichier PDF
+    $form = $this->createForm(CourType::class, $cour);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Gérer le téléchargement du fichier PDF
         $pdfFile = $form->get('coursPdfUrl')->getData();
         if ($pdfFile instanceof UploadedFile) {
             $pdfFileName = md5(uniqid()) . '.' . $pdfFile->guessExtension();
@@ -137,44 +140,40 @@ class CourController extends AbstractController
             $cour->setCourspdfurl($pdfFileName);
         }
 
+        $file = $form->get('image')->getData();
+        if ($file) {
+            // Generate a unique name for the file before saving it
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
 
-
-          $file = $form->get('image')->getData();
-            if ($file) {
-                // Generate a unique name for the file before saving it
-                $fileName = md5(uniqid()).'.'.$file->guessExtension();
-
-
-                // Move the file to the directory where brochures are stored
-                $targetDirectory = $this->getParameter('kernel.project_dir') . '/public';
-                $file->move(
-                    $targetDirectory,
-                    $fileName
-                );
-                $cour->setImage($fileName);
-            }
-            // Récupérer l'ID de la matière sélectionnée depuis le formulaire
-            $idMatiere = $form->get('idmatiere')->getData();
-            
-            // Récupérer l'entité Matiere correspondante depuis la base de données
-            $matiere = $this->getDoctrine()->getRepository(Matiere::class)->find($idMatiere);
-            
-            // Associer la matière au cours
-            $cour->setIdmatiere($matiere);
-            
-            // Enregistrer le cours en base de données
-            $entityManager->persist($cour);
-            $entityManager->flush();
-            flash()->addSuccess('cour Added Successfully');
-            return $this->redirectToRoute('app_cour_index', [], Response::HTTP_SEE_OTHER);
+            // Move the file to the directory where brochures are stored
+            $targetDirectory = $this->getParameter('kernel.project_dir') . '/public';
+            $file->move(
+                $targetDirectory,
+                $fileName
+            );
+            $cour->setImage($fileName);
         }
-    
-        return $this->renderForm('cour/new.html.twig', [
-            'cour' => $cour,
-            'form' => $form,
-        ]);
+        // Récupérer l'ID de la matière sélectionnée depuis le formulaire
+        $idMatiere = $form->get('idmatiere')->getData();
+
+        // Récupérer l'entité Matiere correspondante depuis la base de données
+        $matiere = $this->getDoctrine()->getRepository(Matiere::class)->find($idMatiere);
+
+        // Associer la matière au cours
+        $cour->setIdmatiere($matiere);
+
+        // Enregistrer le cours en base de données
+        $entityManager->persist($cour);
+        $entityManager->flush();
+        flash()->addSuccess('cour Added Successfully');
+        return $this->redirectToRoute('app_cour_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    return $this->renderForm('cour/new.html.twig', [
+        'cour' => $cour,
+        'form' => $form,
+    ]);
+}
 
 
 
@@ -252,6 +251,42 @@ class CourController extends AbstractController
     
         return $response;
     }
+
+     #[Route('/like/{id}', name: 'app_cour_like', methods: ['POST'])]
+public function like(Request $request, Cour $cour, EntityManagerInterface $entityManager): Response
+{
+    // Récupérer le nombre de likes actuel
+    $nbLikes = $cour->getNblike();
+    
+    // Incrémenter le nombre de likes
+    $cour->setNblike($nbLikes + 1);
+    
+    // Enregistrer les modifications dans la base de données
+    $entityManager->persist($cour);
+    $entityManager->flush();
+    
+    // Retourner une réponse JSON avec le nouveau nombre de likes
+    return new JsonResponse(['nb_likes' => $cour->getNblike()]);
+}
+
+#[Route('/dislike/{id}', name: 'app_cour_dislike', methods: ['POST'])]
+public function dislike(Request $request, Cour $cour, EntityManagerInterface $entityManager): Response
+{
+    // Récupérer le nombre de likes actuel
+    $nbLikes = $cour->getNblike();
+    
+    // Décrémenter le nombre de likes
+    $cour->setNblike($nbLikes - 1);
+    
+    // Enregistrer les modifications dans la base de données
+    $entityManager->persist($cour);
+    $entityManager->flush();
+    
+    // Retourner une réponse JSON avec le nouveau nombre de likes
+    return new JsonResponse(['nb_likes' => $cour->getNblike()]);
+}
+
+
     #[Route('/{id}', name: 'app_cour_delete', methods: ['POST'])]
     public function delete(Request $request, Cour $cour, EntityManagerInterface $entityManager): Response
     {

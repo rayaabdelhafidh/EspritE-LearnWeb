@@ -40,14 +40,14 @@
     </div>
 
     <div class="btn-group">
-    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        Trier par Titre de Cours
-    </button>
-    <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="{{ path('app_cour_indexEtud', {'sort': 'asc'}) }}">Ascendant</a></li>
-        <li><a class="dropdown-item" href="{{ path('app_cour_indexEtud', {'sort': 'desc'}) }}">Descendant</a></li>
-    </ul>
-</div>
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Trier par Titre de Cours
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ path('app_cour_indexEtud', {'sort': 'asc'}) }}">Ascendant</a></li>
+            <li><a class="dropdown-item" href="{{ path('app_cour_indexEtud', {'sort': 'desc'}) }}">Descendant</a></li>
+        </ul>
+    </div>
 
     <div class="row">
         {% for cour in cours %}
@@ -61,9 +61,11 @@
                         <p class="card-text"><strong>Objectif:</strong> {{ cour.Objectif }}</p>
                         <p class="card-text"><strong>Matière:</strong> {{ cour.idmatiere.nomm }}</p>
                         <p class="card-text"><strong>Note:</strong> {{ cour.Note }}</p>
-                        <p class="card-text"><strong>Likes:</strong> {{ cour.Nblike }}</p>
-                        <p class="card-text"><strong>coururl:</strong> {{ cour.Courspdfurl }}</p>
-                         <a href="{{ path('download_pdf', {'id': cour.id}) }}" class="btn btn-outline-secondary" downloadPdf>downloadPdf</a>
+                        <p class="card-text"><strong>Likes:</strong> <span id="likesCount{{ cour.id }}">{{ cour.Nblike }}</span></p>
+                        <button class="btn btn-success" onclick="like('{{ cour.id }}')" id="likeBtn{{ cour.id }}">Like</button>
+                        <button class="btn btn-danger" onclick="dislike('{{ cour.id }}')" id="dislikeBtn{{ cour.id }}">Dislike</button>
+                        
+                        <a href="{{ path('download_pdf', {'id': cour.id}) }}" class="btn btn-outline-secondary" downloadPdf>downloadPdf</a>
                     </div>
                 </div>
             </div>
@@ -97,5 +99,31 @@
         document.getElementById('searchButton').addEventListener('click', function() {
             search();
         });
+
+        function like(courId) {
+            let likeBtn = document.getElementById('likeBtn' + courId);
+            let dislikeBtn = document.getElementById('dislikeBtn' + courId);
+            let likesCount = document.getElementById('likesCount' + courId);
+
+            likesCount.innerText = parseInt(likesCount.innerText) + 1;
+            likeBtn.disabled = true;
+            dislikeBtn.disabled = true;
+
+            // Envoyer une requête AJAX pour mettre à jour le nombre de likes dans la base de données
+            fetch('{{ path('app_cour_like', {'id': 0}) }}'.replace('0', courId), { method: 'POST' });
+        }
+
+        function dislike(courId) {
+            let likeBtn = document.getElementById('likeBtn' + courId);
+            let dislikeBtn = document.getElementById('dislikeBtn' + courId);
+            let likesCount = document.getElementById('likesCount' + courId);
+
+            likesCount.innerText = parseInt(likesCount.innerText) - 1;
+            likeBtn.disabled = true;
+            dislikeBtn.disabled = true;
+
+            // Envoyer une requête AJAX pour mettre à jour le nombre de likes dans la base de données
+            fetch('{{ path('app_cour_dislike', {'id': 0}) }}'.replace('0', courId), { method: 'POST' });
+        }
     </script>
 {% endblock %}

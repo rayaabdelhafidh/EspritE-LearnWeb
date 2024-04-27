@@ -61,7 +61,11 @@
             </tbody>
         </table>
     </div>
-
+         
+    
+    <div class="pagination justify-content-center">
+            {{ knp_pagination_render(matieres) }}
+        </div>
     <a href="{{ path('app_matiere_new') }}" class="btn btn-success">Ajouter une nouvelle Matiere</a>
     <a href="{{ path('app_matiere_print') }}" class="btn btn-primary">PDF</a>
 

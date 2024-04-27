@@ -16,8 +16,7 @@
                         <p class="card-text"><strong>Durée:</strong> {{ cour.Duree }}</p>
                         <p class="card-text"><strong>Objectif:</strong> {{ cour.Objectif }}</p>
                         <p class="card-text"><strong>Matière:</strong> {{ cour.idmatiere.nomm }}</p>
-                        <p class="card-text"><strong>Note:</strong> {{ cour.Note }}</p>
-                        <p class="card-text"><strong>Likes:</strong> {{ cour.Nblike }}</p>
+                       
                         <!-- Lien de téléchargement PDF -->
                         <a href="{{ path('download_pdf', {'id': cour.id}) }}" class="btn btn-primary mt-auto">Télécharger PDF</a>
                         <a href="{{ path('app_cour_show', {'id': cour.id}) }}" class="btn btn-primary mt-auto">Détails</a>

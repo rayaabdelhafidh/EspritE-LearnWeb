@@ -13,6 +13,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^2.9",
         "dompdf/dompdf": "^2.0",
+        "knplabs/knp-paginator-bundle": "^5.9",
         "knplabs/knp-snappy-bundle": "^1.10",
         "php-flasher/flasher-symfony": "^1.15",
         "phpdocumentor/reflection-docblock": "^5.3",

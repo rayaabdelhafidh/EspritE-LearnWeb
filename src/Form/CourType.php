@@ -101,18 +101,9 @@ class CourType extends AbstractType
                 new NotBlank(['message' => 'La matière est requise.']),
             ],
         ])
-        ->add('note', IntegerType::class, [
-            'constraints' => [
-                new NotBlank(['message' => 'La note est requise.']),
-                new PositiveOrZero(['message' => 'La note doit être un entier positif ou zéro.']),
-            ],
-        ])
-        ->add('nblike', IntegerType::class, [
-            'constraints' => [
-                new NotBlank(['message' => 'Le nombre de likes est requis.']),
-                new PositiveOrZero(['message' => 'Le nombre de likes doit être un entier positif ou zéro.']),
-            ],
-        ]);
+        ->add('note')
+        ->add('nblike');
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void
