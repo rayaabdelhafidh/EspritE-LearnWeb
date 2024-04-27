@@ -1,97 +1,113 @@
-<style>
-    @font-face {
-        font-family: 'Roboto', sans-serif;
-        src: local('Roboto'), url('path/to/Roboto.woff2') format('woff2');
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des matières</title>
+    <style>
+        @font-face {
+            font-family: 'Roboto', sans-serif;
+            src: local('Roboto'), url('path/to/Roboto.woff2') format('woff2');
+        }
 
-    html, body {
-        font-family: 'Roboto', sans-serif;
-        margin: 0;
-        background-color: #222;
-        color: #ccc;
-    }
+        html, body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            background-color: #d4d4d4; /* Nouvelle couleur de fond */
+            color: #1f1f1f; /* Nouvelle couleur d'affichage */
+        }
 
-    h1 {
-        text-align: center;
-        padding: 20px 0;
-        font-size: 22px;
-        font-weight: bold;
-        color: #562B05;
-    }
+        h1 {
+            text-align: center;
+            padding: 20px 0;
+            font-size: 22px;
+            font-weight: bold;
+            color: #b90000; /* Rouge plus clair */
+        }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        page-break-inside: avoid;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            page-break-inside: avoid;
+        }
 
-    th, td {
-        border: 1px solid #444;
-        padding: 8px;
-        text-align: left;
-    }
+        th, td {
+            border: 1px solid #444;
+            padding: 8px;
+            text-align: left;
+        }
 
-    th {
-        background-color: #333;
-    }
+        th {
+            background-color: #333;
+            color: #731010; /* Nouvelle couleur du texte dans les titres de colonnes */
+        }
 
-    tr:nth-child(even) {
-        background-color: #444;
-    }
+        tr:nth-child(even) {
+            background-color: #444;
+        }
 
-    .actions {
-        text-align: center;
-    }
+        .actions {
+            text-align: center;
+        }
 
-    .badge {
-        display: inline-block;
-        background-color: #963;
-        color: #ccc;
-        border: 1px solid #963;
-        padding: 5px 10px;
-        border-radius: 3px;
-        margin-right: 5px;
-        text-decoration: none;
-    }
+        .badge {
+            display: inline-block;
+            background-color: #963;
+            color: #ccc;
+            border: 1px solid #963;
+            padding: 5px 10px;
+            border-radius: 3px;
+            margin-right: 5px;
+            text-decoration: none;
+        }
 
-    .badge:hover {
-        background-color: #b63;
-        border-color: #b63;
-    }
+        .badge:hover {
+            background-color: #b63;
+            border-color: #b63;
+        }
 
+        table thead, table tfoot {
+            background-color: #333;
+            font-weight: bold;
+        }
 
-    table thead, table tfoot {
-        background-color: #333;
-        font-weight: bold;
-    }
+        table thead tr th:first-child, table tfoot tr th:first-child {
+            text-align: left;
+        }
 
+        /* Styles for printing */
+        @media print {
+            body {
+                background-color: #fff;
+                color: #000;
+            }
 
-    table thead tr th:first-child, table tfoot tr th:first-child {
-        text-align: left;
-    }
-</style>
+            .no-print {
+                display: none;
+            }
 
-<h1>Liste des matieres</h1>
+            /* Add more print-specific styles if needed */
+        }
+    </style>
+</head>
 <body>
-<div class="table-responsive">
-    <table class="table app-table-hover mb-0 text-left">
-        <thead>
-         <tr>
-                    <th >Idm</th>
-                    <th >Nomm</th>
-                    <th >Idenseignant</th>
-                    <th >Nbrheure</th>
-                    <th >Coefficient</th>
-                    <th >Semester</th>
-                    <th >Credit</th>
-                    <th >Plandetude</th>
-                   
+    <h1>Liste des matières</h1>
+    <div class="table-responsive">
+        <table class="table app-table-hover mb-0 text-left">
+            <thead>
+                <tr>
+                    <th style="background-color: #d4d4d4; color: #731010;">Nom Matière</th>
+                    <th style="background-color: #d4d4d4; color: #731010;">Idenseignant</th>
+                    <th style="background-color: #d4d4d4; color: #731010;">Nbrheure</th>
+                    <th style="background-color: #d4d4d4; color: #731010;">Coefficient</th>
+                    <th style="background-color: #d4d4d4; color: #731010;">Semester</th>
+                    <th style="background-color: #d4d4d4; color: #731010;">Credit</th>
+                    <th style="background-color: #d4d4d4; color: #731010;">Plandetude</th>
                 </tr>
-        </thead>
-        <tbody>
-         {% for matiere in matieres %}
+            </thead>
+            <tbody>
+                {% for matiere in matieres %}
                     <tr>
-                        <td>{{ matiere.idm }}</td>
                         <td>{{ matiere.nomm }}</td>
                         <td>{{ matiere.idenseignant }}</td>
                         <td>{{ matiere.nbrheure }}</td>
@@ -99,13 +115,14 @@
                         <td>{{ matiere.semester }}</td>
                         <td>{{ matiere.credit }}</td>
                         <td>{{ matiere.idplandetude.nomprogramme }}</td>
-                        </tr>
-        {% else %}
-            <tr>
-                <td colspan="6" style="text-align: center;">No records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" style="text-align: center;">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
+</html>

@@ -32,32 +32,46 @@ class PlandetudeController extends AbstractController
         ]);
     }
     #[Route('/planEtud', name: 'app_plandetude_indexEtud', methods: ['GET'])]
-    public function indexEtud(PlandetudeRepository $plandetudeRepository): Response
-    {
-        return $this->render('plandetude/indexEtud.html.twig', [
-            'plandetudes' => $plandetudeRepository->findAll(),
-        ]);
+public function indexEtud(Request $request, PlandetudeRepository $plandetudeRepository): Response
+{
+    $sort = $request->query->get('sort');
+
+    if ($sort === 'asc') {
+        $plandetudes = $plandetudeRepository->findBy([], ['nomprogramme' => 'ASC']);
+    } elseif ($sort === 'desc') {
+        $plandetudes = $plandetudeRepository->findBy([], ['nomprogramme' => 'DESC']);
+    } else {
+        $plandetudes = $plandetudeRepository->findAll();
     }
 
-    #[Route('/new', name: 'app_plandetude_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $plandetude = new Plandetude();
-        $form = $this->createForm(PlandetudeType::class, $plandetude);
-        $form->handleRequest($request);
+    return $this->render('plandetude/indexEtud.html.twig', [
+        'plandetudes' => $plandetudes,
+    ]);
+}
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($plandetude);
-            $entityManager->flush();
+#[Route('/new', name: 'app_plandetude_new', methods: ['GET', 'POST'])]
+public function new(Request $request, EntityManagerInterface $entityManager): Response
+{
+    $plandetude = new Plandetude();
+    // Initialisez les valeurs par défaut pour les champs dureeTotal et creditsRequisTotal
+    $plandetude->setDureetotal(0);
+    $plandetude->setCreditsrequistotal(0);
 
-            return $this->redirectToRoute('app_plandetude_index', [], Response::HTTP_SEE_OTHER);
-        }
+    $form = $this->createForm(PlandetudeType::class, $plandetude);
+    $form->handleRequest($request);
 
-        return $this->renderForm('plandetude/new.html.twig', [
-            'plandetude' => $plandetude,
-            'form' => $form,
-        ]);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager->persist($plandetude);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_plandetude_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->renderForm('plandetude/new.html.twig', [
+        'plandetude' => $plandetude,
+        'form' => $form,
+    ]);
+}
 
     #[Route('/{id}', name: 'app_plandetude_show', methods: ['GET'])]
     public function show(Plandetude $plandetude): Response

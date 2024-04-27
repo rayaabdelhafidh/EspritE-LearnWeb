@@ -21,15 +21,51 @@ class CourController extends AbstractController
     #[Route('/', name: 'app_cour_index', methods: ['GET'])]
     public function index(CourRepository $courRepository): Response
     {
+        // Récupérer les cours par défaut
+        $cours = $courRepository->findAll();
+
         return $this->render('cour/index.html.twig', [
-            'cours' => $courRepository->findAll(),
+            'cours' => $cours,
+        ]);
+    }
+
+    #[Route('/sort', name: 'app_cour_sort', methods: ['GET'])]
+    public function sort(Request $request, CourRepository $courRepository): Response
+    {
+        $attribute = $request->query->get('attribute');
+        $order = $request->query->get('order');
+
+        // Vérifier si les paramètres de tri sont valides
+        if (!in_array($attribute, ['titre', 'duree', 'description'])) {
+            throw new \InvalidArgumentException('Invalid sorting attribute.');
+        }
+
+        if (!in_array($order, ['asc', 'desc'])) {
+            throw new \InvalidArgumentException('Invalid sorting order.');
+        }
+
+        // Récupérer les cours triés
+        $cours = $courRepository->findBy([], [$attribute => $order]);
+
+        return $this->render('cour/index.html.twig', [
+            'cours' => $cours,
         ]);
     }
     #[Route('/courEtud', name: 'app_cour_indexEtud', methods: ['GET'])]
-    public function indexEtud(CourRepository $courRepository): Response
+    public function indexEtud(Request $request, CourRepository $courRepository): Response
     {
+        $sort = $request->query->get('sort');
+
+        if ($sort === 'asc') {
+            $cours = $courRepository->findBy([], ['titre' => 'ASC']);
+        } elseif ($sort === 'desc') {
+            $cours = $courRepository->findBy([], ['titre' => 'DESC']);
+        } else {
+            $cours = $courRepository->findAll();
+        }
+
         return $this->render('cour/indexEtud.html.twig', [
-            'cours' => $courRepository->findAll(),
+            'cours' => $cours,
         ]);
     }
     

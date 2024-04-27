@@ -44,14 +44,14 @@ class Plandetude
      * @ORM\Column(type="integer")
      */
     #[ORM\Column]
-    #[Assert\NotBlank(message:"duree  is required")]
+   
     private ?int $dureetotal = null;
 
      /**
      * @ORM\Column(type="integer")
      */
     #[ORM\Column]
-    #[Assert\NotBlank(message:"credit  is required")]
+    
     private ?int $creditsrequistotal = null;
 
 

@@ -4,6 +4,11 @@
 
 {% block body %}
     <h1 class="text-center mb-4">Liste des Plandetudes</h1>
+
+<div class="section-title">
+    <input type="text" id="searchInputPlan" class="form-control" placeholder="Rechercher un plan d'étude" oninput="searchPlan()">
+</div>
+
 <div class="btn-group">
     <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
         Trier par Nom du Programme
@@ -49,4 +54,34 @@
     </div>
 
     <a href="{{ path('app_plandetude_new') }}" class="btn btn-success">Ajouter un nouveau Plandetude</a>
+    <script>
+    function searchPlan() {
+        // Récupère la valeur de la recherche
+        let input = document.getElementById("searchInputPlan");
+        let filter = input.value.toUpperCase();
+
+        // Récupère tous les éléments de la table à filtrer
+        let rows = document.querySelectorAll("tbody tr");
+
+        // Parcours tous les éléments et masque ceux qui ne correspondent pas à la recherche
+        rows.forEach(row => {
+            let found = false;
+            // Récupère toutes les cellules de la ligne
+            let cells = row.querySelectorAll("td");
+            cells.forEach(cell => {
+                let text = cell.textContent || cell.innerText;
+                // Vérifie si le texte de la cellule contient le terme recherché
+                if (text.toUpperCase().includes(filter)) {
+                    found = true;
+                }
+            });
+            // Affiche ou masque la ligne en fonction de si elle contient le terme recherché
+            if (found) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+</script>
 {% endblock %}

@@ -25,22 +25,35 @@
 {% endblock %}
 
 {% block body %}
-    
+    <h1>Plandetude index</h1>
 
-    <h1>          </h1>
+    <div class="input-group mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Rechercher un programme" oninput="search()">
+        <button class="btn btn-outline-secondary" type="button" id="searchButton">Rechercher</button>
+    </div>
 
-    <table class="table">
+ <div class="btn-group">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Trier par Nom de Programme
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ path('app_plandetude_indexEtud', {'sort': 'asc'}) }}">Ascendant</a></li>
+            <li><a class="dropdown-item" href="{{ path('app_plandetude_indexEtud', {'sort': 'desc'}) }}">Descendant</a></li>
+        </ul>
+    </div>
+
+    <table class="table" id="plandetudeTable">
         <thead>
             <tr>
-                <th>nomprogramme</th>
-                <th>niveau</th>
-                <th>dureetotal</th>
-                <th>creditsrequistotal</th>
+                <th>Nom Programme</th>
+                <th>Niveau</th>
+                <th>Durée Total</th>
+                <th>Crédits Total</th>
             </tr>
         </thead>
         <tbody>
         {% for plandetude in plandetudes %}
-            <tr>
+            <tr class="plandetudeRow">
                 <td>{{ plandetude.Nomprogramme }}</td>
                 <td>{{ plandetude.Niveau }}</td>
                 <td>{{ plandetude.Dureetotal }}</td>
@@ -53,4 +66,40 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <script>
+        function search() {
+            let input, filter, table, rows, cells, i, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            table = document.getElementById('plandetudeTable');
+            rows = table.getElementsByClassName('plandetudeRow');
+
+            for (i = 0; i < rows.length; i++) {
+                cells = rows[i].getElementsByTagName('td');
+                let found = false; // Ajoutez cette ligne pour suivre l'état de la recherche
+                for (let j = 0; j < cells.length; j++) {
+                    let cell = cells[j];
+                    if (cell) {
+                        txtValue = cell.textContent || cell.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            found = true;
+                            break; // Si un terme est trouvé, sortez de la boucle interne
+                        }
+                    }
+                }
+                // Afficher ou masquer la ligne en fonction de si elle contient le terme recherché
+                if (found) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+
+        document.getElementById('searchButton').addEventListener('click', function() {
+            search();
+        });
+    </script>
+
 {% endblock %}

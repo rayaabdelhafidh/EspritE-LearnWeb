@@ -30,18 +30,8 @@ class PlandetudeType extends AbstractType
                     new Length(['min' => 2, 'minMessage' => 'Le niveau doit contenir au moins {{ limit }} caractères.']),
                 ],
             ])
-            ->add('dureeTotal', IntegerType::class, [
-                'constraints' => [
-                    new NotBlank(['message' => 'La durée totale est requise.']),
-                    new PositiveOrZero(['message' => 'La durée totale doit être un entier positif ou zéro.']),
-                ],
-            ])
-            ->add('creditsRequisTotal', IntegerType::class, [
-                'constraints' => [
-                    new NotBlank(['message' => 'Le nombre de crédits requis est requis.']),
-                    new PositiveOrZero(['message' => 'Le nombre de crédits requis doit être un entier positif ou zéro.']),
-                ],
-            ])
+            ->add('dureeTotal')
+            ->add('creditsRequisTotal')
             ->add('save', SubmitType::class, [
                 'label' => 'Enregistrer',
                 'attr' => ['class' => 'btn btn-primary'],

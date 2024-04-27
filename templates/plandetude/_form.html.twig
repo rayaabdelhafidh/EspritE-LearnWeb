@@ -25,20 +25,8 @@
                             <div class="error-message">{{ form_errors(form.niveau) }}</div>
                         {% endif %}
                     </div>
-                    <div class="form-group">
-                        <label class="form-control-label text-danger" for="{{ form.dureeTotal.vars.id }}">Durée Totale</label>
-                        {{ form_widget(form.dureeTotal, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
-                        {% if form_errors(form.dureeTotal)|length > 0 %}
-                            <div class="error-message">{{ form_errors(form.dureeTotal) }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        <label class="form-control-label text-danger" for="{{ form.creditsRequisTotal.vars.id }}">Crédits Requis Total</label>
-                        {{ form_widget(form.creditsRequisTotal, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
-                        {% if form_errors(form.creditsRequisTotal)|length > 0 %}
-                            <div class="error-message">{{ form_errors(form.creditsRequisTotal) }}</div>
-                        {% endif %}
-                    </div>
+                    
+                    
                     <!-- Ajoutez d'autres champs de formulaire si nécessaire -->
                     <div class="text-center mb-0">
                         <button type="submit" class="btn btn-primary py-3 w-100 mb-4">{{ button_label|default('Save') }}</button>

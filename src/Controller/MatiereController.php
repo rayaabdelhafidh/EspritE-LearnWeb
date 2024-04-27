@@ -18,19 +18,39 @@ use Symfony\Component\Routing\Annotation\Route;
 class MatiereController extends AbstractController
 {
     #[Route('/', name: 'app_matiere_index', methods: ['GET'])]
-    public function index(MatiereRepository $matiereRepository): Response
-    {
-        return $this->render('matiere/index.html.twig', [
-            'matieres' => $matiereRepository->findAll(),
-        ]);
+public function index(Request $request, MatiereRepository $matiereRepository): Response
+{
+    $sort = $request->query->get('sort');
+
+    if ($sort === 'asc') {
+        $matieres = $matiereRepository->findBy([], ['nomm' => 'ASC']);
+    } elseif ($sort === 'desc') {
+        $matieres = $matiereRepository->findBy([], ['nomm' => 'DESC']);
+    } else {
+        $matieres = $matiereRepository->findAll();
     }
-    #[Route('/matiereEtud', name: 'app_matiere_indexEtud', methods: ['GET'])]
-    public function indexEtud(MatiereRepository $matiereRepository): Response
-    {
-        return $this->render('matiere/indexEtud.html.twig', [
-            'matieres' => $matiereRepository->findAll(),
-        ]);
+
+    return $this->render('matiere/index.html.twig', [
+        'matieres' => $matieres,
+    ]);
+}
+#[Route('/matiereEtud', name: 'app_matiere_indexEtud', methods: ['GET'])]
+public function indexEtud(Request $request, MatiereRepository $matiereRepository): Response
+{
+    $sort = $request->query->get('sort');
+
+    if ($sort === 'asc') {
+        $matieres = $matiereRepository->findBy([], ['nomm' => 'ASC']);
+    } elseif ($sort === 'desc') {
+        $matieres = $matiereRepository->findBy([], ['nomm' => 'DESC']);
+    } else {
+        $matieres = $matiereRepository->findAll();
     }
+
+    return $this->render('matiere/indexEtud.html.twig', [
+        'matieres' => $matieres,
+    ]);
+}
 
     /*#[Route('/new', name: 'app_matiere_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -78,6 +98,8 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
         'form' => $form,
     ]);
 }*/
+
+
 #[Route('/new', name: 'app_matiere_new', methods: ['GET', 'POST'])]
 public function new(Request $request, EntityManagerInterface $entityManager): Response
 {
@@ -92,6 +114,13 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
         // Récupérer l'entité Plandetude correspondante depuis la base de données
         $plandetude = $this->getDoctrine()->getRepository(Plandetude::class)->find($idPlandetude);
         
+        // Mettre à jour les attributs de Plandetude en fonction des valeurs de la matière
+        $plandetude->setDureetotal($plandetude->getDureetotal() + $matiere->getNbrHeure());
+        $plandetude->setCreditsrequistotal($plandetude->getCreditsrequistotal() + $matiere->getCredit());
+        
+        // Persister les changements de l'objet Plandetude
+        $entityManager->persist($plandetude);
+
         // Associer la matière au plan d'étude
         $matiere->setIdplandetude($plandetude);
         
@@ -107,6 +136,7 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
         'form' => $form,
     ]);
 }
+
 
 #[Route('/print', name: 'app_matiere_print', methods: ['GET'])]
 public function print( MatiereRepository $matiererepository)
@@ -146,33 +176,44 @@ public function print( MatiereRepository $matiererepository)
     }
 
     #[Route('/{idm}/edit', name: 'app_matiere_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Matiere $matiere, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(MatiereType::class, $matiere);
-        $form->handleRequest($request);
+public function edit(Request $request, Matiere $matiere, EntityManagerInterface $entityManager): Response
+{
+    $originalNbrHeure = $matiere->getNbrHeure();
+    $originalCredit = $matiere->getCredit();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Récupérer l'ID du plan d'étude sélectionné depuis le formulaire
+    $form = $this->createForm(MatiereType::class, $matiere);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Récupérer l'ID du plan d'étude sélectionné depuis le formulaire
         $idPlandetude = $form->get('idplandetude')->getData();
         
         // Récupérer l'entité Plandetude correspondante depuis la base de données
         $plandetude = $this->getDoctrine()->getRepository(Plandetude::class)->find($idPlandetude);
         
-        // Associer la matière au plan d'étude
-        $matiere->setIdplandetude($plandetude);
+        // Calculer les différences de durée totale et de crédits requis
+        $diffDuree = $matiere->getNbrHeure() - $originalNbrHeure;
+        $diffCredit = $matiere->getCredit() - $originalCredit;
+
+        // Mettre à jour les attributs de Plandetude en fonction des différences calculées
+        $plandetude->setDureetotal($plandetude->getDureetotal() + $diffDuree);
+        $plandetude->setCreditsrequistotal($plandetude->getCreditsrequistotal() + $diffCredit);
         
+        // Persister les changements de l'objet Plandetude
+        $entityManager->persist($plandetude);
+
         // Persister la matière en base de données
-        $entityManager->persist($matiere);
-            $entityManager->flush();
+        $entityManager->flush();
 
-            return $this->redirectToRoute('app_matiere_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('matiere/edit.html.twig', [
-            'matiere' => $matiere,
-            'form' => $form,
-        ]);
+        return $this->redirectToRoute('app_matiere_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->renderForm('matiere/edit.html.twig', [
+        'matiere' => $matiere,
+        'form' => $form,
+    ]);
+}
+
 
 
    

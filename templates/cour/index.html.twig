@@ -5,6 +5,20 @@
 {% block body %}
     <h1 class="mb-4">Liste des Cours</h1>
 
+    <div class="section-title">
+        <input type="text" id="searchInputCour" class="form-control" placeholder="Rechercher un cours" oninput="searchCour()">
+    </div>
+   <div class="btn-group">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Trier par Titre
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ path('app_cour_sort', {'attribute': 'titre', 'order': 'asc'}) }}">Ascendant</a></li>
+            <li><a class="dropdown-item" href="{{ path('app_cour_sort', {'attribute': 'titre', 'order': 'desc'}) }}">Descendant</a></li>
+        </ul>
+    </div>
+    
+
     <div class="row">
         <a href="{{ path('app_cour_new') }}" class="btn btn-success mt-4">Ajouter un nouveau cours</a>
 
@@ -35,5 +49,30 @@
             </div>
         {% endfor %}
     </div>
+   
 
+
+
+    <script>
+        function searchCour() {
+            // Récupère la valeur de la recherche
+            let input = document.getElementById("searchInputCour");
+            let filter = input.value.toUpperCase();
+
+            // Récupère tous les éléments de la liste de cours
+            let cards = document.querySelectorAll(".card");
+
+            // Parcours tous les éléments et masque ceux qui ne correspondent pas à la recherche
+            cards.forEach(card => {
+                let cardText = card.innerText.toUpperCase();
+
+                // Vérifie si le texte de la carte contient le terme recherché
+                if (cardText.includes(filter)) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+    </script>
 {% endblock %}
