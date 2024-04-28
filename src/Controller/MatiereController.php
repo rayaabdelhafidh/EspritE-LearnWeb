@@ -44,6 +44,26 @@ public function index(Request $request, MatiereRepository $matiereRepository, Pa
     ]);
 }
 
+#[Route('/matiereEtud', name: 'app_matiere_indexEtud', methods: ['GET'])]
+public function indexEtud(Request $request, MatiereRepository $matiereRepository): Response
+{
+    $sort = $request->query->get('sort', 'asc'); // Par défaut, tri ascendant
+
+    // Récupérer toutes les matières depuis le repository
+    if ($sort === 'asc') {
+        $matieres = $matiereRepository->findBy([], ['nomm' => 'ASC']);
+    } elseif ($sort === 'desc') {
+        $matieres = $matiereRepository->findBy([], ['nomm' => 'DESC']);
+    } else {
+        $matieres = $matiereRepository->findAll();
+    }
+
+    return $this->render('matiere/indexEtud.html.twig', [
+        'matieres' => $matieres,
+    ]);
+}
+
+
     /*#[Route('/new', name: 'app_matiere_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
