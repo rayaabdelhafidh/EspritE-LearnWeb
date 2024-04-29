@@ -26,7 +26,9 @@
     <button type="submit">Filtrer</button>
 </form>
 
-
+   <div class="section-title">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
+        </div>
 
     <a href="{{ path('app_emploi_new') }}">Créer Emploi</a>
     <table class="table">
@@ -65,4 +67,31 @@
 <div style="display: flex; justify-content: center; margin-top: 20px;">
     {{ knp_pagination_render(pagination) }}
 </div>
+
+ <script>
+        function search() {
+          
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toUpperCase();
+   
+            let rows = document.querySelectorAll("tbody tr");
+           
+            rows.forEach(row => {
+                let found = false;
+                
+                let cells = row.querySelectorAll("td");
+                cells.forEach(cell => {
+                    let text = cell.textContent || cell.innerText;
+                    if (text.toUpperCase().includes(filter)) {
+                        found = true;
+                    }
+                });
+                if (found) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
 {% endblock %}

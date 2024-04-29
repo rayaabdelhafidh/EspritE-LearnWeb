@@ -33,6 +33,10 @@
         <button type="submit">Filtrer</button>
     </form>
 
+   <div class="section-title">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
+        </div>
+
     <table class="table" style ="margin-left:20px;">
         <thead>
             <tr>
@@ -65,6 +69,33 @@
     {{ knp_pagination_render(pagination) }}
 </div>
 
+ <script>
+        function search() {
+          
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toUpperCase();
+   
+            let rows = document.querySelectorAll("tbody tr");
+           
+            rows.forEach(row => {
+                let found = false;
+                
+                let cells = row.querySelectorAll("td");
+                cells.forEach(cell => {
+                    let text = cell.textContent || cell.innerText;
+                    if (text.toUpperCase().includes(filter)) {
+                        found = true;
+                    }
+                });
+
+                if (found) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
 {% endblock %}
 
 

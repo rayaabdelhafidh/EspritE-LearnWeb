@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Psr\Log\LoggerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Flasher\Prime\FlasherInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/salle')]
 class SalleController extends AbstractController
@@ -57,6 +58,9 @@ class SalleController extends AbstractController
             'pagination' => $pagination,
         ]);
     }
+
+
+   
     
     #[Route('/new', name: 'app_salle_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response

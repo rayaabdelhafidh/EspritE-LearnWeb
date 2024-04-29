@@ -16,6 +16,7 @@ use Flasher\Prime\FlasherInterface;
 use DateTime;
 
 
+
 #[Route('/emploi')]
 class EmploiController extends AbstractController
 {
@@ -45,6 +46,10 @@ class EmploiController extends AbstractController
                 ->setParameter('start_date', $premierdate)
                 ->setParameter('end_date', $dernierdate);
     
+            // Sort emplois by premierdate and dernierdate
+            $queryBuilder->orderBy('e.premierdate', 'ASC')
+                        ->addOrderBy('e.dernierdate', 'ASC');
+    
             // Output the generated SQL query for debugging
             dump($queryBuilder->getQuery()->getSQL());
     
@@ -72,12 +77,8 @@ class EmploiController extends AbstractController
             'pagination' => $pagination,
         ]);
     }
+
     
-
-
-
-
-
 
     
 
