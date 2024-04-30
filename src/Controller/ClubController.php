@@ -16,6 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\AbstractType;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 
 #[Route('/club')]
@@ -31,9 +33,14 @@ class ClubController extends AbstractController
     }
 
     #[Route('/clubEtud', name: 'app_club_indexFront')]
-    public function indexFront(ClubRepository $clubRepository): Response
+    public function indexFront(ClubRepository $clubRepository,Request $request,PaginatorInterface $paginator): Response
     {
         $clubs= $clubRepository->findAll();
+        $clubs = $paginator->paginate(
+            $clubs, /* query NOT result */
+            $request->query->getInt('page', 1),
+            3
+        );
         return $this->render('club/indexFront.html.twig',
             ['clubs'=>$clubs]
         );

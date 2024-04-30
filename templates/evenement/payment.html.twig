@@ -1,0 +1,78 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement pour {{ evenement.nomevenement }}{% endblock %}
+
+{% block body %}
+    <h1>Paiement pour l'événement "{{ evenement.nomevenement }}"</h1>
+    <p>Prix de l'événement: {{ evenement.prixEvenement }} DT</p>
+<script src="https://js.stripe.com/v3/"></script>
+   <h1>Payment</h1>
+
+    <form id="payment-form">
+        <div id="card-element"><!-- Elements will create input elements here --></div>
+
+        <!-- Used to display form errors -->
+        <div id="card-errors" role="alert"></div>
+
+        <button id="submit">
+            <span id="button-text">Payer maintenant</span>
+        </button>
+    </form>
+
+    <script>
+        var stripe = Stripe('{{ stripe_public_key }}');
+        var elements = stripe.elements();
+        var style = {
+            base: {
+                color: '#32325d',
+                lineHeight: '18px',
+                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                fontSmoothing: 'antialiased',
+                fontSize: '16px',
+                '::placeholder': {
+                    color: '#aab7c4',
+                },
+            },
+            invalid: {
+                color: '#fa755a',
+                iconColor: '#fa755a',
+            },
+        };
+
+        var card = elements.create('card', {style: style});
+        card.mount('#card-element');
+
+        card.addEventListener('change', function(event) {
+            var displayError = document.getElementById('card-errors');
+            if (event.error) {
+                displayError.textContent = event.error.message;
+            } else {
+                displayError.textContent = '';
+            }
+        });
+
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            stripe.confirmCardPayment("{{ client_secret }}", {
+                payment_method: {
+                    card: card,
+                    billing_details: {
+                        name: 'Card Holder Name', // Replace with actual cardholder name if available
+                    },
+                }
+            }).then(function(result) {
+                if (result.error) {
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    if (result.paymentIntent.status === 'succeeded') {
+                        // Payment successful, handle accordingly
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

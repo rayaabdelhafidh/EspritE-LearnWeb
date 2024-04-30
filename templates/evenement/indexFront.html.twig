@@ -47,7 +47,12 @@
         <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
     </div>
 
-    <h1>Evenements</h1>
+    <br>
+    <h1>Evenements ({{ evenements.getTotalItemCount }})</h1>
+
+    <br>
+    <a href="{{ path('app_evenement_stat') }}"><button type="submit" class="btn btn-primary">Statistiques</button></a>
+
     <div class="row">
         {% for evenement in evenements %}
             <div class="col-md-3 mb-4 event-card" data-nom="{{ evenement.nomevenement|upper }}">
@@ -56,12 +61,13 @@
                         <h5 class="card-title red-title"><strong>{{ evenement.nomevenement }}</strong></h5>
                         <img src="{{ asset(evenement.afficheevenement) }}" class="card-img-right" width="200">
                         <a href="{{ path('app_evenement_details', {'idevenement': evenement.idevenement}) }}"><button type="submit" class="btn btn-primary">Consulter</button></a>
+
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
-
+    
     <!-- JavaScript function for search -->
     <script>
         function search() {
@@ -83,4 +89,5 @@
             });
         }
     </script>
+    {{ knp_pagination_render(evenements) }}
 {% endblock %}

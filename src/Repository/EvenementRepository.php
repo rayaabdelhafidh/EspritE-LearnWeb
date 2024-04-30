@@ -45,4 +45,11 @@ class EvenementRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function findByClub(): array
+    {
+        $entityManager= $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT e FROM
+        App\Entity\Evenement e ORDER BY e.club ASC');
+        return $query->getResult();
+    }
 }

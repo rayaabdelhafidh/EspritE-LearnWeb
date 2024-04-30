@@ -10,12 +10,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
+use Stripe\Stripe;
+use Stripe\PaymentIntent;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
 
 #[Route('/evenement')]
 class EvenementController extends AbstractController
 {
     #[Route('/', name: 'app_evenement_index', methods: ['GET'])]
-    public function index(EvenementRepository $evenementRepository): Response
+    public function index(EvenementRepository $evenementRepository,PaginatorInterface $paginator): Response
     {
         return $this->render('evenement/index.html.twig', [
             'evenements' => $evenementRepository->findAll(),
@@ -23,10 +28,16 @@ class EvenementController extends AbstractController
     }
 
     #[Route('/evenementEtud', name: 'app_evenement_indexFront', methods: ['GET'])]
-    public function indexFront(EvenementRepository $evenementRepository): Response
+    public function indexFront(Request $request,EvenementRepository $evenementRepository,PaginatorInterface $paginator): Response
     {
+        $evenements = $evenementRepository->findAll();
+        $evenements = $paginator->paginate(
+            $evenements, /* query NOT result */
+            $request->query->getInt('page', 1),
+             3
+        );
         return $this->render('evenement/indexFront.html.twig', [
-            'evenements' => $evenementRepository->findAll(),
+            'evenements' => $evenements,        
         ]);
     }
 
@@ -136,4 +147,59 @@ class EvenementController extends AbstractController
         return $this->render('evenement/index.html.twig',
         ['evenements'=>$evenements]);
     }
+
+    #[Route('/{idevenement}/evenementpayment', name: 'app_evenement_payment')]
+    public function payment(Evenement $evenement): Response
+    {
+    // Configure Stripe with your API key
+    Stripe::setApiKey($this->getParameter('stripe_public_key'));
+
+    // Create a PaymentIntent with the price of the event
+    $intent = PaymentIntent::create([
+        'amount' => $evenement->getPrixEvenement() * 100, // Convertir en centimes
+        'currency' => 'eur', // Devise
+    ]);
+
+    return $this->render('evenement/payment.html.twig', [
+        'client_secret' => $intent->client_secret,
+        'evenement' => $evenement, // Passer l'objet Evenement à la vue pour référence
+        'stripe_public_key' => $this->getParameter('stripe_public_key'), // Passer la clé publique de Stripe au modèle
+    ]);
 }
+
+
+    #[Route('evenementStat',name:'app_evenement_stat')]
+    function statistique(ChartBuilderInterface $chartBuilder,EvenementRepository $evenementRepository): Response
+    {
+        $clubs=$evenementRepository->findByClub();
+
+        $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
+
+        $chart->setData([
+            'labels' => $clubs,
+            'datasets' => [
+                [
+                    'label' => 'Evenements par club ',
+                    'backgroundColor' => 'rgb(255, 99, 132)',
+                    'borderColor' => 'rgb(255, 99, 132)',
+                    'data' => [0, 10, 5, 2, 20, 30, 45],
+                ],
+            ],
+        ]);
+
+        $chart->setOptions([
+            'scales' => [
+                'y' => [
+                    'suggestedMin' => 0,
+                    'suggestedMax' => 100,
+                ],
+            ],
+        ]);
+
+        return $this->render('evenement/stat.html.twig', [
+            'chart' => $chart,
+        ]);
+    }
+
+}
+

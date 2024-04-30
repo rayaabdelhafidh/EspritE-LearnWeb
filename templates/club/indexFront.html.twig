@@ -38,7 +38,7 @@
         <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
     </div>
 
-    <h1>Liste des Clubs</h1>
+    <h1>Liste des Clubs ({{ clubs.getTotalItemCount }})</h1>
     <div class="row">
         {% for club in clubs %}
             <div class="col-md-4 mb-4 club-card" data-nom="{{ club.nomclub|upper }}">
@@ -80,5 +80,7 @@
             });
         }
     </script>
+        {{ knp_pagination_render(clubs) }}
+
     
 {% endblock %}

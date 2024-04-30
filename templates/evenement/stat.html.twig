@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Event Statistics{% endblock %}
+
+{% block body %}
+    <div style="width: 800px; margin: 0 auto;">
+        {{ render_chart(chart) }}
+    </div>
+{% endblock %}
+
