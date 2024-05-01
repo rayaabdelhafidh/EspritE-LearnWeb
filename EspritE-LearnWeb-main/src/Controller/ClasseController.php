@@ -97,6 +97,29 @@ class ClasseController extends AbstractController
         ]);
     }
 
+    #[Route('/stat', name: 'app_classe_stat', methods: ['GET'])]
+    public function classStat(ClasseRepository $classeRepository,Request $request): Response
+    {
+        $year = $request->get("select");
+        $classes = [];
+        $listYears =[];
+        $listdata=[];
+        $classes = $classeRepository->findAll() ; 
+        foreach($classes as $class){
+            $listYears[] = $class->getFiliere();
+        }
+        $listdata[]=count($classeRepository->findclasseswithyear($year , "TIC"));
+        $listdata[]=count($classeRepository->findclasseswithyear($year , "GC"));
+        $listdata[]=count($classeRepository->findclasseswithyear($year , "BUSINESS"));
+
+        return $this->render('classe/stat.html.twig', [
+            'years'=> array_unique($listYears),
+            'data'=> json_encode($listdata),
+            'year'=>$year
+        ]);
+    }
+
+
     #[Route('/{idClasse}', name: 'app_classe_show', methods: ['GET'])]
     public function show(Classe $classe): Response
     {
