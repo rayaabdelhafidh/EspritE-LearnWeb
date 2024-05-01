@@ -4,8 +4,8 @@
 {% block title %}Paiement pour {{ evenement.nomevenement }}{% endblock %}
 
 {% block body %}
-    <h1>Paiement pour l'événement "{{ evenement.nomevenement }}"</h1>
-    <p>Prix de l'événement: {{ evenement.prixEvenement }} DT</p>
+    <h1>Evenement {{ evenement.nomevenement }} </h1>
+    <p>Prix du pass: {{ evenement.prixEvenement }} DT</p>
 <script src="https://js.stripe.com/v3/"></script>
    <h1>Payment</h1>
 
@@ -16,10 +16,12 @@
         <div id="card-errors" role="alert"></div>
 
         <button id="submit">
-            <span id="button-text">Payer maintenant</span>
+            <span id="button-text">Confirmer Paiement</span>
         </button>
     </form>
-
+<div id="payment-success" style="display: none;">
+        <p>Votre paiement a été effectué avec succès!</p>
+    </div>
     <script>
         var stripe = Stripe('{{ stripe_public_key }}');
         var elements = stripe.elements();
@@ -68,8 +70,9 @@
                     var errorElement = document.getElementById('card-errors');
                     errorElement.textContent = result.error.message;
                 } else {
-                    if (result.paymentIntent.status === 'succeeded') {
-                        // Payment successful, handle accordingly
+                    if (result.paymentIntent.status == 'succeeded') {
+                        // Payment successful, display success message
+                        
                     }
                 }
             });

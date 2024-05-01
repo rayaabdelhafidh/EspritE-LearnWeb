@@ -155,7 +155,7 @@ class EvenementController extends AbstractController
     public function payment(Evenement $evenement): Response
     {
     // Configure Stripe with your API key
-    Stripe::setApiKey($this->getParameter('stripe_public_key'));
+    Stripe::setApiKey($this->getParameter('stripe_secret_key'));
 
     // Create a PaymentIntent with the price of the event
     $intent = PaymentIntent::create([
@@ -169,6 +169,7 @@ class EvenementController extends AbstractController
         'stripe_public_key' => $this->getParameter('stripe_public_key'), // Passer la clé publique de Stripe au modèle
     ]);
 }
+
 
 #[Route('evenementStat',name:'app_evenement_stat')]
 function statistique(ChartBuilderInterface $chartBuilder,EvenementRepository $evenementRepository,ClubRepository $clubRepository): Response
