@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Evenement;
 use App\Form\EvenementType;
 use App\Repository\EvenementRepository;
+use App\Repository\ClubRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,17 +30,18 @@ class EvenementController extends AbstractController
     }
 
     #[Route('/evenementEtud', name: 'app_evenement_indexFront', methods: ['GET'])]
-    public function indexFront(Request $request,EvenementRepository $evenementRepository,PaginatorInterface $paginator): Response
+    public function indexFront(ChartBuilderInterface $chartBuilder, Request $request,EvenementRepository $evenementRepository,PaginatorInterface $paginator): Response
     {
-        $evenements = $evenementRepository->findAll();
-        $evenements = $paginator->paginate(
-            $evenements, /* query NOT result */
-            $request->query->getInt('page', 1),
-             3
-        );
-        return $this->render('evenement/indexFront.html.twig', [
-            'evenements' => $evenements,        
-        ]);
+    // Fetch all events (assuming you want to display them in the frontend as well) using pagination
+     $events = $paginator->paginate(
+         $evenementRepository->findAll(), // Fetch all events
+         $request->query->getInt('page', 1),
+         3
+     );
+ 
+     return $this->render('evenement/indexFront.html.twig', [
+         'evenements' => $events,  // Pass the paginated events to the template
+     ]);
     }
 
     #[Route('/{idevenement}/details', name: 'app_evenement_details', methods: ['GET'])]
@@ -167,37 +170,24 @@ class EvenementController extends AbstractController
     ]);
 }
 
+#[Route('evenementStat',name:'app_evenement_stat')]
+function statistique(ChartBuilderInterface $chartBuilder,EvenementRepository $evenementRepository,ClubRepository $clubRepository): Response
+{
+        // On va chercher le nombre d'annonces publiées par date
+        $evenements = $evenementRepository->countByDate();
 
-    #[Route('evenementStat',name:'app_evenement_stat')]
-    function statistique(ChartBuilderInterface $chartBuilder,EvenementRepository $evenementRepository): Response
-    {
-        $clubs=$evenementRepository->findByClub();
+        $dates = [];
+        $eventcount = [];
 
-        $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
+        // On "démonte" les données pour les séparer tel qu'attendu par ChartJS
+        foreach($evenements as $evenement){
+            $dates[] = $evenement['dateevenement'];
+            $eventcount[] = $evenement['count'];
+        }
 
-        $chart->setData([
-            'labels' => $clubs,
-            'datasets' => [
-                [
-                    'label' => 'Evenements par club ',
-                    'backgroundColor' => 'rgb(255, 99, 132)',
-                    'borderColor' => 'rgb(255, 99, 132)',
-                    'data' => [0, 10, 5, 2, 20, 30, 45],
-                ],
-            ],
-        ]);
-
-        $chart->setOptions([
-            'scales' => [
-                'y' => [
-                    'suggestedMin' => 0,
-                    'suggestedMax' => 100,
-                ],
-            ],
-        ]);
-
-        return $this->render('evenement/stat.html.twig', [
-            'chart' => $chart,
+        return $this->render('evenement/indexFront.html.twig', [
+            'dates' => json_encode($dates),
+            'eventcount' => json_encode($eventcount),
         ]);
     }
 

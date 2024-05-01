@@ -52,4 +52,17 @@ public function findByClub(): array
         App\Entity\Evenement e ORDER BY e.club ASC');
         return $query->getResult();
     }
+
+   public function countByClub()
+{
+    $query = $this->getEntityManager()->createQuery("
+    SELECT c.nomclub AS clubName, COUNT(e) as count 
+    FROM App\Entity\Evenement e 
+    JOIN e.club c
+    GROUP BY c.nomclub
+");
+
+    return $query->getResult();
+}
+
 }

@@ -87,6 +87,9 @@ class Club
         $this->evenement_club = new ArrayCollection();
     }
 
+    public function initializeEvenementClub(): void
+{        $this->evenement_club = new ArrayCollection();
+}
     public function getIdclub(): ?int
     {
         return $this->idclub;
@@ -163,6 +166,14 @@ class Club
 
         return $this;
     }
+
+    /**
+ * @return Collection|Evenement[]
+ */
+public function getEvenement(): Collection
+{
+    return $this->evenement_club;
+}
 
 
 }

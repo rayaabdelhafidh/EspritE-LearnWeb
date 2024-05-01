@@ -17,6 +17,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\AbstractType;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
 
 
 
@@ -24,25 +26,49 @@ use Knp\Component\Pager\PaginatorInterface;
 class ClubController extends AbstractController
 {
     #[Route('/', name: 'app_club_index')]
-    public function index(ClubRepository $clubRepository): Response
+    public function index(ClubRepository $clubRepository,ChartBuilderInterface $chartBuilder,EvenementRepository $evenementRepository): Response
     {
-        $clubs= $clubRepository->findAll();
+        // On va chercher toutes les catégories
+       $clubs = $clubRepository->findAll();
         return $this->render('club/index.html.twig',
-            ['clubs'=>$clubs]
+            ['clubs'=>$clubs,           
+            ]
         );
     }
 
     #[Route('/clubEtud', name: 'app_club_indexFront')]
-    public function indexFront(ClubRepository $clubRepository,Request $request,PaginatorInterface $paginator): Response
+    public function indexFront(ChartBuilderInterface $chartBuilder, Request $request,EvenementRepository $evenementRepository,ClubRepository $clubRepository,PaginatorInterface $paginator): Response
     {
         $clubs= $clubRepository->findAll();
-        $clubs = $paginator->paginate(
-            $clubs, /* query NOT result */
-            $request->query->getInt('page', 1),
-            3
-        );
+        // Fetch the count of events grouped by club
+     $clubStatistics = $evenementRepository->countByClub();
+ 
+     // Prepare arrays to store club names and event counts
+     $clubse = [];
+     $eventCounts = [];
+ 
+     // Process the club statistics data
+     foreach ($clubStatistics as $clubStat) {
+         // Extract club name and event count
+         $clubName = $clubStat['clubName'];
+         $eventCount = $clubStat['count'];
+ 
+         // Add club name and event count to the respective arrays
+         $clubse[] = $clubName;
+         $eventCounts[] = $eventCount;
+     }
+ 
+     $pagination = $paginator->paginate(
+        $clubs, // Query/Array
+        $request->query->getInt('page', 1), // Page number
+        3 // Items per page
+    );
+
         return $this->render('club/indexFront.html.twig',
-            ['clubs'=>$clubs]
+            ['clubs'=>$pagination,
+            'clubse' => json_encode($clubse), // Pass club names to the template
+         'eventCounts' => json_encode($eventCounts), // Pass event counts to the template
+         ]
         );
     }
 
@@ -124,6 +150,6 @@ class ClubController extends AbstractController
         ['clubs'=>$clubs]);
     }
     
-
-   
+    
+    
 }

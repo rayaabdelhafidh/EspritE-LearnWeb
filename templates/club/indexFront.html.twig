@@ -3,6 +3,8 @@
 {% block title %}Club index{% endblock %}
 
 {% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous">
+
     {{ parent() }}
     <style>
         .row {
@@ -38,7 +40,7 @@
         <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
     </div>
 
-    <h1>Liste des Clubs ({{ clubs.getTotalItemCount }})</h1>
+    <h1>Liste des Clubs</h1>
     <div class="row">
         {% for club in clubs %}
             <div class="col-md-4 mb-4 club-card" data-nom="{{ club.nomclub|upper }}">
@@ -80,7 +82,49 @@
             });
         }
     </script>
-        {{ knp_pagination_render(clubs) }}
 
-    
+    <canvas id="evenements" width="200" height="50"></canvas>
+
+    {% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+<script>
+    let evenements = document.querySelector("#evenements")
+    let annGraph = new Chart(evenements, {
+        type: "bar",
+        data: {
+            labels: {{ clubse|raw }},
+            datasets: [{
+                label: "Nombre d'evenement par club",
+                data: {{ eventCounts|raw }},
+                backgroundColor: [ // Define background colors for each data point
+                    'rgba(255, 99, 132, 0.2)', // Example color 1
+                    'rgba(54, 162, 235, 0.2)', // Example color 2
+                    'rgba(255, 206, 86, 0.2)', // Example color 3
+                    // Add more colors as needed
+                ],
+                borderColor: [ // Define border colors for each data point
+                    'rgba(255, 99, 132, 1)', // Example color 1
+                    'rgba(54, 162, 235, 1)', // Example color 2
+                    'rgba(255, 206, 86, 1)', // Example color 3
+                    // Add more colors as needed
+                ],
+                borderWidth: 1 // Define border width
+                
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    })
+</script>
+{% endblock %}
+
+                {{ knp_pagination_render(clubs) }}
+
 {% endblock %}

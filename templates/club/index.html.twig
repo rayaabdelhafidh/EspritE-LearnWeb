@@ -151,7 +151,9 @@
         <div class="section-title">
         <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
     </div>
-
+<div style="width: 800px; margin: 0 auto;">
+<canvas data-controller="symfony--ux-chartjs--chart" data-symfony--ux-chartjs--chart-view-value="{{ chart|json_encode|raw }}"></canvas>
+    </div>
     <table class="table">
         <thead>
             <tr>
