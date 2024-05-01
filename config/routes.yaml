@@ -4,3 +4,8 @@
 cour_download_pdf:
     path: /download-pdf/{id}
     controller: App\Controller\CourController::downloadPdf
+view_pdf:
+    path: /view-pdf/{id}
+    controller: App\Controller\CourController::viewPdf
+
+   

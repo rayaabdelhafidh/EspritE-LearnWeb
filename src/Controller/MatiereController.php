@@ -139,7 +139,7 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
         // Persister la matière en base de données
         $entityManager->persist($matiere);
         $entityManager->flush();
-
+        flash()->addSuccess('matiere ajouter  avec succes');
         return $this->redirectToRoute('app_matiere_index', [], Response::HTTP_SEE_OTHER);
     }
 
@@ -216,7 +216,7 @@ public function edit(Request $request, Matiere $matiere, EntityManagerInterface 
 
         // Persister la matière en base de données
         $entityManager->flush();
-
+        flash()->addSuccess('matiere modifier  avec succes');
         return $this->redirectToRoute('app_matiere_index', [], Response::HTTP_SEE_OTHER);
     }
 
@@ -239,7 +239,7 @@ public function edit(Request $request, Matiere $matiere, EntityManagerInterface 
             $entityManager->remove($matiere);
             $entityManager->flush();
         }
-
+        flash()->addSuccess('matiere supprimer   avec succes');
         return $this->redirectToRoute('app_matiere_index', [], Response::HTTP_SEE_OTHER);
     }
 }

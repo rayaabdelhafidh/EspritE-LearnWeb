@@ -73,10 +73,10 @@
             input = document.getElementById('searchInput');
             filter = input.value.toUpperCase();
             table = document.getElementById('plandetudeTable');
-            rows = table.getElementsByClassName('plandetudeRow');
+            rows = table.getElementsByClassName('plandetudeRow'); //Ensuite, elle parcourt toutes les lignes (<tr>) de la table en utilisant rows = table.getElementsByClassName('plandetudeRowEnsuite, elle parcourt toutes les lignes (<tr>) de la table en utilisant rows = table.getElementsByClassName('plandetudeRow
 
             for (i = 0; i < rows.length; i++) {
-                cells = rows[i].getElementsByTagName('td');
+                cells = rows[i].getElementsByTagName('td');   //Pour chaque ligne, elle parcourt ensuite toutes les cellules (<td>) 
                 let found = false; // Ajoutez cette ligne pour suivre l'état de la recherche
                 for (let j = 0; j < cells.length; j++) {
                     let cell = cells[j];

@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+
+
 #[Route('/cour')]
 class CourController extends AbstractController
 {
@@ -165,7 +167,7 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
         // Enregistrer le cours en base de données
         $entityManager->persist($cour);
         $entityManager->flush();
-        flash()->addSuccess('cour Added Successfully');
+        flash()->addSuccess('cour ajouter  avec succes');
         return $this->redirectToRoute('app_cour_index', [], Response::HTTP_SEE_OTHER);
     }
 
@@ -194,6 +196,17 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+          // Gérer le téléchargement du fichier PDF
+        $pdfFile = $form->get('coursPdfUrl')->getData();
+        if ($pdfFile instanceof UploadedFile) {
+            $pdfFileName = md5(uniqid()) . '.' . $pdfFile->guessExtension();
+            $pdfFile->move(
+                $this->getParameter('kernel.project_dir') . '/public/uploads/pdf',
+                $pdfFileName
+            );
+            $cour->setCourspdfurl($pdfFileName);
+        }
+
             $file = $form->get('image')->getData();
             if ($file) {
                 // Generate a unique name for the file before saving it
@@ -217,7 +230,7 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
             $cour->setIdmatiere($matiere);
             
             $entityManager->flush();
-            flash()->addSuccess('cour Modified Successfully');
+            flash()->addSuccess('cour modifier  avec succes');
 
             return $this->redirectToRoute('app_cour_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -251,6 +264,44 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
     
         return $response;
     }
+       
+
+
+    public function viewPdf($id, CourRepository $repo)
+    {
+        $cour = $repo->find($id);
+    
+        if (!$cour) {
+            throw $this->createNotFoundException('Cour non trouvée');
+        }
+    
+        $pdfPath = $this->getParameter('pdf_directory') . '/' . $cour->getCourspdfurl();
+    
+        $response = new Response(file_get_contents($pdfPath));
+        $response->headers->set('Content-Type', 'application/pdf');
+    
+        return $response;
+    }
+
+        
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+       
+
+
+
 
      #[Route('/like/{id}', name: 'app_cour_like', methods: ['POST'])]
 public function like(Request $request, Cour $cour, EntityManagerInterface $entityManager): Response
@@ -294,7 +345,7 @@ public function dislike(Request $request, Cour $cour, EntityManagerInterface $en
             $entityManager->remove($cour);
             $entityManager->flush();
         }
-
+        flash()->addSuccess('cour suprimer avec succes');
         return $this->redirectToRoute('app_cour_index', [], Response::HTTP_SEE_OTHER);
     }
 }

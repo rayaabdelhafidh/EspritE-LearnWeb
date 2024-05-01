@@ -64,8 +64,9 @@
                         <p class="card-text"><strong>Likes:</strong> <span id="likesCount{{ cour.id }}">{{ cour.Nblike }}</span></p>
                         <button class="btn btn-success" onclick="like('{{ cour.id }}')" id="likeBtn{{ cour.id }}">Like</button>
                         <button class="btn btn-danger" onclick="dislike('{{ cour.id }}')" id="dislikeBtn{{ cour.id }}">Dislike</button>
-                        
+                        <a href="{{ path('view_pdf', {'id': cour.id}) }}" class="btn btn-outline-secondary" target="_blank">Ouvrir PDF</a>
                         <a href="{{ path('download_pdf', {'id': cour.id}) }}" class="btn btn-outline-secondary" downloadPdf>downloadPdf</a>
+
                     </div>
                 </div>
             </div>
