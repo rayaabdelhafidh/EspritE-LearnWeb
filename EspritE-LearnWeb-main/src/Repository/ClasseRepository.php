@@ -49,16 +49,15 @@ class ClasseRepository extends ServiceEntityRepository
 function tri_asc()
 {
     return $this->createQueryBuilder('evenement')
-        ->orderBy('evenement.nbreetudi ','ASC')
+        ->orderBy('evenement.nombre ','ASC')
         ->getQuery()->getResult();
 }
 function tri_desc()
 {
     return $this->createQueryBuilder('evenement')
-        ->orderBy('evenement.nbreetudi ','DESC')
+        ->orderBy('evenement.nombre ','DESC')
         ->getQuery()->getResult();
-}
-function SearchNom($nsc)
+}function SearchNom($nsc)
 
     {
         return $this->createQueryBuilder('o')

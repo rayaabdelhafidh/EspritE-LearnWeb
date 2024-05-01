@@ -1,0 +1,105 @@
+<style>
+    @font-face {
+        font-family: 'Roboto', sans-serif;
+        src: local('Roboto'), url('path/to/Roboto.woff2') format('woff2');
+    }
+
+    html, body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        background-color: #222;
+        color: #ccc;
+    }
+
+    h1 {
+        text-align: center;
+        padding: 20px 0;
+        font-size: 22px;
+        font-weight: bold;
+        color: #562B05;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        page-break-inside: avoid;
+    }
+
+    th, td {
+        border: 1px solid #444;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #333;
+    }
+
+    tr:nth-child(even) {
+        background-color: #444;
+    }
+
+    .actions {
+        text-align: center;
+    }
+
+    .badge {
+        display: inline-block;
+        background-color: #963;
+        color: #ccc;
+        border: 1px solid #963;
+        padding: 5px 10px;
+        border-radius: 3px;
+        margin-right: 5px;
+        text-decoration: none;
+    }
+
+    .badge:hover {
+        background-color: #b63;
+        border-color: #b63;
+    }
+
+
+    table thead, table tfoot {
+        background-color: #333;
+        font-weight: bold;
+    }
+
+
+    table thead tr th:first-child, table tfoot tr th:first-child {
+        text-align: left;
+    }
+</style>
+
+<h1>Liste des matieres</h1>
+<body>
+<div class="table-responsive">
+    <table class="table app-table-hover mb-0 text-left">
+        <thead>
+         <tr>
+  <th>idClasse</th>
+                <th>Nom</th>
+                <th>Nombre</th>
+                <th>Niveau</th>
+                <th>Filiere</th>
+                <th>actions</th>                   
+                </tr>
+        </thead>
+        <tbody>
+        {% for classe in classes %}
+                    <tr>
+                <td>{{ classe.idClasse }}</td>
+                <td>{{ classe.nom }}</td>
+                <td>{{ classe.nombre }}</td>
+                <td>{{ classe.niveau }}</td>
+                <td>{{ classe.filiere }}</td>
+                        </tr>
+        {% else %}
+            <tr>
+                <td colspan="6" style="text-align: center;">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
