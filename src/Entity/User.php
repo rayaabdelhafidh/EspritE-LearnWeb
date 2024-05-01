@@ -40,6 +40,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     #[Groups(['users'])]
     #[Assert\Length(min: 8, exactMessage: 'Le mot de passe doit contien plus que 8 characters')]
+    #[Assert\Regex(
+        pattern: '/^(?=.*[A-Z])(?=.*[\W_]).*$/',
+        message: 'Le mot de passe doit contenir au moins une lettre majuscule et un symbole.'
+    )]
     
     private ?string $password = null;
     
@@ -65,8 +69,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $etatPresence = null;
+    #[ORM\Column(type: 'boolean')]
+    private  $blocked = false;
 
-    
+    public function isBlocked(): bool
+    {
+        return $this->blocked;
+    }
+
+    public function setBlocked(bool $blocked): self
+    {
+        $this->blocked = $blocked;
+        return $this;
+    }
     public function getId(): ?int
     {
         return $this->id;

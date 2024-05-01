@@ -50,6 +50,16 @@
                             <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
                         </form>
                     </td>
+                    <td> <!-- New column for block/unblock button -->
+                        <form action="{{ path('app_user_block', {'id': user.id}) }}" method="post" onsubmit="return confirm('Are you sure you want to block/unblock this user?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('block' ~ user.id) }}">
+                            {% if user.blocked %}
+                                <button type="submit" class="btn btn-sm btn-success">Débloquer</button>
+                            {% else %}
+                                <button type="submit" class="btn btn-sm btn-warning">Bloquer</button>
+                            {% endif %}
+                        </form>
+                    </td>
                 </tr>
             {% else %}
                 <tr>

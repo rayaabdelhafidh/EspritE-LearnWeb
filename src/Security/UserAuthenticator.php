@@ -17,6 +17,8 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Symfony\Component\Security\Core\Exception\DisabledException;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
 class UserAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -41,7 +43,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         if (!$user) {
             throw new UsernameNotFoundException('User not found');
         }
-
+        
         return new Passport(
             new UserBadge($email),
             new PasswordCredentials($request->request->get('password', '')),
@@ -54,6 +56,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         $user = $token->getUser();
+        
 
         if (in_array("ROLE_ENSEIGNANT", $user->getRoles())) {
             return new RedirectResponse($this->urlGenerator->generate('app_home_front'));

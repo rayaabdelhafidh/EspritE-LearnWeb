@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -117,6 +118,18 @@ class UserController extends AbstractController
         return $this->render('user/enseignant.html.twig', [
             'enseignants' => $enseignants,
         ]);
+    }
+    #[Route('/{id}/block', name: 'app_user_block', methods: ['POST'])]
+    public function blockUser(User $user, EntityManagerInterface $entityManager): RedirectResponse
+    {
+        // Toggle the blocked status
+        $user->setBlocked(!$user->isBlocked());
+        
+        // Save the changes
+        $entityManager->flush();
+        
+        // Redirect back to the user listing page
+        return $this->redirectToRoute('app_user_index');
     }
 
 }

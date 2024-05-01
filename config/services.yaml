@@ -29,3 +29,5 @@ services:
     Twilio\Rest\Client:
         alias: app.twilio_client
         
+    App\Security\UserChecker:
+        tags: ['security.user_checker']    
