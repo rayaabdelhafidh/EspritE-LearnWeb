@@ -7,6 +7,7 @@
 <h1 class="text-center mb-3" style="color: red;">{{ quizz.getDescription() }}</h1>
 
 <form action="{{ path('app_quizz_submit', {'quizId': quizz.getQuizId()}) }}" method="post">
+
     {% for question in questions %}
         <div>
             <p style="display: inline-block; margin-right: 300px;">{{ question.getContent() }}</p>
@@ -27,9 +28,9 @@
         </div>
     {% endfor %}
     <button type="submit" style="border: 2px solid red; width: 400px; background-color: transparent; color: red; border-radius: 10px; margin-bottom: 50px;">Submit</button>
-</form>
 
-
+<a href="{{ path('app_emploi_pdf', {'quizId': quizz.getQuizId()}) }}" class="btn btn-primary">Générer PDF</a> <!-- Add this line for PDF generation -->
+<a href="{{ path('app_emploi_pdf_send', {'quizId': quizz.getQuizId()}) }}" class="btn btn-primary">Générer PDF</a>
 <div style="display: flex; align-items: center;">
     <a href="{{ path('app_quizz_index') }}" style="margin-right: 10px;">Back to list</a>
     <a href="{{ path('app_quizz_edit', {'quizId': quizz.getQuizId()}) }}"  style="margin-right: 10px; margin-left: 30px;">Edit</a>

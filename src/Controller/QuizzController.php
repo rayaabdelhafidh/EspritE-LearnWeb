@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Controller;
-
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use App\Entity\Quizz;
 use App\Form\QuizzType;
 use App\Repository\QuizzRepository;
@@ -18,13 +19,31 @@ use App\Form\OptionsType;
 use App\Repository\OptionsRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+use BaconQrCode\Common\Mode;
+use App\Services\QrcodeService;
 
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\ErrorCorrectionLevel;
+
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCodeBundle\Response\QrCodeResponse;
+
+use Knp\Component\Pager\PaginatorInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options as DompdfOptions;
+use ZipArchive;
+use App\Entity\Reponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 #[Route('/quizz')]
 class QuizzController extends AbstractController
 {
+
     #[Route('/', name: 'app_quizz_index', methods: ['GET'])]
-    public function index(Request $request, QuizzRepository $quizRepository): Response
+    public function index(Request $request, QuizzRepository $quizRepository,PaginatorInterface $paginator): Response
     {
         $sort = $request->query->get('sort');
         if ($sort === 'asc') {
@@ -34,6 +53,7 @@ class QuizzController extends AbstractController
         } else {
             $quizzs = $quizRepository->findAll();
         }
+        
 
         return $this->render('quizz/index.html.twig', [
             'quizzs' => $quizzs,
@@ -130,7 +150,7 @@ class QuizzController extends AbstractController
 
     }
     #[Route('/submit/{quizId}', name: 'app_quizz_submit', methods: ['POST'])]
-    public function submit(Request $request, Quizz $quizz, EntityManagerInterface $entityManager, OptionsRepository $optionsRepository): Response
+    public function submit(Request $request, Quizz $quizz, EntityManagerInterface $entityManager, OptionsRepository $optionsRepository, QrcodeService $qrcodeService): Response
     {
         // Récupérer les données soumises
         $submittedData = $request->request->all();
@@ -147,23 +167,148 @@ class QuizzController extends AbstractController
             if ($option && $option->isIsCorrect()) {
                 // Incrémenter le score total
                 $question = $option->getQuestion();
-            $totalScore += $question->getScore();
+                $totalScore += $question->getScore();
             }
         }
     
-        // Rediriger vers la page de résultat avec le score total
+        $qrCodeData = $qrcodeService->qrcode('Total Score: ' . $totalScore);
+    
+        // Pass the total score and QR code data to the view
         return $this->render('quizz/submit.html.twig', [
             'totalScore' => $totalScore,
+            'qrCodeData' => $qrCodeData,  
+            'quizz' => $quizz, // Make sure quizz is passed here         
+        ]);
+       
+    }
+ 
+    #[Route('/submit/{quizId}/pdf', name: 'app_quizz_submit_pdf', methods: ['GET'])]
+    public function generatePdf(Request $request, Quizz $quizz): Response
+    {
+        $html = $this->renderView('quizz/submit.html.twig', [
+            'totalScore' => $request->request->get('totalScore'),
+            'qrCodeData' => $request->request->get('qrCodeData'),
+            'quizz' => $quizz,
         ]);
 
+        // Configure Dompdf
+        $options = new DompdfOptions();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+
+        // Instantiate Dompdf
+        $dompdf = new Dompdf($options);
+
+        // Load HTML content
+        $dompdf->loadHtml($html);
+
+        // Set paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the PDF
+        $dompdf->render();
+
+        // Output the generated PDF and force download
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="quiz_result.pdf"',
+            ]
+        );
     }
+    #[Route('/pdf/{quizId}', name: 'app_emploi_pdf', methods: ['GET'])]
+    public function generatedf(Quizz $quizz, QuestionRepository $questionRepository): Response
+    {
+        // Fetch all emplois from the database
+        $questions = $questionRepository->findBy(['quiz' => $quizz]);
+    
+        // Render the PDF template
+        $html = $this->renderView('quizz/sumbitpdf.html.twig', [
+            'quizz' => $quizz,
+            'questions' => $questions,
+        ]);
+    
+        // Configure Dompdf
+        $options = new DompdfOptions();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+    
+        // Instantiate Dompdf
+        $dompdf = new Dompdf($options);
+    
+        // Load HTML content
+        $dompdf->loadHtml($html);
+    
+        // Set paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+    
+        // Render the PDF
+        $dompdf->render();
+    
+        // Output the generated PDF and force download
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="Quiz.pdf"',
+            ]
+        );
+    }
+    #[Route('/pdf/{quizId}/send', name: 'app_emploi_pdf_send', methods: ['GET'])]
+    public function generatePdfAndSendEmail(
+        Quizz $quizz,
+         QuestionRepository $questionRepository,
+        Request $request,
+        MailerInterface $mailer
+    ): Response {
+        $questions = $questionRepository->findBy(['quiz' => $quizz]);
+    
+        // Render the PDF template
+        $html = $this->renderView('quizz/sumbitpdf.html.twig', [
+            'quizz' => $quizz,
+            'questions' => $questions,
+        ]);
+    
+    
+  // Configure Dompdf
+  $options = new DompdfOptions();
+  $options->set('isHtml5ParserEnabled', true);
+  $options->set('isRemoteEnabled', true);
 
-   
+  // Instantiate Dompdf
+  $dompdf = new Dompdf($options);
 
+  // Load HTML content
+  $dompdf->loadHtml($html);
 
+  // Set paper size and orientation
+  $dompdf->setPaper('A4', 'portrait');
 
+  // Render the PDF
+  $dompdf->render();
 
+    
+        // Output the generated PDF content
+        $pdfContent = $dompdf->output();
+    
+        // Send email with attachment
+        $email = (new Email())
+            ->from('wael.benhamouda14@gmail.com')
+            ->to('eya.b.hamouda@gmail.com')
+            ->subject('Emploi PDF')
+            ->html('<p>Please find the emploi PDF attached.</p>')
+            ->attach($pdfContent, 'emplois.pdf', 'application/pdf');
+    
+        $mailer->send($email);
+    
+        // Redirect back to the index page or any other page
+        return $this->redirectToRoute('app_quizz_index');
+    }
+    
 
-}
-
+    
+    }
 

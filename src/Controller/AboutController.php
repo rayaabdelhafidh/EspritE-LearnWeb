@@ -15,4 +15,13 @@ class AboutController extends AbstractController
             'controller_name' => 'AboutController',
         ]);
     }
+    #[Route('/aboutt', name: 'app_about')]
+    public function checkGD(): Response
+    {
+        if (function_exists('gd_info')) {
+            return new Response("Le module GD est activé.");
+        } else {
+            return new Response("Le module GD n'est pas activé.");
+        }
+    }
 }
