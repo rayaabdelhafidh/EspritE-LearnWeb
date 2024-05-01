@@ -5,32 +5,31 @@
 {% block body %}
     <h1>Emplois</h1>
 
-   <form method="GET" action="{{ path('app_emploi_index') }}" style="margin-left: 20px;">
-    <label for="emploi">Filtrer par emploi: </label>
-    <select name="emploi" id="emploi">
+<form method="GET" action="{{ path('app_emploi_index') }}" style="margin-left: 20px;">
+    <label for="premierdate">Filtrer par date de début: </label>
+    <select name="premierdate" id="premierdate">
         <option value="">Tout</option>
-       {% set uniqueEmploiDates = [] %}
-{% for emploi in pagination.items %}
-    {% set premierdateStr = emploi.premierDate|date('Y-m-d') %}
-    {% set dernierdateStr = emploi.dernierDate|date('Y-m-d') %}
-    {% set emploiDate = premierdateStr ~ '-' ~ dernierdateStr %}
-    {% if emploiDate not in uniqueEmploiDates %}
-        {% set uniqueEmploiDates = uniqueEmploiDates|merge([emploiDate]) %}
-        <option value="{{ premierdateStr ~ '-' ~ dernierdateStr }}">
-            {{ premierdateStr }} - {{ dernierdateStr }}
-        </option>
-    {% endif %}
-{% endfor %}
-
+        {% for emploi in premierdates %}
+            {% set premierdate = emploi.premierdate %}
+            <option value="{{ premierdate|date('Y-m-d') }}">{{ premierdate|date('Y-m-d') }}</option>
+        {% endfor %}
     </select>
-    <button type="submit">Filtrer</button>
+    <button type="submit" name="filter">Filtrer</button>
 </form>
+
+
+
+
 
    <div class="section-title">
             <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
         </div>
 
     <a href="{{ path('app_emploi_new') }}">Créer Emploi</a>
+     <a href="{{ path('app_emploi_pdf') }}" class="btn btn-primary">Générer PDF</a>
+      <a href="{{ path('app_emploi_pdf_send') }}" class="btn btn-primary">send email</a>
+
+generate_qr_code
     <table class="table">
         <thead>
             <tr>
@@ -61,6 +60,8 @@
                 <td colspan="4">no records found</td>
             </tr>
         {% endfor %}
+
+          <img src="{{ qrCodeImagePath }}" alt="QR Code Image">
         </tbody>
     </table>
 

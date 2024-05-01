@@ -14,59 +14,65 @@ use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Flasher\Prime\FlasherInterface;
 use DateTime;
-
-
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use BaconQrCode\Encoder\QrCode;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
+use App\Service\QrCodeGenerator;
 
 #[Route('/emploi')]
 class EmploiController extends AbstractController
 {
-  
-
     #[Route('/', name: 'app_emploi_index', methods: ['GET'])]
-    public function index(EmploiRepository $emploiRepository, PaginatorInterface $paginator, Request $request): Response
+    public function index(PaginatorInterface $paginator, Request $request): Response
     {
-        // Get the selected premierdate and dernierdate from the request
-        $selectedEmploiRange = $request->query->get('emploi');
+        // Retrieve all unique premierdates from the Emploi entity
+        $premierdates = $this->getDoctrine()
+            ->getRepository(Emploi::class)
+            ->createQueryBuilder('e')
+            ->select('DISTINCT e.premierdate')
+            ->orderBy('e.premierdate', 'ASC')
+            ->getQuery()
+            ->getResult();
     
-        if ($selectedEmploiRange) {
-            // Split the selected emploi range into premierdate and dernierdate
-            [$premierdateStr, $dernierdateStr] = explode('-', $selectedEmploiRange);
+        // Get the selected premierdate from the request
+        $selectedPremierdate = $request->query->get('premierdate');
     
-            // Convert string representations back to DateTime objects
-            $premierdate = DateTime::createFromFormat('Y-m-d', $premierdateStr);
-            $dernierdate = DateTime::createFromFormat('Y-m-d', $dernierdateStr);
-    
-            // Output the selected date range for debugging
-            dump($premierdate, $dernierdate);
-    
-            // Query emplois within the selected date range
-            $queryBuilder = $emploiRepository->createQueryBuilder('e')
-                ->where('e.premierdate >= :start_date')
-                ->andWhere('e.dernierdate <= :end_date')
-                ->setParameter('start_date', $premierdate)
-                ->setParameter('end_date', $dernierdate);
-    
-            // Sort emplois by premierdate and dernierdate
-            $queryBuilder->orderBy('e.premierdate', 'ASC')
-                        ->addOrderBy('e.dernierdate', 'ASC');
-    
-            // Output the generated SQL query for debugging
-            dump($queryBuilder->getQuery()->getSQL());
-    
+        if ($selectedPremierdate) {
+            // Convert string representation back to DateTime object
+            $premierdate = DateTime::createFromFormat('Y-m-d', $selectedPremierdate);
+        
+            // Query emplois with the selected premierdate
+            $queryBuilder = $this->getDoctrine()
+                ->getRepository(Emploi::class)
+                ->createQueryBuilder('e')
+                ->where(':premierdate BETWEEN e.premierdate AND e.dernierdate')
+                ->setParameter('premierdate', $premierdate);
+        
             // Paginate the query results
             $pagination = $paginator->paginate(
                 $queryBuilder->getQuery(),
                 $request->query->getInt('page', 1),
                 5
             );
-    
+        
             return $this->render('emploi/index.html.twig', [
                 'pagination' => $pagination,
+                'premierdates' => $premierdates,
+                'selectedPremierdate' => $selectedPremierdate,
             ]);
         }
+        
     
-        // If no emploi range is selected, render all emplois
-        $queryBuilder = $emploiRepository->createQueryBuilder('e');
+        // If no premierdate is selected, render all emplois
+        $queryBuilder = $this->getDoctrine()
+            ->getRepository(Emploi::class)
+            ->createQueryBuilder('e');
         $pagination = $paginator->paginate(
             $queryBuilder->getQuery(),
             $request->query->getInt('page', 1),
@@ -75,12 +81,98 @@ class EmploiController extends AbstractController
     
         return $this->render('emploi/index.html.twig', [
             'pagination' => $pagination,
+            'premierdates' => $premierdates,
         ]);
     }
+    
+    
+    
+    #[Route('/pdf', name: 'app_emploi_pdf', methods: ['GET'])]
+    public function generatePdf(EmploiRepository $emploiRepository): Response
+    {
+        // Fetch all emplois from the database
+        $emplois = $emploiRepository->findAll();
+    
+        // Render the PDF template
+        $html = $this->renderView('emploi/all_emplois_pdf.html.twig', [
+            'emplois' => $emplois,
+        ]);
+    
+        // Configure Dompdf
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+    
+        // Instantiate Dompdf
+        $dompdf = new Dompdf($options);
+    
+        // Load HTML content
+        $dompdf->loadHtml($html);
+    
+        // Set paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+    
+        // Render the PDF
+        $dompdf->render();
+    
+        // Output the generated PDF and force download
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="emplois.pdf"',
+            ]
+        );
+    }
+
 
     
+    #[Route('/pdf/send', name: 'app_emploi_pdf_send', methods: ['GET'])]
+public function generatePdfAndSendEmail(
+    EmploiRepository $emploiRepository,
+    Request $request,
+    MailerInterface $mailer
+): Response {
+    $emplois = $emploiRepository->findAll();
 
-    
+    // Generate PDF content
+    $html = $this->renderView('emploi/all_emplois_pdf.html.twig', [
+        'emplois' => $emplois
+    ]);
+
+
+    // Configure Dompdf
+    $options = new Options();
+    $options->set('isHtml5ParserEnabled', true);
+    $options->set('isRemoteEnabled', true);
+    $dompdf = new Dompdf($options);
+
+    // Load HTML content
+    $dompdf->loadHtml($html);
+
+    // Set paper size and orientation
+    $dompdf->setPaper('A4', 'portrait');
+
+    // Render the PDF
+    $dompdf->render();
+
+    // Output the generated PDF content
+    $pdfContent = $dompdf->output();
+
+    // Send email with attachment
+    $email = (new Email())
+        ->from('nadineziadi021@gmail.com')
+        ->to('talesbyrory@gmail.com')
+        ->subject('Emploi PDF')
+        ->html('<p>Please find the emploi PDF attached.</p>')
+        ->attach($pdfContent, 'emplois.pdf', 'application/pdf');
+
+    $mailer->send($email);
+
+    // Redirect back to the index page or any other page
+    return $this->redirectToRoute('app_emploi_index');
+}
 
 
     #[Route('/new', name: 'app_emploi_new', methods: ['GET', 'POST'])]
@@ -122,6 +214,45 @@ class EmploiController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    public function generateQrCode(QrCodeGenerator $qrCodeGenerator, EmploiRepository $emploiRepository): Response
+    {
+        // Fetch all emplois from the database
+        $emplois = $emploiRepository->findAll();
+    
+        // Render the PDF template
+        $html = $this->renderView('emploi/all_emplois_pdf.html.twig', [
+            'emplois' => $emplois,
+        ]);
+    
+        // Configure Dompdf
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+    
+        // Instantiate Dompdf
+        $dompdf = new Dompdf($options);
+    
+        // Load HTML content
+        $dompdf->loadHtml($html);
+    
+        // Set paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+    
+        // Render the PDF
+        $dompdf->render();
+    
+        // Get the PDF content
+        $pdfContent = $dompdf->output();
+    
+        // Generate the QR code for the PDF content
+        $qrCodeImagePath = $qrCodeGenerator->generateQrCodeForPdf($pdfContent);
+    
+        return $this->render('qr_code.html.twig', [
+            'qrCodeImagePath' => $qrCodeImagePath,
+        ]);
+    }
+    
 
     
 

@@ -45,4 +45,13 @@ class EmploiRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+public function findUniqueEmploiDates(): array
+{
+    return $this->createQueryBuilder('e')
+        ->select('e.premierdate, e.dernierdate')
+        ->groupBy('e.premierdate, e.dernierdate')
+        ->getQuery()
+        ->getResult();
+}
 }
