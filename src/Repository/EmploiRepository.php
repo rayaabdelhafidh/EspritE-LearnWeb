@@ -46,11 +46,19 @@ class EmploiRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-public function findUniqueEmploiDates(): array
+public function findByAsc(): array
 {
     return $this->createQueryBuilder('e')
-        ->select('e.premierdate, e.dernierdate')
-        ->groupBy('e.premierdate, e.dernierdate')
+        ->orderBy('e.premierdate', 'ASC') // Replace 'fieldName' with the actual field name you want to sort by
+        ->getQuery()
+        ->getResult();
+}
+
+// Define a custom method to sort by a specific field in descending order
+public function findByDesc(): array
+{
+    return $this->createQueryBuilder('e')
+        ->orderBy('e.premierdate', 'DESC') // Replace 'fieldName' with the actual field name you want to sort by
         ->getQuery()
         ->getResult();
 }

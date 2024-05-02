@@ -5,17 +5,25 @@
 {% block body %}
     <h1>Emplois</h1>
 
-<form method="GET" action="{{ path('app_emploi_index') }}" style="margin-left: 20px;">
+<form method="GET" id="filterForm" action="{{ path('app_emploi_index') }}" style="margin-left: 20px;">
     <label for="premierdate">Filtrer par date de début: </label>
     <select name="premierdate" id="premierdate">
         <option value="">Tout</option>
         {% for emploi in premierdates %}
             {% set premierdate = emploi.premierdate %}
-            <option value="{{ premierdate|date('Y-m-d') }}">{{ premierdate|date('Y-m-d') }}</option>
+            <option value="{{ premierdate|date('Y-m-d') }}" {{ premierdate|date('Y-m-d') == selectedPremierdate ? 'selected' : '' }}>{{ premierdate|date('Y-m-d') }}</option>
         {% endfor %}
     </select>
+    <label for="type">Trier par : </label>
+    <select name="type" id="type">
+        <option value="Croissant" {{ order == 'Croissant' ? 'selected' : '' }}>Croissant</option>
+        <option value="Décroissant" {{ order == 'Décroissant' ? 'selected' : '' }}>Décroissant</option>
+    </select>
     <button type="submit" name="filter">Filtrer</button>
+    <a href="#" id="generatePdfButton" class="btn btn-primary">Générer PDF</a>
+     <a href="#" id="sendEmailButton" class="btn btn-primary">envoyer Email</a>
 </form>
+
 
 
 
@@ -26,10 +34,7 @@
         </div>
 
     <a href="{{ path('app_emploi_new') }}">Créer Emploi</a>
-     <a href="{{ path('app_emploi_pdf') }}" class="btn btn-primary">Générer PDF</a>
-      <a href="{{ path('app_emploi_pdf_send') }}" class="btn btn-primary">send email</a>
 
-generate_qr_code
     <table class="table">
         <thead>
             <tr>
@@ -61,7 +66,7 @@ generate_qr_code
             </tr>
         {% endfor %}
 
-          <img src="{{ qrCodeImagePath }}" alt="QR Code Image">
+    
         </tbody>
     </table>
 
@@ -95,4 +100,28 @@ generate_qr_code
             });
         }
     </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const premierdateSelect = document.getElementById('premierdate');
+        const generatePdfButton = document.getElementById('generatePdfButton');
+
+        premierdateSelect.addEventListener('change', function() {
+            const selectedPremierdate = premierdateSelect.value;
+            generatePdfButton.href = '{{ path('app_emploi_pdf') }}?premierdate=' + selectedPremierdate;
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const premierdateSelect = document.getElementById('premierdate');
+        const sendEmailButton = document.getElementById('sendEmailButton');
+
+        premierdateSelect.addEventListener('change', function() {
+            const selectedPremierdate = premierdateSelect.value;
+            sendEmailButton.href = '{{ path('app_emploi_pdf_send') }}?premierdate=' + selectedPremierdate;
+        });
+    });
+</script>
+
 {% endblock %}

@@ -33,6 +33,10 @@
         <button type="submit">Filtrer</button>
     </form>
 
+   <a href="{{ path('app_salle_pdf') }}" style ="margin-left:20px;">Générer PDF</a> 
+      <a href="{{ path('app_salle_pdf_send') }}" style ="margin-left:20px;">envoyer email</a> 
+<a href="{{ path('app_salle_new') }}" style ="margin-left:20px;">Ajouter salle</a>
+
    <div class="section-title">
             <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
         </div>
@@ -64,12 +68,12 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_salle_new') }}" style ="margin-left:20px;">Ajouter salle</a>
+    
 <div style="display: flex; justify-content: center; margin-top: 20px;">
     {{ knp_pagination_render(pagination) }}
 </div>
 
- <script>
+<script>
         function search() {
           
             let input = document.getElementById("searchInput");
@@ -87,7 +91,6 @@
                         found = true;
                     }
                 });
-
                 if (found) {
                     row.style.display = "";
                 } else {

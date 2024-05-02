@@ -14,6 +14,11 @@ use Psr\Log\LoggerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Flasher\Prime\FlasherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Address;
 
 #[Route('/salle')]
 class SalleController extends AbstractController
@@ -59,9 +64,80 @@ class SalleController extends AbstractController
         ]);
     }
 
+    #[Route('/pdf', name: 'app_salle_pdf', methods: ['GET'])]
+    public function generatePdf(
+        SalleRepository $salleRepository,
+        Request $request,
+        FlasherInterface $flasher
+    ): Response {
 
-   
+        
+            $salles = $salleRepository->findAll();
+        
     
+        $html = $this->renderView('salle/salles.html.twig', [
+            'salles' => $salles,
+        ]);
+
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+        $dompdf = new Dompdf($options);
+    
+        $dompdf->loadHtml($html);
+    
+        $dompdf->setPaper('A4', 'portrait');
+    
+        $dompdf->render();
+        $flasher->addSuccess('pdf téléchargé avec succès.');
+
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="salles.pdf"',
+            ]
+        );
+    }
+   
+    #[Route('/pdf/send', name: 'app_salle_pdf_send', methods: ['GET'])]
+    public function generatePdfAndSendEmail(
+        Request $request,
+        SalleRepository $salleRepository,
+        MailerInterface $mailer,
+        FlasherInterface $flasher
+    ): Response {
+        
+            $salles = $salleRepository->findAll();
+    
+        $html = $this->renderView('salle/salles.html.twig', [
+            'salles' => $salles
+        ]);
+    
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $pdfContent = $dompdf->output();
+    
+        $email = (new Email())
+            ->from(new Address('nadineziadi021@gmail.com', 'Scolarité Esprit'))
+            ->to('talesbynadine@gmail.com')
+            ->subject('Nos Salles')
+            ->html('<p>Ici, vous trouverez nos salles !</p>')
+            ->attach($pdfContent, 'salles.pdf', 'application/pdf');
+        $mailer->send($email);
+    
+        $flasher->addSuccess('Email envoyé avec succès.');
+    
+        return $this->redirectToRoute('app_salle_index');
+    }
+    
+
     #[Route('/new', name: 'app_salle_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, FlasherInterface $flasher): Response
     {
