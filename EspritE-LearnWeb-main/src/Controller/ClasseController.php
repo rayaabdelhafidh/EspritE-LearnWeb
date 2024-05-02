@@ -74,6 +74,34 @@ class ClasseController extends AbstractController
         }
         return $realEntities;
     }
+    #[Route('/print', name: 'app_classe_print', methods: ['GET'])]
+    public function print( ClasseRepository $matiererepository)
+    {
+    
+        $result = $matiererepository->findAll();
+        $pdfOptions = new Options();
+    
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+    
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('classe/print.html.twig', [
+            'classes' => $result
+        ]);
+    
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+    
+        // Render the HTML as PDF
+        $dompdf->render();
+        // Output the generated PDF as a response with Content-Type set to 'application/pdf'
+        return new Response($dompdf->output(), Response::HTTP_OK, [
+            'Content-Type' => 'listedesclasses/pdf',
+        ]);
+    
+    }
 
     #[Route('/new', name: 'app_classe_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -86,6 +114,7 @@ class ClasseController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($classe);
             $entityManager->flush();
+            flash()->addSuccess('classe Added Successfully');
 
             return $this->redirectToRoute('app_classe_index', [], Response::HTTP_SEE_OTHER);
         }

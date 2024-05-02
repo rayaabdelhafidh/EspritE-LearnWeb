@@ -27,9 +27,6 @@ class PresenceController extends AbstractController
     }
     
 
-   
-
-
     #[Route('/mail', name: 'app_mail', methods: ['GET'])]
     public function sendEmail(MailerInterface $mailer,PresenceRepository $presenceRepository, ClasseRepository $userRepository): Response
 {
@@ -88,7 +85,7 @@ class PresenceController extends AbstractController
 
     $mailer->send($email);
     flash()->addSuccess('mail envoyé avec succés');
-
+      
     return $this->redirectToRoute('app_presence_index', [], Response::HTTP_SEE_OTHER);
 }
 
