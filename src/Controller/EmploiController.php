@@ -161,7 +161,7 @@ class EmploiController extends AbstractController
     
         $email = (new Email())
             ->from(new Address('nadineziadi021@gmail.com', 'Scolarité Esprit'))
-            ->to('talesbynadine@gmail.com')
+            ->to('ziadinadine5@gmail.com')
             ->subject('Votre Emploi')
             ->html('<p>Ici, vous trouverez votre emploi du temps pour la semaine. Bonne étude !</p>')
             ->attach($pdfContent, 'emplois.pdf', 'application/pdf');

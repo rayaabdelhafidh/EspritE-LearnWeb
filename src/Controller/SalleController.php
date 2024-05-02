@@ -126,7 +126,7 @@ class SalleController extends AbstractController
     
         $email = (new Email())
             ->from(new Address('nadineziadi021@gmail.com', 'Scolarité Esprit'))
-            ->to('talesbynadine@gmail.com')
+            ->to('ziadinadine5@gmail.com')
             ->subject('Nos Salles')
             ->html('<p>Ici, vous trouverez nos salles !</p>')
             ->attach($pdfContent, 'salles.pdf', 'application/pdf');
