@@ -1,9 +1,10 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Paiement pour {{ evenement.nomevenement }}{% endblock %}
 
 {% block body %}
+    
+
     <h1>Evenement {{ evenement.nomevenement }}</h1>
     <p>Prix du pass: {{ evenement.prixEvenement }} DT</p>
 <script src="https://js.stripe.com/v3/"></script>
@@ -64,10 +65,20 @@
                 if (result.error) {
                     var errorElement = document.getElementById('card-errors');
                     errorElement.textContent = result.error.message;
+                    // Add error message to flash
+                    var errorMessage = result.error.message;
+                    var flashErrorContainer = document.createElement('div');
+                    flashErrorContainer.className = 'alert alert-danger';
+                    flashErrorContainer.textContent = errorMessage;
+                    document.body.insertBefore(flashErrorContainer, document.body.firstChild);
                 } else {
                     if (result.paymentIntent.status === 'succeeded') {
                         // Payment successful, display success message
+                        var successMessage = document.createElement('div');
                         
+                        successMessage.className = 'alert alert-success';
+                        successMessage.textContent = 'Payment successful!';
+                        document.body.insertBefore(successMessage, document.body.firstChild);
                     }
                 }
             });

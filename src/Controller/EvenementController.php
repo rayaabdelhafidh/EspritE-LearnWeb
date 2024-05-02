@@ -165,6 +165,9 @@ class EvenementController extends AbstractController
         'currency' => 'eur', // Devise
     ]);
 
+    $this->addFlash('success', 'Succés de payment!');
+    $this->addFlash('error', 'Payment refusé!');
+
     return $this->render('evenement/payment.html.twig', [
         'client_secret' => $intent->client_secret,
         'evenement' => $evenement, // Passer l'objet Evenement à la vue pour référence
