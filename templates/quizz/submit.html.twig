@@ -10,5 +10,10 @@
     <p>Total Score: {{ totalScore }}</p>
       {# Display the QR code image #}
     <img src="{{ qrCodeData }}" alt="QR Code for Total Score">
-   
+    <div>
+    <a href="{{ path('app_emploi_pdf_send', {'quizId': quizz.getQuizId(), 'totalScore': totalScore, 'qrCodeData': qrCodeData}) }}" class="btn btn-primary">Envoyer</a>
+    </div>
+    <div>
+     <a href="{{ path('app_quizz_generate_pdf', {'quizId': quizz.getQuizId(), 'totalScore': totalScore, 'qrCodeData': qrCodeData}) }}" class="btn btn-primary">PDF</a>
+     </div>
 {% endblock %}

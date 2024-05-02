@@ -37,13 +37,14 @@ use ZipArchive;
 use App\Entity\Reponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Routing\RouterInterface;
 
 #[Route('/quizz')]
 class QuizzController extends AbstractController
 {
 
     #[Route('/', name: 'app_quizz_index', methods: ['GET'])]
-    public function index(Request $request, QuizzRepository $quizRepository,PaginatorInterface $paginator): Response
+    public function index(Request $request, QuizzRepository $quizRepository, PaginatorInterface $paginator): Response
     {
         $sort = $request->query->get('sort');
         if ($sort === 'asc') {
@@ -53,12 +54,18 @@ class QuizzController extends AbstractController
         } else {
             $quizzs = $quizRepository->findAll();
         }
-        
-
+    
+        $quizzsPaginated = $paginator->paginate(
+            $quizzs, // Les résultats à paginer
+            $request->query->getInt('page', 1), // Numéro de page à afficher
+            10
+        );
+    
         return $this->render('quizz/index.html.twig', [
-            'quizzs' => $quizzs,
+            'quizzs' => $quizzsPaginated,
         ]);
     }
+    
 
     #[Route('/new', name: 'app_quizz_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -149,66 +156,61 @@ class QuizzController extends AbstractController
      
 
     }
-    #[Route('/submit/{quizId}', name: 'app_quizz_submit', methods: ['POST'])]
-    public function submit(Request $request, Quizz $quizz, EntityManagerInterface $entityManager, OptionsRepository $optionsRepository, QrcodeService $qrcodeService): Response
+    #[Route('/submit/{quizId}', name: 'app_quizz_submit', methods: ['POST', 'GET'])]
+    public function submit(Request $request, Quizz $quizz, EntityManagerInterface $entityManager, OptionsRepository $optionsRepository, QrcodeService $qrcodeService, RouterInterface $router): Response
     {
-        // Récupérer les données soumises
-        $submittedData = $request->request->all();
-    
-        // Initialiser le score total à 0
-        $totalScore = 0;
-    
-        // Parcourir les données soumises
-        foreach ($submittedData as $questionid => $optionId) {
-            // Récupérer l'option sélectionnée
-            $option = $optionsRepository->find($optionId);
-    
-            // Vérifier si l'option existe et si elle est correcte
-            if ($option && $option->isIsCorrect()) {
-                // Incrémenter le score total
-                $question = $option->getQuestion();
-                $totalScore += $question->getScore();
+        if ($request->isMethod('POST')) {
+            // Calcul du totalScore et qrCodeData
+            $submittedData = $request->request->all();
+            $totalScore = 0;
+            foreach ($submittedData as $questionid => $optionId) {
+                $option = $optionsRepository->find($optionId);
+                if ($option && $option->isIsCorrect()) {
+                    $question = $option->getQuestion();
+                    $totalScore += $question->getScore();
+                }
             }
+            $qrCodeData = $qrcodeService->qrcode('Total Score: ' . $totalScore);
+            
+            // Rendu du modèle Twig
+            $html = $this->renderView('quizz/submit.html.twig', [
+                'totalScore' => $totalScore,
+                'qrCodeData' => $qrCodeData,
+                'quizz' => $quizz,
+            ]);
+
+            // Retourne la réponse avec le contenu HTML
+            return new Response($html);
         }
-    
-        $qrCodeData = $qrcodeService->qrcode('Total Score: ' . $totalScore);
-    
-        // Pass the total score and QR code data to the view
-        return $this->render('quizz/submit.html.twig', [
-            'totalScore' => $totalScore,
-            'qrCodeData' => $qrCodeData,  
-            'quizz' => $quizz, // Make sure quizz is passed here         
-        ]);
-       
+
+        // Si la méthode est GET, redirigez l'utilisateur vers la page de soumission
+        return $this->redirectToRoute('app_quizz_submit');
     }
- 
-    #[Route('/submit/{quizId}/pdf', name: 'app_quizz_submit_pdf', methods: ['GET'])]
+
+    #[Route('/submit/{quizId}/pdf', name: 'app_quizz_generate_pdf', methods: ['GET'])]
     public function generatePdf(Request $request, Quizz $quizz): Response
     {
+        $totalScore = $request->query->get('totalScore');
+        $qrCodeData = $request->query->get('qrCodeData');
+
         $html = $this->renderView('quizz/submit.html.twig', [
-            'totalScore' => $request->request->get('totalScore'),
-            'qrCodeData' => $request->request->get('qrCodeData'),
+            'totalScore' => $totalScore,
+            'qrCodeData' => $qrCodeData,
             'quizz' => $quizz,
         ]);
 
-        // Configure Dompdf
         $options = new DompdfOptions();
         $options->set('isHtml5ParserEnabled', true);
         $options->set('isRemoteEnabled', true);
 
-        // Instantiate Dompdf
         $dompdf = new Dompdf($options);
 
-        // Load HTML content
         $dompdf->loadHtml($html);
 
-        // Set paper size and orientation
         $dompdf->setPaper('A4', 'portrait');
 
-        // Render the PDF
         $dompdf->render();
 
-        // Output the generated PDF and force download
         return new Response(
             $dompdf->output(),
             Response::HTTP_OK,
@@ -217,7 +219,8 @@ class QuizzController extends AbstractController
                 'Content-Disposition' => 'attachment; filename="quiz_result.pdf"',
             ]
         );
-    }
+    
+}
     #[Route('/pdf/{quizId}', name: 'app_emploi_pdf', methods: ['GET'])]
     public function generatedf(Quizz $quizz, QuestionRepository $questionRepository): Response
     {
@@ -298,16 +301,67 @@ class QuizzController extends AbstractController
         $email = (new Email())
             ->from('wael.benhamouda14@gmail.com')
             ->to('eya.b.hamouda@gmail.com')
-            ->subject('Emploi PDF')
-            ->html('<p>Please find the emploi PDF attached.</p>')
-            ->attach($pdfContent, 'emplois.pdf', 'application/pdf');
+            ->subject('Quiz PDF')
+            ->html('<p>Please find the Quiz PDF attached.</p>')
+            ->attach($pdfContent, 'Quiz.pdf', 'application/pdf');
     
         $mailer->send($email);
     
         // Redirect back to the index page or any other page
         return $this->redirectToRoute('app_quizz_index');
     }
+    #[Route('/pdf/{quizId}/sendd', name: 'app_emploi_pdf_send', methods: ['GET'])]
+    public function generatePdfAndSendEmai(
+        Quizz $quizz,
+       
+        Request $request,
+        MailerInterface $mailer
+    ): Response {
+        
+        $totalScore = $request->query->get('totalScore');
+        $qrCodeData = $request->query->get('qrCodeData');
+        // Render the PDF template
+        $html = $this->renderView('quizz/submit.html.twig', [
+            'totalScore' => $totalScore,
+            'qrCodeData' => $qrCodeData,
+            'quizz' => $quizz,
+        ]);
     
+    
+  // Configure Dompdf
+  $options = new DompdfOptions();
+  $options->set('isHtml5ParserEnabled', true);
+  $options->set('isRemoteEnabled', true);
+
+  // Instantiate Dompdf
+  $dompdf = new Dompdf($options);
+
+  // Load HTML content
+  $dompdf->loadHtml($html);
+
+  // Set paper size and orientation
+  $dompdf->setPaper('A4', 'portrait');
+
+  // Render the PDF
+  $dompdf->render();
+
+    
+        // Output the generated PDF content
+        $pdfContent = $dompdf->output();
+    
+        // Send email with attachment
+        $email = (new Email())
+            ->from('wael.benhamouda14@gmail.com')
+            ->to('eya.b.hamouda@gmail.com')
+            ->subject('result PDF')
+            ->html('<p>Please find the Quiz PDF attached.</p>')
+            ->attach($pdfContent, 'resultz.pdf', 'application/pdf');
+    
+        $mailer->send($email);
+    
+        // Redirect back to the index page or any other page
+        return $this->redirectToRoute('app_quizz_index');
+    }
 
     
     }

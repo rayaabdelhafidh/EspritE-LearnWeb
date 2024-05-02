@@ -25,7 +25,7 @@ class QrcodeService
 
     public function qrcode($query)
     {
-        $url = 'https://www.google.com/search?q=';
+        
 
         $objDateTime = new \DateTime('NOW');
         $dateString = $objDateTime->format('d-m-Y H:i:s');
@@ -34,7 +34,7 @@ class QrcodeService
 
         // set qrcode
         $result = $this->builder
-        ->data($url.$query)
+        ->data($query)
         ->encoding(new Encoding('UTF-8'))
       
         ->size(400)
