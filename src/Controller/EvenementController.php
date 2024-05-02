@@ -17,6 +17,8 @@ use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 
 #[Route('/evenement')]
 class EvenementController extends AbstractController
@@ -192,5 +194,27 @@ function statistique(ChartBuilderInterface $chartBuilder,EvenementRepository $ev
         ]);
     }
 
+    /////////////////////////MAP///////////////////////
+    private function generateGoogleMapLink(string $location): string
+{
+    // Formater le lieu pour qu'il soit compatible avec l'URL de la page show_map_by_location
+    $formattedLocation = urlencode($location);
+    
+    // Retourner le nom de la route avec le paramètre lieu
+    return 'show_map_by_location?lieu=' . $formattedLocation;
+}
+
+
+    #[Route('/show-map', name: 'show_map_by_location')]
+    public function showMapByLocation(Request $request): Response
+    {
+        // Récupérer le lieu depuis la requête
+        $lieu = $request->query->get('lieu');
+        
+        // Passer le lieu à la vue
+        return $this->render('evenement/showDetails.html.twig', [
+            'lieu' => $lieu,
+        ]);
+    }
 }
 

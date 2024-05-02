@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c392a0eea06b72dfc0a808e13e19edd1",
+    "content-hash": "f246063880a8037468f00ca40714e6d4",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1631,6 +1631,32 @@
                 "source": "https://github.com/KnpLabs/KnpPaginatorBundle/tree/v5.9.0"
             },
             "time": "2022-08-28T14:42:14+00:00"
+        },
+        {
+            "name": "leaflet/leaflet",
+            "version": "v1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aissasell/leaflet.git",
+                "reference": "7eadefcbd4d8bbb9af36a2b78186e6d068afa177"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aissasell/leaflet/zipball/7eadefcbd4d8bbb9af36a2b78186e6d068afa177",
+                "reference": "7eadefcbd4d8bbb9af36a2b78186e6d068afa177",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "description": "an open-source JavaScript library for mobile-friendly interactive maps",
+            "support": {
+                "issues": "https://github.com/aissasell/leaflet/issues",
+                "source": "https://github.com/aissasell/leaflet/tree/v1.4.0"
+            },
+            "time": "2019-03-23T14:27:52+00:00"
         },
         {
             "name": "monolog/monolog",

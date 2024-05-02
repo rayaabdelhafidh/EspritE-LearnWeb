@@ -4,7 +4,7 @@
 {% block title %}Paiement pour {{ evenement.nomevenement }}{% endblock %}
 
 {% block body %}
-    <h1>Evenement {{ evenement.nomevenement }} </h1>
+    <h1>Evenement {{ evenement.nomevenement }}</h1>
     <p>Prix du pass: {{ evenement.prixEvenement }} DT</p>
 <script src="https://js.stripe.com/v3/"></script>
    <h1>Payment</h1>
@@ -70,7 +70,7 @@
                     var errorElement = document.getElementById('card-errors');
                     errorElement.textContent = result.error.message;
                 } else {
-                    if (result.paymentIntent.status == 'succeeded') {
+                    if (result.paymentIntent.status === 'succeeded') {
                         // Payment successful, display success message
                         
                     }
