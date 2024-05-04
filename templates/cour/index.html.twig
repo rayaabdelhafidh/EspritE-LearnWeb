@@ -1,0 +1,78 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Cour index{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Liste des Cours</h1>
+
+    <div class="section-title">
+        <input type="text" id="searchInputCour" class="form-control" placeholder="Rechercher un cours" oninput="searchCour()">
+    </div>
+   <div class="btn-group">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Trier par Titre
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ path('app_cour_sort', {'attribute': 'titre', 'order': 'asc'}) }}">Ascendant</a></li>
+            <li><a class="dropdown-item" href="{{ path('app_cour_sort', {'attribute': 'titre', 'order': 'desc'}) }}">Descendant</a></li>
+        </ul>
+    </div>
+    
+
+    <div class="row">
+        <a href="{{ path('app_cour_new') }}" class="btn btn-success mt-4">Ajouter un nouveau cours</a>
+
+        {% for cour in cours %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 bg-white">
+                    <img src="{{ asset(cour.Image) }}" class="card-img-top" alt="...">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-danger"><strong>Titre:</strong> {{ cour.Titre }}</h5>
+                        <p class="card-text"><strong>Description:</strong> {{ cour.description }}</p>
+                        <p class="card-text"><strong>Durée:</strong> {{ cour.Duree }}</p>
+                        <p class="card-text"><strong>Objectif:</strong> {{ cour.Objectif }}</p>
+                        <p class="card-text"><strong>url:</strong> {{ cour.CoursPdfUrl }}</p>                      
+                        <p class="card-text"><strong>Matière:</strong> {{ cour.idmatiere.nomm }}</p>
+                        <p class="card-text"><strong>Note:</strong> {{ cour.Note }}</p>
+                        <p class="card-text"><strong>Likes:</strong> {{ cour.Nblike }}</p>
+                    
+                        <a href="{{ path('app_cour_show', {'id': cour.id}) }}" class="btn btn-primary mt-auto">Détails</a>
+                        <a href="{{ path('app_cour_edit', {'id': cour.id}) }}" class="btn btn-secondary">Modifier</a>
+                         <a href="{{ path('download_pdf', {'id': cour.id}) }}" class="btn btn-outline-secondary" downloadPdf>downloadPdf</a>
+
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-md-12">
+                <p>Aucun cours disponible pour le moment.</p>
+            </div>
+        {% endfor %}
+    </div>
+   
+
+
+
+    <script>
+        function searchCour() {
+            // Récupère la valeur de la recherche
+            let input = document.getElementById("searchInputCour");
+            let filter = input.value.toUpperCase();
+
+            // Récupère tous les éléments de la liste de cours
+            let cards = document.querySelectorAll(".card");
+
+            // Parcours tous les éléments et masque ceux qui ne correspondent pas à la recherche
+            cards.forEach(card => {
+                let cardText = card.innerText.toUpperCase();
+
+                // Vérifie si le texte de la carte contient le terme recherché
+                if (cardText.includes(filter)) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+    </script>
+{% endblock %}

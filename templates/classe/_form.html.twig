@@ -1,0 +1,16 @@
+{{ form_start(form, {attr: {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+    <div class="mb-3">
+        {{ form_row(form.nom, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="mb-3">
+        {{ form_row(form.nombre, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="mb-3">
+        {{ form_row(form.niveau, {'attr': {'class': 'form-select'}}) }}
+    </div>
+    
+    <div class="mb-3">
+        {{ form_row(form.filiere, {'attr': {'class': 'form-select'}}) }}
+    </div>
+    <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

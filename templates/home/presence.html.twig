@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des presence pour {{ classe.nom }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2>Presence List for {{ classe.nom }}</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Seance</th>
+                        <th scope="col">List presence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for presence in presences %}
+                {% set presenceIndex = presence.id - 4 + 1  %}
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ presence.date|date('Y-m-d H:i') }}</td>
+                        <td>{{ presence.seance }}</td>
+                        <td>
+                         {% for etudiantname in nometu[presenceIndex] %}
+                {{ etudiantname}}
+                {% else %}
+                    a absent
+                 {% endfor %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">No presences found for {{ classe.nom }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <a href="{{ path('app_home') }}" class="btn btn-secondary">Back to Home</a>
+    <a href="{{ path('presence_pdf', {'id': classe.id}) }}" class="btn btn-primary">PDF</a>                                           
+
+</div>
+{% endblock %}

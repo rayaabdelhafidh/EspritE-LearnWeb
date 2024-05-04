@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Club index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px; /* Pour compenser les marges négatives des colonnes */
+        }
+
+        .col-md-4 {
+            padding: 0 15px; /* Ajoute une marge aux colonnes */
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Assurez-vous que la hauteur de la carte est à 100% de son conteneur */
+        }
+
+        .card-body {
+            flex-grow: 1; /* Permet au contenu de s'étirer pour remplir l'espace disponible */
+        }
+
+        .red-title {
+            color: red;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<br>
+    <h1>Liste des Clubs</h1>
+     <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title red-title"><strong>Nom Club: </strong> {{ club.nomclub }}</h5>
+                        <p class="card-text"><strong>Date Fondation: </strong> {{ club.datefondation ? club.datefondation|date('Y-m-d') : '' }}</p>
+                        <p class="card-text"><strong>Type Activite: </strong> {{ club.typeactivite }}</p>
+                        <p class="card-text"><strong>Description: </strong> {{ club.description }}</p>
+                        <p class="card-text"><strong>Nombre de Membres: </strong> {{ club.nbmembres }}</p>
+                        <p class="card-text"><strong>Activite: </strong> {{  club.active ? 'Active' : 'Inactive' }}</p>
+                    
+                    </div>
+                </div>
+            </div>
+            </div>
+{% endblock %}

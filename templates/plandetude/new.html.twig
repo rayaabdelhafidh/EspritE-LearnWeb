@@ -1,0 +1,11 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}New Plandetude{% endblock %}
+
+{% block body %}
+    
+
+    {{ include('plandetude/_form.html.twig') }}
+
+    <a href="{{ path('app_plandetude_index') }}">back to list</a>
+{% endblock %}

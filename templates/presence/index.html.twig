@@ -1,0 +1,126 @@
+{% extends 'baseback.html.twig' %}
+{% block stylesheets %}
+    <style>
+        /* Ajoutez vos règles CSS personnalisées ici */
+        .search-container {
+            margin-bottom: 20px;
+        }
+        
+        .search-container label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .search-container input[type="text"] {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .table th,
+        .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .table th {
+            background-color: #f2f2f2;
+        }
+        
+        .table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .table tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}Presence index{% endblock %}
+
+{% block body %}
+    <h1>Presence index</h1>
+    <a href="{{ path('app_mail') }}" style="border: 5px solid; background-color: black;"> Envoyer mail</a>
+
+        <div class="section-title">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
+        </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Seance</th>
+                <th>Les etudiants présents</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for presence in presences %}
+        {% set presenceIndex = loop.index - 1 %}
+            <tr>
+                <td>{{ presence.id }}</td>
+                <td>{{ presence.date ? presence.date|date('Y-m-d') : '' }}</td>
+                <td>{{ presence.seance }}</td>
+                <td>
+                {% for etudiantname in nometu[presenceIndex] %}
+                {{ etudiantname}}
+                {% else %}
+                    a absent
+                 {% endfor %}
+                </td>
+                <td>
+                    <a href="{{ path('app_presence_show', {'id': presence.id}) }}">show</a>
+                    <a href="{{ path('app_presence_edit', {'id': presence.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+       <script>
+        function search() {
+            // Récupère la valeur de la recherche
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toUpperCase();
+
+            // Récupère tous les éléments de la table à filtrer
+            let rows = document.querySelectorAll("tbody tr");
+
+            // Parcours tous les éléments et masque ceux qui ne correspondent pas à la recherche
+            rows.forEach(row => {
+                let found = false;
+                // Récupère toutes les cellules de la ligne
+                let cells = row.querySelectorAll("td");
+                cells.forEach(cell => {
+                    let text = cell.textContent || cell.innerText;
+                    // Vérifie si le texte de la cellule contient le terme recherché
+                    if (text.toUpperCase().includes(filter)) {
+                        found = true;
+                    }
+                });
+                // Affiche ou masque la ligne en fonction de si elle contient le terme recherché
+                if (found) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
+
+
+    <a href="{{ path('app_presence_new') }}">Create new</a>
+{% endblock %}

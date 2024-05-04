@@ -1,0 +1,62 @@
+
+  {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}           
+
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary rounded-top p-4">
+                    <div class="row">
+    <form method="{{ form.vars.method }}" action="{{ form.vars.action }}" enctype="multipart/form-data">
+        {{ form_start(form,{'attr': {'novalidate': 'novalidate'}}) }}
+        <div class="form-group">
+            <label class="form-control-label text-danger" for="{{ form.nomevenement.vars.id }}">Nom Evenement</label>
+            {{ form_widget(form.nomevenement, {'attr': {'class': 'form-control','placeholder': 'Inserer le nom de l evenement'}}) }}
+            {% if form_errors(form.nomevenement) %}
+                <div class="error-message">{{ form_errors(form.nomevenement) }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label class="form-control-label text-danger" for="{{ form.dateevenement.vars.id }}">Date de l evenement</label>
+            {{ form_widget(form.dateevenement, {'attr': {'class': 'form-control','placeholder': 'Inserer la date de l evenement'}}) }}
+            {% if form_errors(form.dateevenement) %}
+                <div class="error-message">{{ form_errors(form.dateevenement) }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label class="form-control-label text-danger" for="{{ form.lieuevenement.vars.id }}">Lieu de l evenement</label>
+            {{ form_widget(form.lieuevenement, {'attr': {'class': 'form-control','placeholder': 'Inserer le lieu de l evenement'}}) }}
+            {% if form_errors(form.lieuevenement) %}
+                <div class="error-message">{{ form_errors(form.lieuevenement) }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label class="form-control-label text-danger" for="{{ form.prixevenement.vars.id }}">Prix</label>
+            {{ form_widget(form.prixevenement, {'attr': {'class': 'form-control','placeholder': 'Inserer le prix de l evenement'}}) }}
+            {% if form_errors(form.prixevenement) %}
+                <div class="error-message">{{ form_errors(form.prixevenement) }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+    <label class="form-control-label text-danger" for="{{ form.afficheevenement.vars.id }}">Affiche de l'événement</label>
+    {{ form_widget(form.afficheevenement, {'attr': {'class': 'form-control-file'}}) }}
+    {% if form_errors(form.afficheevenement) %}
+        <div class="error-message">{{ form_errors(form.afficheevenement) }}</div>
+    {% endif %}
+</div>
+
+        <div class="form-group">
+            <label class="form-control-label text-danger" for="{{ form.club.vars.id }}">Club responsable</label>
+            {{ form_widget(form.club, {'attr': {'class': 'form-control'}}) }}
+            {% if form_errors(form.club) %}
+                <div class="error-message">{{ form_errors(form.club) }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+        <a href="{{ path('app_evenement_index') }}" class="btn btn-secondary">Annuler</a>
+        {{ form_end(form) }}
+
+       </form>
+                        </div>
+                </div>
+            </div>
+
+                
+

@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cour index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px; /* Pour compenser les marges négatives des colonnes */
+        }
+
+        .col-md-4 {
+            padding: 0 15px; /* Ajoute une marge aux colonnes */
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Assurez-vous que la hauteur de la carte est à 100% de son conteneur */
+        }
+
+        .card-body {
+            flex-grow: 1; /* Permet au contenu de s'étirer pour remplir l'espace disponible */
+        }
+
+        .red-title {
+            color: red;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Liste des Cours</h1>
+
+    <div class="input-group mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Rechercher un cours" oninput="search()">
+        <button class="btn btn-outline-secondary" type="button" id="searchButton">Rechercher</button>
+    </div>
+
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Trier par Titre de Cours
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ path('app_cour_indexEtud', {'sort': 'asc'}) }}">Ascendant</a></li>
+            <li><a class="dropdown-item" href="{{ path('app_cour_indexEtud', {'sort': 'desc'}) }}">Descendant</a></li>
+        </ul>
+    </div>
+
+    <div class="row">
+        {% for cour in cours %}
+            <div class="col-md-4 mb-4 courCard">
+                <div class="card">
+                    <img src="{{ asset(cour.Image) }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title red-title"><strong>Titre:</strong> {{ cour.Titre }}</h5>
+                        <p class="card-text"><strong>Description:</strong> {{ cour.description }}</p>
+                        <p class="card-text"><strong>Durée:</strong> {{ cour.Duree }}</p>
+                        <p class="card-text"><strong>Objectif:</strong> {{ cour.Objectif }}</p>
+                        <p class="card-text"><strong>Matière:</strong> {{ cour.idmatiere.nomm }}</p>
+                        <p class="card-text"><strong>Note:</strong> {{ cour.Note }}</p>
+                        <p class="card-text"><strong>Likes:</strong> <span id="likesCount{{ cour.id }}">{{ cour.Nblike }}</span></p>
+                        <button class="btn btn-success" onclick="like('{{ cour.id }}')" id="likeBtn{{ cour.id }}">Like</button>
+                        <button class="btn btn-danger" onclick="dislike('{{ cour.id }}')" id="dislikeBtn{{ cour.id }}">Dislike</button>
+                        <a href="{{ path('view_pdf', {'id': cour.id}) }}" class="btn btn-outline-secondary" target="_blank">Ouvrir PDF</a>
+                        <a href="{{ path('download_pdf', {'id': cour.id}) }}" class="btn btn-outline-secondary" downloadPdf>downloadPdf</a>
+
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-md-12">
+                <p>Aucun cours disponible pour le moment.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function search() {
+            let input, filter, cards, i, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            cards = document.getElementsByClassName('courCard');
+
+            for (i = 0; i < cards.length; i++) {
+                let title = cards[i].getElementsByClassName('card-title')[0];
+                if (title) {
+                    txtValue = title.textContent || title.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        cards[i].style.display = '';
+                    } else {
+                        cards[i].style.display = 'none';
+                    }
+                }
+            }
+        }
+
+        document.getElementById('searchButton').addEventListener('click', function() {
+            search();
+        });
+
+        function like(courId) {
+            let likeBtn = document.getElementById('likeBtn' + courId);
+            let dislikeBtn = document.getElementById('dislikeBtn' + courId);
+            let likesCount = document.getElementById('likesCount' + courId);
+
+            likesCount.innerText = parseInt(likesCount.innerText) + 1;
+            likeBtn.disabled = true;
+            dislikeBtn.disabled = true;
+
+            // Envoyer une requête AJAX pour mettre à jour le nombre de likes dans la base de données
+            fetch('{{ path('app_cour_like', {'id': 0}) }}'.replace('0', courId), { method: 'POST' });
+        }
+
+        function dislike(courId) {
+            let likeBtn = document.getElementById('likeBtn' + courId);
+            let dislikeBtn = document.getElementById('dislikeBtn' + courId);
+            let likesCount = document.getElementById('likesCount' + courId);
+
+            likesCount.innerText = parseInt(likesCount.innerText) - 1;
+            likeBtn.disabled = true;
+            dislikeBtn.disabled = true;
+
+            // Envoyer une requête AJAX pour mettre à jour le nombre de likes dans la base de données
+            fetch('{{ path('app_cour_dislike', {'id': 0}) }}'.replace('0', courId), { method: 'POST' });
+        }
+    </script>
+{% endblock %}

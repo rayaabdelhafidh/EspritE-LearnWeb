@@ -1,0 +1,70 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Classe index{% endblock %}
+
+{% block body %}
+    <h1>Classe index</h1>
+
+    <div>
+        <a href="{{ path('app_classe_print') }}" class="btn btn-primary">Générer PDF</a>
+        <form class="form-inline my-2 my-lg-0" method="post" action="{{ path('evenement_tri') }}">
+            <label>
+                <select class="form-control" name="type">
+                    <option>Croissant</option>
+                    <option>Décroissant</option>
+                </select>
+            </label>
+            <input type="submit" class="btn btn-success" value="Trier!">
+        </form>
+    </div>
+
+    <table id="datatable" class="table">
+        <thead>
+            <tr>
+                <th style="color: var(--primary);">Id</th>
+                <th style="color: var(--primary);">Nom</th>
+                <th style="color: var(--primary);">Nombre</th>
+                <th style="color: var(--primary);">Niveau</th>
+                <th style="color: var(--primary);">Filiere</th>
+                <th style="color: var(--primary);">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for classe in classes %}
+            <tr>
+                <td>{{ classe.id }}</td>
+                <td>{{ classe.nom }}</td>
+                <td>{{ classe.nombre }}</td>
+                <td>{{ classe.niveau }}</td>
+                <td>{{ classe.filiere }}</td>
+                <td>
+                    <a href="{{ path('app_classe_show', {'id': classe.id}) }}" class="btn btn-primary">Show</a>
+                    <a href="{{ path('app_classe_edit', {'id': classe.id}) }}" class="btn btn-success">Edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#search").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#datatable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+
+    <div style="margin-left: 50%">
+        {{ knp_pagination_render(classes) }}
+    </div>
+
+    <a href="{{ path('app_classe_new') }}" class="btn btn-danger">Create new</a>
+{% endblock %}

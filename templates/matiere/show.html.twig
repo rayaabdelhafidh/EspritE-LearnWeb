@@ -1,0 +1,46 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Matiere{% endblock %}
+
+{% block body %}
+    <h1>Matiere</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Idm</th>
+                <td>{{ matiere.idm }}</td>
+            </tr>
+            <tr>
+                <th>Nomm</th>
+                <td>{{ matiere.nomm }}</td>
+            </tr>
+            <tr>
+                <th>Idenseignant</th>
+                <td>{{ matiere.idenseignant }}</td>
+            </tr>
+            <tr>
+                <th>Nbrheure</th>
+                <td>{{ matiere.nbrheure }}</td>
+            </tr>
+            <tr>
+                <th>Coefficient</th>
+                <td>{{ matiere.coefficient }}</td>
+            </tr>
+            <tr>
+                <th>Semester</th>
+                <td>{{ matiere.semester }}</td>
+            </tr>
+            <tr>
+                <th>Credit</th>
+                <td>{{ matiere.credit }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_matiere_index') }}">back to list</a>
+
+    <a href="{{ path('app_matiere_edit', {'idm': matiere.idm}) }}">edit</a>
+
+    {{ include('matiere/_delete_form.html.twig') }}
+{% endblock %}

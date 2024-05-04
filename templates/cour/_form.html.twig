@@ -1,0 +1,75 @@
+{% extends 'back_home/form.html.twig' %}
+
+{% block body %}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    <div class="container-fluid">
+        <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+                <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <a href="{{ path('app_plandetude_index') }}" class="">
+                            <h3 class="text-primary">Ajouter un Cours</h3>
+                        </a>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label text-danger" for="{{ form.titre.vars.id }}">Titre</label>
+                        {{ form_widget(form.titre, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
+                        {% if form_errors(form.titre)|length > 0 %}
+                            <div class="error-message">{{ form_errors(form.titre) }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label text-danger" for="{{ form.description.vars.id }}">Description</label>
+                        {{ form_widget(form.description, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
+                        {% if form_errors(form.description)|length > 0 %}
+                            <div class="error-message">{{ form_errors(form.description) }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label text-danger" for="{{ form.duree.vars.id }}">Durée</label>
+                        {{ form_widget(form.duree, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
+                        {% if form_errors(form.duree)|length > 0 %}
+                            <div class="error-message">{{ form_errors(form.duree) }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label text-danger" for="{{ form.objectif.vars.id }}">Objectif</label>
+                        {{ form_widget(form.objectif, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
+                        {% if form_errors(form.objectif)|length > 0 %}
+                            <div class="error-message">{{ form_errors(form.objectif) }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label text-danger" for="{{ form.image.vars.id }}">Image</label>
+                        {{ form_widget(form.image, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
+                        {% if form_errors(form.image)|length > 0 %}
+                            <div class="error-message">{{ form_errors(form.image) }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+    <label class="form-control-label text-danger" for="{{ form.coursPdfUrl.vars.id }}">Fichier PDF</label>
+    {{ form_row(form.coursPdfUrl, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
+    {% if form_errors(form.coursPdfUrl)|length > 0 %}
+        <div class="error-message">{{ form_errors(form.coursPdfUrl) }}</div>
+    {% endif %}
+</div>
+                 
+                    
+                    <div class="form-group">
+                        <label class="form-control-label text-danger" for="{{ form.idmatiere.vars.id }}">Matière</label>
+                        {{ form_widget(form.idmatiere, {'attr': {'class': 'form-control bg-dark border-0', 'autocomplete': 'off'}}) }}
+                        {% if form_errors(form.idmatiere)|length > 0 %}
+                            <div class="error-message">{{ form_errors(form.idmatiere) }}</div>
+                        {% endif %}
+                    </div>
+                    <!-- Ajoutez d'autres champs de formulaire si nécessaire -->
+                    <div class="text-center mb-0">
+                        <button type="submit" class="btn btn-primary py-3 w-100 mb-4">{{ button_label|default('Save') }}</button>
+                        <a href="{{ path('app_cour_index') }}" class="btn btn-secondary">Annuler</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
