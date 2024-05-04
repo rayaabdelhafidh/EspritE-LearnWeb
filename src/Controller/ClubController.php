@@ -61,7 +61,7 @@ class ClubController extends AbstractController
      $pagination = $paginator->paginate(
         $clubs, // Query/Array
         $request->query->getInt('page', 1), // Page number
-        3 // Items per page
+        3 
     );
 
         return $this->render('club/indexFront.html.twig',

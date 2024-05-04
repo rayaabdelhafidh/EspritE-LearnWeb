@@ -143,6 +143,7 @@ class EvenementController extends AbstractController
         return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
     }
 
+
     #[Route('evenementASC',name:'app_evenement_trier')]
     function listEvenementByName(EvenementRepository $evenementRepository){
         $evenements = $evenementRepository->createQueryBuilder('a')
@@ -152,6 +153,7 @@ class EvenementController extends AbstractController
         return $this->render('evenement/index.html.twig',
         ['evenements'=>$evenements]);
     }
+
 
     #[Route('/{idevenement}/evenementpayment', name: 'app_evenement_payment')]
     public function payment(Evenement $evenement,Request $request): Response
@@ -201,28 +203,6 @@ function statistique(ChartBuilderInterface $chartBuilder,EvenementRepository $ev
         ]);
     }
 
-    /////////////////////////MAP///////////////////////
-    private function generateGoogleMapLink(string $location): string
-{
-    // Formater le lieu pour qu'il soit compatible avec l'URL de la page show_map_by_location
-    $formattedLocation = urlencode($location);
-    
-    // Retourner le nom de la route avec le paramètre lieu
-    return 'show_map_by_location?lieu=' . $formattedLocation;
-}
-
-
-    #[Route('/show-map', name: 'show_map_by_location')]
-    public function showMapByLocation(Request $request): Response
-    {
-        // Récupérer le lieu depuis la requête
-        $lieu = $request->query->get('lieu');
-        
-        // Passer le lieu à la vue
-        return $this->render('evenement/showDetails.html.twig', [
-            'lieu' => $lieu,
-        ]);
-    }
     
 }
 

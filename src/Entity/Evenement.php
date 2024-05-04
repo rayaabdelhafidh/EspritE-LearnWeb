@@ -42,6 +42,7 @@ class Evenement
     #[ORM\OneToMany(mappedBy: 'evenement', targetEntity: Participant::class)]
     private Collection $evenement_participant;
 
+    
     public function getIdevenement(): ?int
     {
         return $this->idevenement;
