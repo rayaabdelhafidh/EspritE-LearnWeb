@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Entity;
-
 use App\Repository\EvenementRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -42,7 +41,6 @@ class Evenement
     #[ORM\OneToMany(mappedBy: 'evenement', targetEntity: Participant::class)]
     private Collection $evenement_participant;
 
-    
     public function getIdevenement(): ?int
     {
         return $this->idevenement;
