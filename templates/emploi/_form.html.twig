@@ -1,0 +1,62 @@
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+<style>
+    .form-container {
+        text-align: center;
+    }
+
+    .form-wrapper {
+        max-width: 700px;
+        margin: 40px auto;
+        text-align: left;
+    }
+
+    .form-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        width: 120px; 
+        margin-right: 20px; 
+    }
+
+    .submit-button {
+        margin-top: 20px; 
+    }
+
+    .error-message {
+        color: red; 
+        margin-top: 5px;
+    }
+</style>
+
+<div class="form-container">
+    {{ form_start(form,{attr:{novalidate:'novalidate'}}) }}
+    <div class="form-wrapper">
+        <div class="form-row">
+            {{ form_label(form.premierdate, 'De : ', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.premierdate) }}
+            {{ form_errors(form.premierdate, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+        <div class="form-row">
+            {{ form_label(form.dernierdate, 'Jusqu\'à : ', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.dernierdate) }}
+            {{ form_errors(form.dernierdate, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+        <div class="form-row">
+            {{ form_label(form.salle, 'Salle : ', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.salle) }}
+            {{ form_errors(form.salle, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+        <div class="form-row">
+            {{ form_label(form.classe, 'Classe : ', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.classe) }}
+            {{ form_errors(form.classe, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+    </div>
+
+    <button type="submit" class="submit-button" style="border: 2px solid red; width: 200px; background-color: transparent; color: red; border-radius: 10px; margin-bottom: 20px;">enregistrer</button>
+    {{ form_end(form) }}
+</div>

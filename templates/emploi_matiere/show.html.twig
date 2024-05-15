@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EmploiMatiere{% endblock %}
+
+{% block body %}
+    <h1>EmploiMatiere</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Starttime</th>
+                <td>{{ emploi_matiere.starttime ? emploi_matiere.starttime|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Endtime</th>
+                <td>{{ emploi_matiere.endtime ? emploi_matiere.endtime|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Dayofweek</th>
+                <td>{{ emploi_matiere.dayofweek }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_emploi_matiere_index') }}">back to list</a>
+
+    <a href="{{ path('app_emploi_matiere_edit', {'emploi': emploi_matiere.emploi}) }}">edit</a>
+
+    {{ include('emploi_matiere/_delete_form.html.twig') }}
+{% endblock %}

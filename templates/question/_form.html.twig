@@ -1,0 +1,47 @@
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{# Affichage des messages flash #}
+{% if app.request.hasSession() %}
+    {% for type, messages in app.session.flashbag.all() %}
+        {% for message in messages %}
+            {% if type == 'success' %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% else %}
+                <div class="alert alert-{{ type }}">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+
+
+<div style="text-align: center;"> 
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    <div style="max-width: 700px; margin: 40px auto;"> 
+        <div class="form-group" style="margin-right: 20px;">
+            <label for="content" class="text-grey" style="font-size: 18px;">Contenu :</label>
+            {{ form_widget(form.content, {'attr': {'class': 'form-control', 'style': 'font-size: 18px; border: 2px solid grey; width: 100%;'}}) }}
+            {{ form_errors(form.content, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+        <div class="form-group"> 
+            <label for="score" class="text-grey" style="font-size: 18px;">Score :</label>
+            {{ form_widget(form.score, {'attr': {'class': 'form-control', 'style': 'font-size: 18px; border: 2px solid grey; width: 100%;'}}) }}
+            {{ form_errors(form.score, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+    
+    </div>
+    <button class="btn btn-lg" style="border: 2px solid red; width: 200px; background-color: transparent; color: red; border-radius: 10px; margin-bottom: 20px;">{{ button_label|default('Enregistrer') }}</button> 
+    {{ form_end(form) }}
+</div>
+
+<style>
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .text-white {
+        color: white; 
+    }
+</style>

@@ -1,0 +1,44 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Plandetude{% endblock %}
+
+{% block body %}
+<div class="container-fluid px-4">
+    <h1 class="mt-4 mb-3">Plandetude</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th scope="row">Id</th>
+                        <td>{{ plandetude.Id }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Nom du Programme</th>
+                        <td>{{ plandetude.Nomprogramme }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Niveau</th>
+                        <td>{{ plandetude.Niveau }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Durée Totale</th>
+                        <td>{{ plandetude.DureeTotal }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Crédits Requis Total</th>
+                        <td>{{ plandetude.Creditsrequistotal }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <a href="{{ path('app_plandetude_index') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
+
+    <a href="{{ path('app_plandetude_edit', {'id': plandetude.id}) }}" class="btn btn-primary mt-3">Modifier</a>
+
+    {{ include('plandetude/_delete_form.html.twig') }}
+</div>
+{% endblock %}

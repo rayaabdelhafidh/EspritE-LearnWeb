@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Evenement index{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous">
+
+    {{ parent() }}
+    <style>
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px; /* Pour compenser les marges négatives des colonnes */
+        }
+
+        .col-md-4 {
+            padding: 0 15px; /* Ajoute une marge aux colonnes */
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Assurez-vous que la hauteur de la carte est à 100% de son conteneur */
+            border: 2px solid #ddd; /* Ajoute une bordure pour séparer les cartes */
+        }
+
+        .card-img-top {
+            flex-shrink: 0; /* Empêche l'image de se rétrécir pour remplir l'espace disponible */
+            width: 100%; /* Assure que l'image occupe toute la largeur de son conteneur */
+            height: auto; /* Garde le ratio hauteur-largeur de l'image */
+        }
+
+        .card-body {
+            flex-grow: 0; /* Permet au contenu de s'étirer pour remplir l'espace disponible */
+            padding: 5px; /* Ajoute une marge intérieure au contenu de la carte */
+        }
+
+        .red-title {
+            color: red;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+<br>
+<!-- Search input field -->
+    <div class="section-title">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
+    </div>
+
+    <br>
+    <h1>Evenements ({{ evenements.getTotalItemCount }})</h1>
+
+    <br>
+    <div class="row">
+        {% for evenement in evenements %}
+            <div class="col-md-3 mb-4 event-card" data-nom="{{ evenement.nomevenement|upper }}">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title red-title"><strong>{{ evenement.nomevenement }}</strong></h5>
+                        <img src="{{ asset(evenement.afficheevenement) }}" class="card-img-right" width="200">
+                        <a href="{{ path('app_evenement_details', {'idevenement': evenement.idevenement}) }}"><button type="submit" class="btn btn-primary">Consulter</button></a>
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <!-- JavaScript function for search -->
+    <script>
+        function search() {
+            // Retrieve the value of the search input
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toUpperCase();
+
+            // Retrieve all event cards to filter
+            let cards = document.querySelectorAll(".event-card");
+
+            // Iterate through all cards and hide those that don't match the search term
+            cards.forEach(card => {
+                let nom = card.dataset.nom;
+                if (nom.toUpperCase().includes(filter)) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+    </script>
+    
+    {{ knp_pagination_render(evenements) }}
+{% endblock %}

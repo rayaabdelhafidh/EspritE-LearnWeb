@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Club index{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous">
+
+    {{ parent() }}
+    <style>
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px; /* Pour compenser les marges négatives des colonnes */
+        }
+
+        .col-md-4 {
+            padding: 0 15px; /* Ajoute une marge aux colonnes */
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Assurez-vous que la hauteur de la carte est à 100% de son conteneur */
+        }
+
+        .card-body {
+            flex-grow: 1; /* Permet au contenu de s'étirer pour remplir l'espace disponible */
+        }
+
+        .red-title {
+            color: red;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<br>
+    <!-- Search input field -->
+    <div class="section-title">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
+    </div>
+
+    <h1>Liste des Clubs</h1>
+    <div class="row">
+        {% for club in clubs %}
+            <div class="col-md-4 mb-4 club-card" data-nom="{{ club.nomclub|upper }}">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title red-title"><strong>Nom Club: </strong> {{ club.nomclub }}</h5>
+                        <p class="card-text"><strong>Date Fondation: </strong> {{ club.datefondation ? club.datefondation|date('Y-m-d') : '' }}</p>
+                        <p class="card-text"><strong>Type Activite: </strong> {{ club.typeactivite }}</p>
+                        <p class="card-text"><strong>Description: </strong> {{ club.description }}</p>
+                        <p class="card-text"><strong>Nombre de Membres: </strong> {{ club.nbmembres }}</p>
+                        <p class="card-text"><strong>Activite: </strong> {{  club.active ? 'Active' : 'Inactive' }}</p>
+                        <a href="{{ path('app_club_details', {'idclub': club.idclub}) }}">
+                            <button type="submit" class="btn btn-primary">Consulter</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- JavaScript function for search -->
+    <script>
+        function search() {
+            // Retrieve the value of the search input
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toUpperCase();
+
+            // Retrieve all club cards to filter
+            let cards = document.querySelectorAll(".club-card");
+
+            // Iterate through all cards and hide those that don't match the search term
+            cards.forEach(card => {
+                let nom = card.dataset.nom;
+                if (nom.toUpperCase().includes(filter)) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+    </script>
+ {{ knp_pagination_render(clubs) }}
+    <canvas id="evenements" width="200" height="50"></canvas>
+
+    {% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+<script>
+    let evenements = document.querySelector("#evenements")
+    let annGraph = new Chart(evenements, {
+        type: "bar",
+        data: {
+            labels: {{ clubse|raw }},
+            datasets: [{
+                label: "Nombre d'evenement par club",
+                data: {{ eventCounts|raw }},
+                backgroundColor: [ // Define background colors for each data point
+                    'rgba(255, 99, 132, 0.2)', // Example color 1
+                    'rgba(54, 162, 235, 0.2)', // Example color 2
+                    'rgba(255, 206, 86, 0.2)', // Example color 3
+                    // Add more colors as needed
+                ],
+                borderColor: [ // Define border colors for each data point
+                    'rgba(255, 99, 132, 1)', // Example color 1
+                    'rgba(54, 162, 235, 1)', // Example color 2
+                    'rgba(255, 206, 86, 1)', // Example color 3
+                    // Add more colors as needed
+                ],
+                borderWidth: 1 // Define border width
+                
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    })
+</script>
+{% endblock %}
+
+               
+
+{% endblock %}

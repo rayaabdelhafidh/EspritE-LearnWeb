@@ -1,0 +1,55 @@
+{% extends 'baseback.html.twig' %}
+
+{% block body %}
+
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary rounded-top p-4">
+                    <div class="row">
+<h1>Evenement : </h1>
+    <table class="table">
+        <thead>
+            <tr>
+    <td> Id Evenement </td>
+    <td> Nom Evenement </td>
+    <td> Date Evenement </td>
+    <td> Lieu Evenement </td>
+    <td> Prix Evenement </td>
+    <td> Affiche de l Evenement </td>
+    <td> Club Responsable  </td>                
+    <th>          </th>
+    <th>          </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+    <td> {{evenement.idevenement}} </td>
+    <td> {{evenement.nomevenement|upper}} </td>
+    <td>{{ evenement.dateevenement ? evenement.dateevenement|date('Y-m-d') : '' }}</td>
+    <td> {{evenement.lieuevenement}} </td>
+    <td> {{evenement.prixevenement}} </td>
+    {% set imagePath = evenement.afficheevenement | default('path_to_default_image.jpg') %}
+    <td><img src="{{ asset(imagePath) }}"alt=" Image" class="img-thumbnail" width="100"></td>
+    <td>{{ evenement.club.nomclub}}</td>
+                <td>
+                    {{ include('evenement/_delete_form.html.twig') }}
+                </td>
+                <td>
+                    <a href="{{ path('app_evenement_edit', {'idevenement': evenement.idevenement}) }}"><button type="submit" class="btn btn-primary">Modifier</button></a>
+                </td>
+                
+            </tr>
+        </tbody>
+    </table>
+    {% set addressGPS = evenement.lieuevenement|replace({' ': '+'}) %}
+    <iframe src="https://maps.google.com/maps?&q={{ addressGPS }}&output=embed" width="100%" height="300"></iframe>
+
+
+    <a href="{{ path('app_evenement_new') }}">Ajouter Evenement</a>
+        <a href="{{ path('app_evenement_index') }}">Annuler</a>
+
+                    </div>
+                </div>
+            </div>
+           
+    
+{% endblock %}

@@ -1,0 +1,6 @@
+
+<form method="post" action="{{ path('app_club_delete', {'idclub': club.idclub}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ club.idclub) }}">
+    <button button type="submit" class="btn btn-primary">Supprimer</button>
+</form>
+

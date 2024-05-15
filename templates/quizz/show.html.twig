@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ quizz.getDescription() }}{% endblock %}
+
+{% block body %}
+             
+<h1 class="text-center mb-3" style="color: red;">{{ quizz.getDescription() }}</h1>
+
+<form action="{{ path('app_quizz_submit', {'quizId': quizz.getQuizId()}) }}" method="post">
+
+    {% for question in questions %}
+        <div>
+            <p style="display: inline-block; margin-right: 300px;">{{ question.getContent() }}</p>
+            <p style="display: inline-block;">Score: {{ question.getScore() }}</p>
+            <ul>
+                {% if question.getOptions() is not empty %}
+                    {% for option in question.getOptions() %}
+                        <li>
+                            <input type="radio" id="{{ option.getOptionId() }}" name="question{{ question.getQuestionId() }}" value="{{ option.getOptionId() }}">
+                            <input type="hidden" name="questionId{{ option.getOptionId() }}" value="{{ question.getQuestionId() }}">
+                            <label for="{{ option.getOptionId() }}">{{ option.getOptionContent() }}</label>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li>No options available</li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endfor %}
+        {% if not is_granted('ROLE_ENSEIGNANT') %}
+        <button type="submit" style="border: 2px solid red; width: 400px; background-color: transparent; color: red; border-radius: 10px; margin-bottom: 50px;">Submit</button>
+    {% endif %}
+
+<a href="{{ path('app_quiz_pdf', {'quizId': quizz.getQuizId()}) }}" class="btn btn-primary">Générer PDF</a> <!-- Add this line for PDF generation -->
+<a href="{{ path('app_quiz_pdf_send', {'quizId': quizz.getQuizId()}) }}" class="btn btn-primary">Envoyer</a>
+<div style="display: flex; align-items: center;">
+    <a href="{{ path('app_quizz_index') }}" style="margin-right: 10px;">Back to list</a>
+   
+
+    
+</div>
+<style>
+    a {
+        color: red;
+        text-decoration: none;
+    }  
+</style>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Emploi{% endblock %}
+{% block body %}
+    <h1>Emploi</h1>
+
+    <form method="GET" id="filterForm" action="{{ path('app_emploi_index') }}" style="margin-left: 20px;">
+        <label for="premierdate">Filtrer par date de début: </label>
+        <select name="premierdate" id="premierdate">
+            <option value="">Tout</option>
+            {% for emploi in premierdates %}
+                {% set premierdate = emploi.premierdate %}
+                <option value="{{ premierdate|date('Y-m-d') }}" {{ premierdate|date('Y-m-d') == selectedPremierdate ? 'selected' : '' }}>{{ premierdate|date('Y-m-d') }}</option>
+            {% endfor %}
+        </select>
+        <a href="#" id="generatePdfButton" class="btn btn-primary">Générer PDF</a>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const premierdateSelect = document.getElementById('premierdate');
+            const generatePdfButton = document.getElementById('generatePdfButton');
+
+            premierdateSelect.addEventListener('change', function() {
+                const selectedPremierdate = premierdateSelect.value;
+                generatePdfButton.href = '{{ path('app_emploi_pdf') }}?premierdate=' + selectedPremierdate;
+            });
+        });
+    </script>
+{% endblock %} 

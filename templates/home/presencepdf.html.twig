@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presence List for {{ classe.nom }}</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <style>
+    
+    /* Resetting some default browser styles */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, table, tr, th, td {
+    margin: 0;
+    padding: 0;
+}
+
+/* Setting box-sizing to border-box for easier sizing */
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+/* Adding some basic styles */
+.container {
+    max-width: 960px; /* Adjust as needed */
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.mt-5 {
+    margin-top: 3rem; /* Adjust as needed */
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+.table th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+    
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Presence List for {{ classe.nom }}</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Session</th>
+                            <th scope="col">List presence</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for presence in presences %}
+                     {% set presenceIndex = loop.index -1  %}
+                        <tr>
+                            <th scope="row">{{ loop.index }}</th>
+                            <td>{{ presence.date|date('Y-m-d H:i') }}</td>
+                            <td>{{ presence.seance }}</td>
+                            <td>
+                                {% for etudiantname in nometu[presenceIndex] %}
+                                    {{ etudiantname}}
+                                {% else %}
+                                    a absent
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">No presences found for {{ classe.nom }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

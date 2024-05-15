@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Question{% endblock %}
+
+{% block body %}
+    <h1> </h1>
+    <a href="{{ path('app_quizz_index') }}" style="float: right; margin-right: 40px;">back to liste Quiz</a>
+
+     <div class="section-title">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
+    </div>
+     <div>
+        <a href="{{ path('app_question_index', {'sort': 'asc'}) }}">Trier Ascending</a>
+        </div>
+        <div>
+        <a href="{{ path('app_question_index', {'sort': 'desc'}) }}">Trier Descending</a>
+         </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+               
+                <th>Content</th>
+                <th>score</th>
+               
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for question in questions %}
+            <tr>
+                
+                <td>{{ question.content }}</td>
+                <td>{{ question.score }}</td>
+               
+                <td style="display: flex; align-items: center;">
+                    <a href="{{ path('app_question_show', {'questionid': question.questionid}) }}" style="margin-right: 10px;">show</a>
+                    <a href="{{ path('app_question_edit', {'questionid': question.questionid}) }}" style="margin-right: 10px; margin-left: 30px;">edit</a>
+                    <a href="{{ path('app_options_new',  {'questionid': question.questionid}) }}"  style="margin-left: 30px;">Ajouter Choix</a>
+                    <div style="margin-left: 20px; color: red;" >{{ include('question/_delete_form.html.twig', {'question': question}) }}</div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        <div class="pagination justify-content-center">
+            {{ knp_pagination_render(questions) }}
+        </div>
+        <style>
+     a {
+    color: red;
+    text-decoration: none;
+}
+     </style>
+     <script>
+        function search() {
+            // Retrieve the value of the search input
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toUpperCase();
+
+            // Retrieve all table rows to filter
+            let rows = document.querySelectorAll("tbody tr");
+
+            // Iterate through all rows and hide those that don't match the search term
+            rows.forEach(row => {
+                let found = false;
+                let cells = row.querySelectorAll("td");
+                cells.forEach(cell => {
+                    let text = cell.textContent || cell.innerText;
+                    if (text.toUpperCase().includes(filter)) {
+                        found = true;
+                    }
+                });
+                if (found) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
+     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    
+{% endblock %}

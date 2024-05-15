@@ -1,0 +1,28 @@
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+<div style="text-align: center;"> 
+    {{ form_start(form,{attr:{novalidate:'novalidate'}}) }}
+    <div style="max-width: 700px; margin: 40px auto;"> 
+        <div class="form-group" margin-right: 20px;">
+            <label for="bloc" class="text-grey" style="font-size: 18px;">Bloc:</label>
+            {{ form_widget(form.bloc, {'attr': {'class': 'form-select custom-select', 'style': 'font-size: 18px; border: 2px solid grey; width: 100%;'}}) }}
+               {{ form_errors(form.bloc, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+        <div class="form-group"> 
+            <label for="numeroSalle" class="text-grey" style="font-size: 18px;">Numéro Salle:</label>
+            {{ form_widget(form.numeroSalle, {'attr': {'class': 'form-control', 'style': 'font-size: 18px; border: 2px solid grey; width: 100%;'}}) }}
+               {{ form_errors(form.numeroSalle, {'attr': {'class': 'text-danger'}}) }}
+        </div>
+    </div>
+    <button class="btn btn-lg" style="border: 2px solid red; width: 200px; background-color: transparent; color: red; border-radius: 10px; margin-bottom: 20px;">{{ button_label|default('Enregistrer') }}</button> 
+    {{ form_end(form) }}
+</div>
+
+<style>
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .text-white {
+        color: white; 
+    }
+</style>

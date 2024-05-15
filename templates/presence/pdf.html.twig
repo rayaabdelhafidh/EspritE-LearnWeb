@@ -1,0 +1,70 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <style>
+    table {
+    width: 100%; /* Adjust width as needed */
+    border-collapse: collapse; /* Collapse borders for a cleaner look */
+  }
+  
+  th, td {
+    padding: 10px; /* Adjust padding for spacing */
+    text-align: left; /* Align content to the left */
+  }
+  
+  th {
+    background-color: #f2f2f2; /* Light gray background for headers */
+    font-weight: bold; /* Bold text for headers */
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f9f9f9; /* Alternate row background for better readability */
+  }
+  
+  .absent {
+    color: #d9534f; /* Red color for absent students */
+  }
+  
+    </style>
+</head>
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Date</th>
+                <th>Seance</th>
+                <th>IdEtudiants</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+        {% for presence in presences %}
+        {% set presenceIndex = loop.index - 1 %}
+            <tr>
+                <td>{{ presence.date ? presence.date|date('Y-m-d') : '' }}</td>
+                <td>{{ presence.seance }}</td>
+                <td>
+                 {% for etudiantname in nometu[presenceIndex] %}
+                {{ etudiantname}}
+                {% else %}
+                    a absent
+                 {% endfor %}
+                </td>
+                
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </body>
+</html>
+
+    

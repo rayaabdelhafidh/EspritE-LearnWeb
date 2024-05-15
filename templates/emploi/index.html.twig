@@ -1,0 +1,127 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Emplois{% endblock %}
+
+{% block body %}
+    <h1>Emplois</h1>
+
+<form method="GET" id="filterForm" action="{{ path('app_emploi_index') }}" style="margin-left: 20px;">
+    <label for="premierdate">Filtrer par date de début: </label>
+    <select name="premierdate" id="premierdate">
+        <option value="">Tout</option>
+        {% for emploi in premierdates %}
+            {% set premierdate = emploi.premierdate %}
+            <option value="{{ premierdate|date('Y-m-d') }}" {{ premierdate|date('Y-m-d') == selectedPremierdate ? 'selected' : '' }}>{{ premierdate|date('Y-m-d') }}</option>
+        {% endfor %}
+    </select>
+    <label for="type">Trier par : </label>
+    <select name="type" id="type">
+        <option value="Croissant" {{ order == 'Croissant' ? 'selected' : '' }}>Croissant</option>
+        <option value="Décroissant" {{ order == 'Décroissant' ? 'selected' : '' }}>Décroissant</option>
+    </select>
+    <button type="submit" name="filter">Filtrer</button>
+    <a href="#" id="generatePdfButton" class="btn btn-primary">Générer PDF</a>
+     <a href="#" id="sendEmailButton" class="btn btn-primary">envoyer Email</a>
+</form>
+
+
+
+
+
+
+   <div class="section-title">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
+        </div>
+
+    <a href="{{ path('app_emploi_new') }}">Créer Emploi</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Filiere</th>
+                <th>Niveau</th>
+                <th>Classe</th>
+                <th>Premierdate</th>
+                <th>Dernierdate</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for emploi in pagination %}
+            <tr>
+                <td>{{ emploi.classe.Filiere }}</td>
+                <td>{{ emploi.classe.niveau }}</td>
+                <td>{{ emploi.classe.nom }}</td>
+                <td>{{ emploi.premierdate ? emploi.premierdate|date('Y-m-d') : '' }}</td>
+                <td>{{ emploi.dernierdate ? emploi.dernierdate|date('Y-m-d') : '' }}</td>
+                <td style="display: flex; align-items: center;">
+                    <a href="{{ path('app_emploi_show', {'id': emploi.id}) }}">afficher</a>
+                    <a href="{{ path('app_emploi_edit', {'id': emploi.id}) }}"  style="margin-left: 17px;">modifer</a>
+                    <div style="margin-left: 10px;">{{ include('emploi/_delete_form.html.twig', {'emploi': emploi}) }}</div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+
+    
+        </tbody>
+    </table>
+
+<div style="display: flex; justify-content: center; margin-top: 20px;">
+    {{ knp_pagination_render(pagination) }}
+</div>
+
+ <script>
+        function search() {
+          
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toUpperCase();
+   
+            let rows = document.querySelectorAll("tbody tr");
+           
+            rows.forEach(row => {
+                let found = false;
+                
+                let cells = row.querySelectorAll("td");
+                cells.forEach(cell => {
+                    let text = cell.textContent || cell.innerText;
+                    if (text.toUpperCase().includes(filter)) {
+                        found = true;
+                    }
+                });
+                if (found) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const premierdateSelect = document.getElementById('premierdate');
+        const generatePdfButton = document.getElementById('generatePdfButton');
+
+        premierdateSelect.addEventListener('change', function() {
+            const selectedPremierdate = premierdateSelect.value;
+            generatePdfButton.href = '{{ path('app_emploi_pdf') }}?premierdate=' + selectedPremierdate;
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const premierdateSelect = document.getElementById('premierdate');
+        const sendEmailButton = document.getElementById('sendEmailButton');
+
+        premierdateSelect.addEventListener('change', function() {
+            const selectedPremierdate = premierdateSelect.value;
+            sendEmailButton.href = '{{ path('app_emploi_pdf_send') }}?premierdate=' + selectedPremierdate;
+        });
+    });
+</script>
+
+{% endblock %}

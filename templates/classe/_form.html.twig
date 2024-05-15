@@ -1,0 +1,31 @@
+{{ form_start(form, {attr: {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+    <div class="mb-3">
+        {{ form_row(form.nom, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="mb-3">
+        {{ form_row(form.nombre, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="mb-3">
+        {{ form_row(form.niveau, {'attr': {'class': 'form-select'}}) }}
+    </div>
+    
+    <div class="mb-3">
+        {{ form_row(form.filiere, {'attr': {'class': 'form-select'}}) }}
+    </div>
+     <div class="mb-3">
+        {{ form_row(form.users, {'attr': {'class': 'form-select'}}) }}
+    </div>
+    <label for="users">Selectionner enseignant:</label>
+    <select name="users"  id="users" class="form-select" required >
+    <option value="" disabled selected>Select a user...</option>
+    {% for user in listE %}
+    {% if user.idClasse == classe %}
+    <option value={{user.id}} selected>{{user.nom}}</option>
+    {% else %}
+    <option value={{user.id}}>{{user.nom}}</option>
+    {% endif %}
+    {% endfor %}
+    <!-- Add more options as needed -->
+    </select>
+    <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

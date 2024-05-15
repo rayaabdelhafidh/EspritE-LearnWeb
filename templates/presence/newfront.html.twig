@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer presence {% endblock %}
+
+{% block body %}
+    <h1>Create new Presence</h1>
+
+    
+
+{{ form_start(form, {attr: {'novalidate': 'novalidate', 'class': 'g-3'}}) }}
+
+    {% for field in form %}
+        <div class="mb-3">
+            {{ form_label(field, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_errors(field) }}
+            {{ form_widget(field, {'attr': {'class': field.vars.name == 'date' ? 'form-control datepicker' : 'form-control'}}) }}
+        </div>
+    {% endfor %}
+
+    <table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>action</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for etudiant in etudiants %}
+    <tr>
+      <td>{{etudiant.nom}}</td>
+      <td><input type="checkbox" name={{etudiant.nom}} value={{etudiant.id}}  onchange="updateInputText(this)"></td>
+    </tr>
+            {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+    <!-- Add more rows for additional users -->
+  </tbody>
+</table>
+<input type="text" name="inputid"  id="attendanceText" readonly hidden>
+
+    <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+
+{{ form_end(form) }}
+
+    <a href="{{ path('app_presence_index') }}">back to list</a>
+
+    <script type="text/javascript">
+    function updateInputText(checkbox) {
+        var inputText = document.getElementById("attendanceText");
+        var checkboxValue = checkbox.value; // Get the value of the checked checkbox
+        if (checkbox.checked) {
+        // If the checkbox is checked, add its value to the input text
+        inputText.value += checkboxValue + ", ";
+        console.log(inputText.value);
+        } else {
+        // If the checkbox is unchecked, remove its value from the input text
+        inputText.value = inputText.value.replace(checkboxValue + ", ", "");
+        }
+    }
+    </script>
+{% endblock %}
+{% block javascripts %}
+ 
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+                startDate: '-3d', // Customize this as needed
+            });
+        });
+
+          
+
+    </script>
+{% endblock %}

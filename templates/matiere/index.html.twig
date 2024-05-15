@@ -1,0 +1,102 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Matiere index{% endblock %}
+
+{% block body %}
+    
+
+    <div class="table-responsive">
+        <div class="section-title">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
+        </div>
+        <div class="btn-group">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        Trier par Nom de Matière
+    </button>
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{{ path('app_matiere_index', {'sort': 'asc'}) }}">Ascendant</a></li>
+        <li><a class="dropdown-item" href="{{ path('app_matiere_index', {'sort': 'desc'}) }}">Descendant</a></li>
+    </ul>
+</div>
+
+    
+   
+
+        
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                   
+                    <th scope="col">Nom Matiere</th>
+                    <th scope="col">Idenseignant</th>
+                    <th scope="col">Nombre d'heure</th>
+                    <th scope="col">Coefficient</th>
+                    <th scope="col">Semester</th>
+                    <th scope="col">Credit</th>
+                    <th scope="col">Plandetude</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for matiere in matieres %}
+                    <tr>
+                        
+                        <td>{{ matiere.nomm }}</td>
+                        <td>{{ matiere.idenseignant }}</td>
+                        <td>{{ matiere.nbrheure }}</td>
+                        <td>{{ matiere.coefficient }}</td>
+                        <td>{{ matiere.semester }}</td>
+                        <td>{{ matiere.credit }}</td>
+                        <td>{{ matiere.idplandetude.nomprogramme }}</td>
+                        <td>
+                            <a href="{{ path('app_matiere_show', {'idm': matiere.idm}) }}" class="btn btn-info btn-sm">Voir</a>
+                            <a href="{{ path('app_matiere_edit', {'idm': matiere.idm}) }}" class="btn btn-primary btn-sm">Modifier</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+         
+    
+    <div class="pagination justify-content-center">
+            {{ knp_pagination_render(matieres) }}
+        </div>
+    <a href="{{ path('app_matiere_new') }}" class="btn btn-success">Ajouter une nouvelle Matiere</a>
+    <a href="{{ path('app_matiere_print') }}" class="btn btn-primary">PDF</a>
+
+    <script>
+        function search() {
+            // Récupère la valeur de la recherche
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toUpperCase();
+
+            // Récupère tous les éléments de la table à filtrer
+            let rows = document.querySelectorAll("tbody tr");
+
+            // Parcours tous les éléments et masque ceux qui ne correspondent pas à la recherche
+            rows.forEach(row => {
+                let found = false;
+                // Récupère toutes les cellules de la ligne
+                let cells = row.querySelectorAll("td");
+                cells.forEach(cell => {
+                    let text = cell.textContent || cell.innerText;
+                    // Vérifie si le texte de la cellule contient le terme recherché
+                    if (text.toUpperCase().includes(filter)) {
+                        found = true;
+                    }
+                });
+                // Affiche ou masque la ligne en fonction de si elle contient le terme recherché
+                if (found) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
+{% endblock %}

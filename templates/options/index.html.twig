@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Options index{% endblock %}
+
+{% block body %}
+    <h1> </h1>
+    <a href="{{path('app_question_index') }}"style="float: right; margin-right: 40px;">back to list Question</a>
+         <div class="section-title">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
+    </div>
+    
+ <div>
+        <a href="{{ path('app_options_index', {'sort': 'asc'}) }}">Trier Ascending</a>
+        </div>
+        <div>
+        <a href="{{ path('app_options_index', {'sort': 'desc'}) }}">Trier Descending</a>
+         </div>
+
+
+    
+    <table class="table" style ="margin-left:10px;">
+        <thead>
+            <tr>
+                
+                <th>Contenue</th>
+                <th>IsCorrect</th>
+                
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for option in options %}
+            <tr>
+                
+                <td>{{ option.optionContent }}</td>
+                <td>{{ option.isCorrect }}</td>
+                
+                
+
+                
+               
+                <td style="display: flex; align-items: center;">
+                    <a href="{{ path('app_options_show', {'optionId': option.optionId}) }}" style="margin-right: 10px;">show</a>
+                    <a href="{{ path('app_options_edit', {'optionId': option.optionId}) }}" style="margin-right: 10px; margin-left: 30px;">edit</a>
+                    <div style="margin-left: 20px; color: red;">{{ include('options/_delete_form.html.twig', {'option': option}) }}</div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+            <div class="pagination justify-content-center">
+            {{ knp_pagination_render(options) }}
+        </div>
+     <style>
+     a {
+    color: red;
+    text-decoration: none;
+}  </style>
+ <script>
+        function search() {
+            // Retrieve the value of the search input
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toUpperCase();
+
+            // Retrieve all table rows to filter
+            let rows = document.querySelectorAll("tbody tr");
+
+            // Iterate through all rows and hide those that don't match the search term
+            rows.forEach(row => {
+                let found = false;
+                let cells = row.querySelectorAll("td");
+                cells.forEach(cell => {
+                    let text = cell.textContent || cell.innerText;
+                    if (text.toUpperCase().includes(filter)) {
+                        found = true;
+                    }
+                });
+                if (found) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
+     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    
+{% endblock %}

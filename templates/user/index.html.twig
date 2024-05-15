@@ -1,0 +1,71 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block body %}
+    <h1>Liste des utilisateurs</h1>
+    <form action="{{ path('app_user_index') }}" method="GET" class="mb-3">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Rechercher par nom" name="search">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Rechercher</button>
+            </div>
+        </div>
+    </form>
+    <form action="{{ path('app_user_sort') }}" method="GET" style="display: inline;">
+        <input type="hidden" name="criteria" value="nom">
+        <input type="hidden" name="direction" value="asc">
+        <button type="submit" class="btn btn-primary">Trier par nom(ASC)</button>
+    </form>
+    
+    <form action="{{ path('app_user_sort') }}" method="GET" style="display: inline;">
+        <input type="hidden" name="criteria" value="nom">
+        <input type="hidden" name="direction" value="desc">
+        <button type="submit" class="btn btn-primary">Trier par nom(DESC)</button>
+    </form>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Email</th>
+                <th scope="col">Rôles</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Téléphone</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.roles ? user.roles|join(', ') }}</td>
+                    <td>{{ user.nom }}</td>
+                    <td>{{ user.tel }}</td>
+                    <td>
+                       
+                        <form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                            <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                        </form>
+                    </td>
+                    <td> <!-- New column for block/unblock button -->
+                        <form action="{{ path('app_user_block', {'id': user.id}) }}" method="post" onsubmit="return confirm('Are you sure you want to block/unblock this user?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('block' ~ user.id) }}">
+                            {% if user.blocked %}
+                                <button type="submit" class="btn btn-sm btn-success">Débloquer</button>
+                            {% else %}
+                                <button type="submit" class="btn btn-sm btn-warning">Bloquer</button>
+                            {% endif %}
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">Aucun enregistrement trouvé</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

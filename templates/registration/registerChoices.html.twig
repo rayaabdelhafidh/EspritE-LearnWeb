@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
+
+    <!-- Title Page-->
+    <title>{% block title %}Esprit | Dashboard{% endblock %}</title>
+
+    {% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('./login/css/style.css')}}">
+
+    <!-- Font Awesome kit script -->
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+
+    <!-- Google Fonts Open Sans-->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('./login/img/html-5.png')}}">
+    <style>
+        /*======== All styles ==========*/
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Open Sans", sans-serif;
+            background-color: #eaeaea;
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            min-height: 100vh; /* Ensure the page takes at least the full height of the viewport */
+        }
+
+        .container {
+            display: flex;
+            justify-content: center; /* Center children horizontally */
+        }
+
+        .confirm-container {
+            margin: 0 10px; /* Add space between containers */
+            text-align: center; /* Center content within each container */
+        }
+
+        /* Rest of your CSS styles */
+    </style>
+    {% endblock %}
+
+</head>
+
+{% block body %}
+
+
+
+
+    <img class="wave" src="{{ asset('./login/img/wave.svg')}}">
+    <div class="container">
+        <div class="confirm-container">
+            <div class="content">
+                <h2>Etudiant</h2>
+                <i class="far fa-check-circle"></i>
+                <div class="btn-container">
+                    <a href="{{ path('app_registerEtudiant') }}" class="btn-action">Registre ici</a>
+                </div>
+            </div>
+        </div>
+        <div class="confirm-container">
+            <div class="content">
+                <h2>Enseignant</h2>
+                <i class="far fa-check-circle"></i>
+                <div class="btn-container">
+                    <a href="{{ path('app_registerEnseignant') }}" class="btn-action">Registre ici</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block javascripts %}
+    
+{% endblock %}

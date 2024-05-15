@@ -1,0 +1,35 @@
+{% extends 'baseback.html.twig' %}
+<!-- hadha s7y7 -->
+{% block title %}Cour index{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Liste des Cours</h1>
+
+    <div class="row">
+        {% for cour in cours %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 bg-white">
+                    <img src="{{ asset(cour.Image) }}" class="card-img-top" alt="...">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-danger"><strong>Titre:</strong> {{ cour.Titre }}</h5>
+                        <p class="card-text"><strong>Description:</strong> {{ cour.description }}</p>
+                        <p class="card-text"><strong>Durée:</strong> {{ cour.Duree }}</p>
+                        <p class="card-text"><strong>Objectif:</strong> {{ cour.Objectif }}</p>
+                        <p class="card-text"><strong>Matière:</strong> {{ cour.idmatiere.nomm }}</p>
+                       
+                        <!-- Lien de téléchargement PDF -->
+                        <a href="{{ path('download_pdf', {'id': cour.id}) }}" class="btn btn-primary mt-auto">Télécharger PDF</a>
+                        <a href="{{ path('app_cour_show', {'id': cour.id}) }}" class="btn btn-primary mt-auto">Détails</a>
+                        <a href="{{ path('app_cour_edit', {'id': cour.id}) }}" class="btn btn-secondary">Modifier</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-md-12">
+                <p>Aucun cours disponible pour le moment.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <a href="{{ path('app_cour_new') }}" class="btn btn-success mt-4">Ajouter un nouveau cours</a>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Modifier Salle{% endblock %}
+
+{% block body %}
+    <h1>Modifier Salle</h1>
+
+{{ include('salle/_form.html.twig', {'button_label': 'Modifier', 'salle': salle}) }}
+
+
+    <a href="{{ path('app_salle_index') }}">Retour à la liste</a>
+{% endblock %}

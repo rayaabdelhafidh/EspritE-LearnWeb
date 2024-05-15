@@ -1,0 +1,63 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Classe index{% endblock %}
+
+{% block body %}
+    <script src="{{asset('./back/lib/chart/chart.min.js')}}"></script>
+        <form action="{{ path('app_classe_stat') }}" method="get">
+            <label style="padding-left:20px ">Select Year</label>
+            <select name="select" id="mySelect">
+                {% for year in years %}
+                    <option value="{{year}}">{{year}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">stat</button>
+        </form>
+             
+    <div class="row" style="padding-left:200px">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary text-center rounded p-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h6 class="mb-0">Worldwide Sales</h6>
+                    <a href="">Show All</a>
+                </div>
+                <canvas id="myChart" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // les parametres de stat 
+        var data = {
+            labels: ['TIC', 'GC', 'BUSINESS'],
+            datasets: [{
+                label: 'Filiers',
+                backgroundColor: ['red', 'black', 'gray'], // Couleurs personnalisées pour chaque section
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+                data: {{ data | raw }}
+            }]
+        };
+
+        // Configuration options
+        var options = {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        };
+
+        // Get the canvas element
+        var ctx = document.getElementById('myChart').getContext('2d');
+
+        // Create the bar chart
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: options
+        });
+    </script>
+{% endblock %}

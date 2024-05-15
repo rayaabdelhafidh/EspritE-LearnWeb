@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Options{% endblock %}
+
+{% block body %}
+    <h1> </h1>
+<div class="card">
+        <div class="card-body">
+    <form action="/submit_answers" method="post"> <!-- Assuming a form submission endpoint -->
+         <div>
+          <div class="text-center mb-3">
+          
+         <h3 style="display: inline-block; margin-right: 300px;color: red;">{{ option.getQuestion.getQuiz.getDescription() }}</h3>
+         </div>
+            <div>
+                
+               <p style="display: inline-block; margin-right: 300px;">{{ option.getQuestion.getContent() }}</p>
+               <label for="question_score">Score:</label>
+                <p style="display: inline-block; margin-right: 300px;">{{ option.getQuestion.getScore() }}</p>
+                
+            </div>
+             <div>
+             <p style="display: inline-block; margin-right: 300px;">{{ option.getOptionContent() }}</p>
+             
+            </div>
+            
+        
+    </form>
+</div>
+</div>
+
+            <div style="display: flex; align-items: center;">
+                <a href="{{ path('app_options_index') }}" style="margin-right: 10px;">back to list</a>
+                <a href="{{ path('app_options_edit', {'optionId': option.optionId}) }}" style="margin-right: 10px; margin-left: 30px;">edit</a>
+                <div style="margin-left: 20px; color: red;">{{ include('options/_delete_form.html.twig', {'option': option}) }}</div>
+            </div>
+        </div>
+    
+     <style>
+     a {
+    color: red;
+    text-decoration: none;
+}  </style>
+{% endblock %}

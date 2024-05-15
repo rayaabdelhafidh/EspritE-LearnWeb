@@ -1,0 +1,56 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Statistiques des Cours par Matière{% endblock %}
+
+{% block body %}
+    <section class="section">
+        <div class="row">
+            {% for stat in statistiques %}
+                <div class="col-lg-4">
+                    <!-- Chart for each matiere -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ stat.matiere.nomm }}</h5>
+                            <div id="matiereChart{{ loop.index }}" class="echart"></div>
+                            <script>
+                                document.addEventListener("DOMContentLoaded", () => {
+                                    const data{{ loop.index }} = [{
+                                        value: {{ stat.totalLikes }},
+                                        name: 'Total Likes'
+                                    }];
+
+                                    echarts.init(document.querySelector("#matiereChart{{ loop.index }}")).setOption({
+                                        tooltip: {
+                                            trigger: 'item'
+                                        },
+                                        series: [{
+                                            name: 'Popularité par Matière',
+                                            type: 'pie',
+                                            radius: ['40%', '70%'],
+                                            avoidLabelOverlap: false,
+                                            label: {
+                                                show: false,
+                                                position: 'center'
+                                            },
+                                            emphasis: {
+                                                label: {
+                                                    show: true,
+                                                    fontSize: '18',
+                                                    fontWeight: 'bold'
+                                                }
+                                            },
+                                            labelLine: {
+                                                show: false
+                                            },
+                                            data: data{{ loop.index }}
+                                        }]
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

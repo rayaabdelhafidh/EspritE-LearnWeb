@@ -1,0 +1,105 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Les salles{% endblock %}
+
+{% block body %}
+    <h1>Salles</h1>
+
+    <form method="GET" action="{{ path('app_salle_index') }}" style ="margin-left:20px;">
+        <label for="bloc">Filterer par Bloc: </label>
+        <select name="bloc" id="bloc">
+            <option value="">Tout</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="G">G</option>
+            <option value="H">H</option>
+            <option value="I">I</option>
+            <option value="J">J</option>
+            <option value="M">M</option>
+        </select>
+
+        <label for="etage">Filterer par Etage:</label>
+        <select name="etage" id="etage">
+            <option value="">Tout</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+
+        <button type="submit">Filtrer</button>
+    </form>
+
+   <a href="{{ path('app_salle_pdf') }}" style ="margin-left:20px;">Générer PDF</a> 
+      <a href="{{ path('app_salle_pdf_send') }}" style ="margin-left:20px;">envoyer email</a> 
+<a href="{{ path('app_salle_new') }}" style ="margin-left:20px;">Ajouter salle</a>
+
+   <div class="section-title">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search" oninput="search()">
+        </div>
+
+    <table class="table" style ="margin-left:20px;">
+        <thead>
+            <tr>
+                <th>Bloc</th>
+                <th>Numero Salle</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for salle in pagination %}
+            <tr>
+                <td>{{ salle.bloc }}</td>
+                <td>{{ salle.numeroSalle }}</td> 
+               <td style="display: flex; align-items: center;">
+    <a href="{{ path('app_salle_edit', {'salleId': salle.salleId}) }}">Modifier</a>
+<div style="margin-left: 10px;">{{ include('salle/_delete_form.html.twig', {'salle': salle}) }}</div>
+
+</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucun enregistrement trouvé</td> 
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+<div style="display: flex; justify-content: center; margin-top: 20px;">
+    {{ knp_pagination_render(pagination) }}
+</div>
+
+<script>
+        function search() {
+          
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toUpperCase();
+   
+            let rows = document.querySelectorAll("tbody tr");
+           
+            rows.forEach(row => {
+                let found = false;
+                
+                let cells = row.querySelectorAll("td");
+                cells.forEach(cell => {
+                    let text = cell.textContent || cell.innerText;
+                    if (text.toUpperCase().includes(filter)) {
+                        found = true;
+                    }
+                });
+                if (found) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
+{% endblock %}
+
+
+
